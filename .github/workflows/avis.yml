@@ -1,0 +1,29 @@
+name: Avis Google
+on:
+  schedule:
+    - cron: "17 4 * * *"   # chaque nuit vers 5 h (heure de Paris)
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  avis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Récupérer les avis
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
+          GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
+        run: python3 .github/scripts/avis.py
+      - name: Publier si changement
+        run: |
+          [ -f avis.json ] || exit 0
+          git add avis.json
+          git diff --cached --quiet && exit 0
+          git config user.name "avis-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Mise à jour des avis Google"
+          git push

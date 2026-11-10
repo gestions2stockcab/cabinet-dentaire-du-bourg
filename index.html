@@ -497,7 +497,7 @@ dl.care div:hover::after{opacity:1}
       </div>
       <div>
         <span class="eyebrow">Avis Google</span>
-        <h2>Plus de <span data-g-count>440</span> patients ont noté le cabinet sur Google.</h2>
+        <h2><span data-g-plus>Plus de </span><span data-g-count>440</span> patients ont noté le cabinet sur Google.</h2>
         <p>Découvrez ce qu’ils en disent.</p>
         <a class="btn arrow" data-g-link href="https://share.google/Jzj9RaFYUuktW2aVb" target="_blank" rel="noopener">Lire les avis sur Google</a>
       </div>
@@ -851,21 +851,23 @@ dl.care div:hover::after{opacity:1}
 })();
 </script>
 <script>
-/* Avis Google en direct via la fonction Supabase (voir avis-google/README.md). Vide = valeurs en dur. */
+/* Avis Google : avis.json est mis à jour chaque nuit par une action GitHub (API Business Profile). Absent = valeurs en dur. */
 (function(){
-  var AVIS_URL='';
+  var AVIS_URL='/avis.json';
   if(!AVIS_URL)return;
   function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
   function each(sel,fn){Array.prototype.forEach.call(document.querySelectorAll(sel),fn);}
-  fetch(AVIS_URL).then(function(r){return r.ok?r.json():null;}).then(function(d){
+  if(location.protocol==='file:')return;
+  function ago(iso){if(!iso)return '';var d=(Date.now()-new Date(iso))/864e5;if(d<1)return 'aujourd’hui';if(d<7)return 'il y a '+Math.floor(d)+' jour'+(d>=2?'s':'');if(d<31)return 'il y a '+Math.floor(d/7)+' semaine'+(d>=14?'s':'');if(d<365)return 'il y a '+Math.floor(d/30)+' mois';var y=Math.floor(d/365);return 'il y a '+y+' an'+(y>1?'s':'');}
+  fetch(AVIS_URL,{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
     if(!d||d.error)return;
-    if(d.rating)each('[data-g-rating]',function(el){el.textContent=d.rating.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});});
-    if(d.count)each('[data-g-count]',function(el){el.textContent=d.count.toLocaleString('fr-FR');});
+    if(d.rating)each('[data-g-rating]',function(el){el.dataset.final=el.textContent=d.rating.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});});
+    if(d.count){each('[data-g-count]',function(el){el.dataset.final=el.textContent=d.count.toLocaleString('fr-FR');});each('[data-g-plus]',function(el){el.remove();});}
     var box=document.querySelector('[data-g-reviews]'),list=(d.reviews||[]).slice(0,3);
     if(!box||!list.length)return;
     box.innerHTML=list.map(function(v){
       var n=Math.round(v.rating||0),who=v.authorUrl?'<a href="'+esc(v.authorUrl)+'" target="_blank" rel="noopener">'+esc(v.author)+'</a>':esc(v.author);
-      return '<figure class="g-review"><span class="stars" aria-label="'+n+' sur 5">'+'★★★★★'.slice(0,n)+'</span><blockquote>'+esc(v.text)+'</blockquote><figcaption>'+who+(v.when?' · '+esc(v.when):'')+'</figcaption></figure>';
+      return '<figure class="g-review"><span class="stars" aria-label="'+n+' sur 5">'+'★★★★★'.slice(0,n)+'</span><blockquote>'+esc(v.text)+'</blockquote><figcaption>'+who+((v.when||v.date)?' · '+esc(v.when||ago(v.date)):'')+'</figcaption></figure>';
     }).join('');
     box.hidden=false;document.querySelector('[data-g-src]').hidden=false;
   }).catch(function(){});
@@ -917,7 +919,7 @@ dl.care div:hover::after{opacity:1}
   function count(el){var txt=el.textContent.trim(),dec=txt.indexOf(',')>-1,to=parseFloat(txt.replace(/\s/g,'').replace(',','.'));if(isNaN(to))return;
     var t0=null,dur=1600;function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/dur),v=to*(1-Math.pow(1-p,4));
       el.textContent=dec?v.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1}):Math.round(v).toLocaleString('fr-FR');
-      if(p<1)requestAnimationFrame(step);else el.textContent=txt;}requestAnimationFrame(step);}
+      if(p<1&&!el.dataset.final)requestAnimationFrame(step);else el.textContent=el.dataset.final||txt;}requestAnimationFrame(step);}
   var cs=[].filter.call(document.querySelectorAll('.avis [data-g-rating], .avis [data-g-count]'),function(el){return el.getBoundingClientRect().top>innerHeight;});
   if(cs.length&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){count(e.target);io.unobserve(e.target);}});},{threshold:.6});cs.forEach(function(el){io.observe(el);});}
 })();

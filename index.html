@@ -13,7 +13,7 @@
 <meta property="og:description" content="Soins, prothèses, implants, parodontologie, chirurgie et urgences au 36 rue de Melun. Rendez-vous en ligne.">
 <meta property="og:image" content="https://www.cabinetdentairedubourg.fr/img/cabinet-hero.webp">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "Dentist", "@id": "https://www.cabinetdentairedubourg.fr/#cabinet", "name": "Cabinet Dentaire du Bourg", "url": "https://www.cabinetdentairedubourg.fr/", "telephone": "+33183869781", "image": ["https://www.cabinetdentairedubourg.fr/img/cabinet-hero.webp", "https://www.cabinetdentairedubourg.fr/img/salle-bleue.webp"], "address": {"@type": "PostalAddress", "streetAddress": "36 rue de Melun", "postalCode": "77176", "addressLocality": "Savigny-le-Temple", "addressRegion": "Île-de-France", "addressCountry": "FR"}, "geo": {"@type": "GeoCoordinates", "latitude": 48.57411, "longitude": 2.587388}, "hasMap": "https://www.google.com/maps/search/?api=1&query=36+rue+de+Melun+77176+Savigny-le-Temple", "areaServed": ["Savigny-le-Temple", "Seine-et-Marne"], "medicalSpecialty": "Dentistry", "sameAs": ["https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg"], "employee": [{"@type": "Person", "name": "Dr Simon Atlan", "jobTitle": "Chirurgien-dentiste"}, {"@type": "Person", "name": "Dr Nils Godkine", "jobTitle": "Chirurgien-dentiste"}, {"@type": "Person", "name": "Dr Ruben Dray", "jobTitle": "Chirurgien-dentiste"}], "availableService": [{"@type": "MedicalProcedure", "name": "Soins dentaires conservateurs"}, {"@type": "MedicalProcedure", "name": "Prothèses dentaires"}, {"@type": "MedicalProcedure", "name": "Implants dentaires"}, {"@type": "MedicalProcedure", "name": "Parodontologie"}, {"@type": "MedicalProcedure", "name": "Chirurgie dentaire"}, {"@type": "MedicalProcedure", "name": "Blanchiment dentaire"}, {"@type": "MedicalProcedure", "name": "Urgences dentaires"}]}
+{"@context": "https://schema.org", "@type": "Dentist", "@id": "https://www.cabinetdentairedubourg.fr/#cabinet", "name": "Cabinet Dentaire du Bourg", "url": "https://www.cabinetdentairedubourg.fr/", "telephone": "+33183869781", "image": ["https://www.cabinetdentairedubourg.fr/img/cabinet-hero.webp", "https://www.cabinetdentairedubourg.fr/img/salle-bleue.webp"], "address": {"@type": "PostalAddress", "streetAddress": "36 rue de Melun", "postalCode": "77176", "addressLocality": "Savigny-le-Temple", "addressRegion": "Île-de-France", "addressCountry": "FR"}, "geo": {"@type": "GeoCoordinates", "latitude": 48.57411, "longitude": 2.587388}, "hasMap": "https://www.google.com/maps/search/?api=1&query=36+rue+de+Melun+77176+Savigny-le-Temple", "areaServed": ["Savigny-le-Temple", "Seine-et-Marne"], "medicalSpecialty": "Dentistry", "sameAs": ["https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg"], "employee": [{"@type": "Person", "name": "Dr Simon Atlan", "jobTitle": "Chirurgien-dentiste"}, {"@type": "Person", "name": "Dr Nils Godkine", "jobTitle": "Chirurgien-dentiste"}, {"@type": "Person", "name": "Dr Ruben Dray", "jobTitle": "Chirurgien-dentiste"}], "availableService": [{"@type": "MedicalProcedure", "name": "Soins dentaires conservateurs"}, {"@type": "MedicalProcedure", "name": "Prothèses dentaires"}, {"@type": "MedicalProcedure", "name": "Implants dentaires"}, {"@type": "MedicalProcedure", "name": "Parodontologie"}, {"@type": "MedicalProcedure", "name": "Chirurgie dentaire"}, {"@type": "MedicalProcedure", "name": "Blanchiment dentaire"}, {"@type": "MedicalProcedure", "name": "Urgences dentaires"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "09:30", "closes": "14:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "15:00", "closes": "19:30"}]}
 </script>
 <style>
 @font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url(fonts/manrope-latin.woff2) format("woff2")}
@@ -323,6 +323,13 @@ section.bot{padding:0}
 .more-link{display:inline-flex;margin-top:8px;font-weight:600;color:var(--accent);text-decoration:none}
 .more-link:hover{text-decoration:underline}
 
+.hours{margin:0 0 32px;padding:22px 24px;border-radius:var(--r-sm);background:var(--tint)}
+.hours h3{font-size:1rem;margin-bottom:12px;letter-spacing:-.01em}
+.hours dl{margin:0;display:grid;gap:8px}
+.hours dl div{display:flex;justify-content:space-between;gap:16px;font-variant-numeric:tabular-nums}
+.hours dt{font-weight:600}.hours dd{margin:0;text-align:right;color:var(--ink)}
+.hours p{margin:12px 0 0;font-size:.9rem;color:var(--muted)}
+
 /* animations */
 .progress{position:fixed;left:0;right:0;top:0;height:2px;z-index:25;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
 .hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
@@ -601,6 +608,10 @@ dl.care div:hover::after{opacity:1}
         <h2>Nous trouver</h2>
         <address><b>Cabinet Dentaire du Bourg</b><br>36 rue de Melun<br>77176 Savigny-le-Temple</address>
         <a class="tel" href="tel:+33183869781">01 83 86 97 81</a>
+        <div class="hours"><h3>Horaires d’ouverture</h3>
+          <dl><div><dt>Lundi au jeudi</dt><dd>9 h 30 – 14 h<br>15 h – 19 h 30</dd></div></dl>
+          <p>En dehors de ces horaires, le cabinet reste joignable par téléphone 24 h/24.</p>
+        </div>
         <div class="cta">
           <a class="btn arrow" href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Prendre rendez-vous</a>
           <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=36+rue+de+Melun+77176+Savigny-le-Temple" target="_blank" rel="noopener">Itinéraire</a>
@@ -699,6 +710,7 @@ dl.care div:hover::after{opacity:1}
         <ul>
           <li>36 rue de Melun, 77176 Savigny-le-Temple</li>
           <li><a href="tel:+33183869781">01 83 86 97 81</a></li>
+          <li>Lundi au jeudi : 9 h 30 – 14 h, 15 h – 19 h 30</li>
           <li><a href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Rendez-vous sur Doctolib</a></li>
         </ul>
       </div>
@@ -742,13 +754,14 @@ dl.care div:hover::after{opacity:1}
     soins:{q:'Quels soins proposez-vous ?',t:'Consultations, soins des caries, prothèses, implants, gencives, chirurgie, esthétique et urgences. Le cabinet ne réalise pas d’orthodontie.',l:[['Lire nos fiches','#conseils'],['Prendre rendez-vous',RDV,1,1]]},
     ortho:{q:'Faites-vous de l’orthodontie ?',t:'Non, le cabinet ne réalise pas d’orthodontie. Pour tous les autres soins dentaires, nous sommes là.',l:[['Voir les soins','#soins']]},
     adresse:{q:'Adresse et accès',t:'Cabinet Dentaire du Bourg, 36 rue de Melun, 77176 Savigny-le-Temple.',l:[['Itinéraire',MAP,1,1],call]},
+    horaires:{q:'Vos horaires ?',t:'Le cabinet est ouvert du lundi au jeudi, de 9 h 30 à 14 h et de 15 h à 19 h 30. En dehors de ces horaires, vous pouvez appeler à toute heure : Recept AI répond 24 h/24.',l:[['Réserver sur Doctolib',RDV,1,1],call]},
     joignable:{q:'Joignable 24 h/24 ?',t:'Oui. Grâce à Recept AI, le cabinet répond à vos appels à toute heure, au même numéro.',l:[['En savoir plus','#recept'],call]},
     humain:{q:'Parler à quelqu’un',t:'Appelez le cabinet, nous répondons 24 h/24 et 7 j/7.',l:[['Appeler le '+PHONE,TEL,0,1]]},
     tarif:{t:'Je ne peux pas donner de tarif ici. Appelez le cabinet, l’équipe vous renseignera.',l:[['Appeler le '+PHONE,TEL,0,1]]},
     autre:{t:'Je n’ai pas bien compris. Choisissez un sujet ci-dessous, ou appelez le cabinet.',l:[['Appeler le '+PHONE,TEL,0,1]]}
   };
-  var order=['rdv','urgence','soins','ortho','adresse','joignable'];
-  var rules=[['urgence',/urgen|douleur|\bmal (aux|a la|au|a)\b|cass|abces|gonfl|saign|tomb|chute|\bchoc\b/],['ortho',/ortho|appareil|bague|invisalign|align/],['tarif',/\bprix\b|tarif|\bcout|combien co|rembours|mutuelle|devis|honorair|\bcher\b/],['rdv',/\brdv\b|rendez|reserv|doctolib|consult|dispo/],['joignable',/24|nuit|week|ferie|dimanche|horaire|ouvert|ferme|recept/],['adresse',/adresse|ou etes|ou se trouve|acces|\bplan\b|itineraire|parking|\brer\b|\bgare\b|\bvenir\b|\bbus\b/],['soins',/soin|implant|couronne|bridge|carie|blanch|gencive|detart|devital|\bdents?\b|prothese|extraction|sagesse|chirurg/],['humain',/parler|humain|telephone|appeler|numero/]];
+  var order=['rdv','urgence','horaires','soins','ortho','adresse','joignable'];
+  var rules=[['urgence',/urgen|douleur|\bmal (aux|a la|au|a)\b|cass|abces|gonfl|saign|tomb|chute|\bchoc\b/],['ortho',/ortho|appareil|bague|invisalign|align/],['tarif',/\bprix\b|tarif|\bcout|combien co|rembours|mutuelle|devis|honorair|\bcher\b/],['rdv',/\brdv\b|rendez|reserv|doctolib|consult|dispo/],['horaires',/horaire|ouvert|ferme|\bheures?\b|lundi|mardi|mercredi|jeudi|vendredi|samedi/],['joignable',/24|nuit|week|ferie|dimanche|recept|joignable/],['adresse',/adresse|ou etes|ou se trouve|acces|\bplan\b|itineraire|parking|\brer\b|\bgare\b|\bvenir\b|\bbus\b/],['soins',/soin|implant|couronne|bridge|carie|blanch|gencive|detart|devital|\bdents?\b|prothese|extraction|sagesse|chirurg/],['humain',/parler|humain|telephone|appeler|numero/]];
   function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
   function add(text,me,links){
     var d=document.createElement('div');d.className='msg '+(me?'me':'them');

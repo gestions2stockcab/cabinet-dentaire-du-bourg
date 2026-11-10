@@ -722,7 +722,8 @@ dl.care div:hover::after{opacity:1}
       <h3>Hébergeur</h3>
       <p>GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis</p>
       <h3>Données personnelles et cookies</h3>
-      <p>Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle. Le plan Google Maps de la rubrique « Nous trouver » ne se charge que si vous cliquez sur « Afficher la carte » ; Google peut alors déposer ses propres cookies. L’assistant du site fonctionne directement dans votre navigateur : vos questions ne sont ni enregistrées ni transmises.</p>
+      <p>Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle. Le plan Google Maps de la rubrique « Nous trouver » ne se charge que si vous cliquez sur « Afficher la carte » ; Google peut alors déposer ses propres cookies.</p>
+      <p>Pour mesurer la fréquentation, le site utilise GoatCounter, un outil de statistiques sans cookies qui ne collecte aucune donnée personnelle et ne permet pas d’identifier les visiteurs. L’assistant du site fonctionne directement dans votre navigateur : vos questions ne sont ni enregistrées ni transmises.</p>
       <p>La prise de rendez-vous en ligne se fait sur Doctolib, qui applique sa propre politique de confidentialité.</p>
       <h3>Contenu</h3>
       <p>Les informations de ce site sont données à titre général et ne remplacent pas une consultation. En cas d’urgence, appelez le cabinet ou le 15.</p>
@@ -910,6 +911,14 @@ dl.care div:hover::after{opacity:1}
 (function(){var b=document.getElementById('mapLoad');if(!b)return;b.addEventListener('click',function(){
   var m=document.getElementById('carte'),f=document.createElement('iframe');f.src=m.getAttribute('data-src');f.title='Plan d’accès au Cabinet Dentaire du Bourg';f.loading='lazy';f.referrerPolicy='no-referrer-when-downgrade';f.allowFullscreen=true;
   m.innerHTML='';m.appendChild(f);});})();
+</script>
+<script data-goatcounter="https://cabinetdentairedubourg.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+/* Statistiques GoatCounter (sans cookies) : compte aussi les pages #recept et #mentions-legales */
+(function(){function hit(){var h=location.hash;if(h!=='#recept'&&h!=='#mentions-legales')return;
+  var go=function(){window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:'/'+h.slice(1),title:document.title})};
+  if(window.goatcounter&&window.goatcounter.count)go();else setTimeout(go,1500);}
+  addEventListener('hashchange',hit);hit();})();
 </script>
 </body>
 </html>

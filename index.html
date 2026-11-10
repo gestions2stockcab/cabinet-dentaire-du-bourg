@@ -776,7 +776,7 @@ dl.care div:hover::after{opacity:1}
       </div>
     </div>
     <div class="bottom">
-      <span>© 2026 Cabinet Dentaire du Bourg</span>
+      <span>© <span data-year>2026</span> Cabinet Dentaire du Bourg<script>document.querySelectorAll('[data-year]').forEach(function(e){e.textContent=new Date().getFullYear()})</script></span>
       <a href="#mentions-legales">Mentions légales</a>
     </div>
   </div>

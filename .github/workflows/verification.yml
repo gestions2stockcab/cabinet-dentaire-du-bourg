@@ -1,0 +1,11 @@
+name: Vérification du site
+on:
+  schedule:
+    - cron: "41 6 * * *"   # chaque matin vers 7 h 40 (heure de Paris)
+  workflow_dispatch: {}
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 .github/scripts/check.py

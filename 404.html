@@ -304,7 +304,6 @@ section.bot{padding:0}
 @media(max-width:900px){.rcpt-grid{grid-template-columns:1fr;gap:40px}.rcpt-brand{justify-self:start;aspect-ratio:auto;min-height:280px;padding:32px}}
 
 .care-link{text-decoration:none;color:inherit}
-.care-link::before{content:"";position:absolute;inset:0;z-index:2}
 .care-link:hover{color:var(--accent)}
 .more-link{display:inline-flex;margin-top:8px;font-weight:600;color:var(--accent);text-decoration:none}
 .more-link:hover{text-decoration:underline}
@@ -347,6 +346,9 @@ section.bot{padding:0}
 .routes span{width:100%;font-size:.85rem;color:var(--muted);font-weight:600}
 .routes a{padding:8px 14px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:600;font-size:.9rem;color:var(--ink);background:var(--surface)}
 .routes a:hover{border-color:var(--accent);color:var(--accent)}
+
+dl.care div:has(.care-link){cursor:pointer}
+dl.care div:has(.care-link) dd::after{content:"En savoir plus →";display:block;margin-top:14px;font-weight:600;font-size:.88rem;color:var(--accent)}
 
 /* animations */
 .progress{position:fixed;left:0;right:0;top:0;height:2px;z-index:25;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}

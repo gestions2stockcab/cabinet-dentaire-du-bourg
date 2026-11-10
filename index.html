@@ -344,6 +344,16 @@ section.bot{padding:0}
   @keyframes sheet{from{transform:translateY(40px);opacity:0}}
 }
 
+/* carte */
+.map{position:relative;margin-top:24px;height:380px;border-radius:32px;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px,var(--tint)}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.map-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px}
+.map-ph svg{width:40px;height:40px;color:var(--accent)}
+.map-ph p{margin:0;font-size:1.05rem;color:var(--ink)}
+.map-ph small{color:var(--muted);font-size:.8rem;max-width:32em}
+@media(max-width:600px){.map{height:300px;border-radius:24px}}
+
 /* animations */
 .progress{position:fixed;left:0;right:0;top:0;height:2px;z-index:25;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
 .hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
@@ -640,6 +650,16 @@ dl.care div:hover::after{opacity:1}
         </ul>
       </div>
     </div>
+    <div class="wrap">
+      <div class="map" id="carte" data-src="https://maps.google.com/maps?q=36+rue+de+Melun,+77176+Savigny-le-Temple&z=16&hl=fr&output=embed">
+        <div class="map-ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <p><b>36 rue de Melun</b><br>77176 Savigny-le-Temple</p>
+          <button class="btn" type="button" id="mapLoad">Afficher la carte</button>
+          <small>La carte est fournie par Google Maps, qui peut déposer des cookies.</small>
+        </div>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -702,7 +722,7 @@ dl.care div:hover::after{opacity:1}
       <h3>Hébergeur</h3>
       <p>GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis</p>
       <h3>Données personnelles et cookies</h3>
-      <p>Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle. L’assistant du site fonctionne directement dans votre navigateur : vos questions ne sont ni enregistrées ni transmises.</p>
+      <p>Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle. Le plan Google Maps de la rubrique « Nous trouver » ne se charge que si vous cliquez sur « Afficher la carte » ; Google peut alors déposer ses propres cookies. L’assistant du site fonctionne directement dans votre navigateur : vos questions ne sont ni enregistrées ni transmises.</p>
       <p>La prise de rendez-vous en ligne se fait sur Doctolib, qui applique sa propre politique de confidentialité.</p>
       <h3>Contenu</h3>
       <p>Les informations de ce site sont données à titre général et ne remplacent pas une consultation. En cas d’urgence, appelez le cabinet ou le 15.</p>
@@ -885,6 +905,11 @@ dl.care div:hover::after{opacity:1}
   var cs=[].filter.call(document.querySelectorAll('.avis [data-g-rating], .avis [data-g-count]'),function(el){return el.getBoundingClientRect().top>innerHeight;});
   if(cs.length&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){count(e.target);io.unobserve(e.target);}});},{threshold:.6});cs.forEach(function(el){io.observe(el);});}
 })();
+</script>
+<script>
+(function(){var b=document.getElementById('mapLoad');if(!b)return;b.addEventListener('click',function(){
+  var m=document.getElementById('carte'),f=document.createElement('iframe');f.src=m.getAttribute('data-src');f.title='Plan d’accès au Cabinet Dentaire du Bourg';f.loading='lazy';f.referrerPolicy='no-referrer-when-downgrade';f.allowFullscreen=true;
+  m.innerHTML='';m.appendChild(f);});})();
 </script>
 </body>
 </html>

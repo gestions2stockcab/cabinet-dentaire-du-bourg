@@ -398,6 +398,30 @@ dl.care div::after{display:none}
 .js .rv,.rv{transform:none!important;transition:opacity .6s ease!important}
 .bot-fab{box-shadow:0 4px 14px -6px rgba(13,34,51,.4)}
 .hero-art .arch{box-shadow:none}
+/* === rythme === */
+.facts{border-bottom:1px solid var(--line);background:var(--surface)}
+.facts .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.facts .wrap>div{padding:28px 24px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.facts .wrap>div:first-child{border-left:0;padding-left:0}
+.facts b{font-size:1.5rem;font-weight:600;letter-spacing:-.03em;color:var(--ink)}
+.facts span{font-size:.9rem;color:var(--muted)}
+.facts b span{font-size:inherit;color:inherit}
+@media(max-width:860px){.facts .wrap{grid-template-columns:1fr 1fr}.facts .wrap>div{padding:20px 16px}.facts .wrap>div:nth-child(3){border-left:0;padding-left:0}.facts .wrap>div:nth-child(n+3){border-top:1px solid var(--line)}}
+/* soins en liste */
+dl.care:not(.rcpt-list){grid-template-columns:1fr 1fr;gap:0 56px}
+dl.care:not(.rcpt-list) div{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:26px 0 26px 56px}
+dl.care:not(.rcpt-list) div::before{position:absolute;left:0;top:30px;margin:0}
+dl.care:not(.rcpt-list) div:hover dt{color:var(--accent)}
+dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  →";margin:0}
+@media(max-width:700px){dl.care:not(.rcpt-list){grid-template-columns:1fr}}
+.soins{background:var(--bg)!important}
+/* grande photo */
+.band{margin:0;height:min(56vw,520px);overflow:hidden}
+.band img{width:100%;height:100%;object-fit:cover;display:block}
+/* équipe teintée */
+#equipe{background:var(--tint)}
+#equipe .ph-empty{background:var(--surface)}
+.facts span span{font-size:inherit;color:inherit}
 </style></head><body><header>
   <div class="wrap">
     <a class="brand" href="/"><span>Cabinet Dentaire du Bourg<small>Savigny-le-Temple</small></span></a>

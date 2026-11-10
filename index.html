@@ -390,6 +390,28 @@ dl.care div:hover::after{opacity:1}
   .progress{display:none}
   .team article.rv .ph{clip-path:none}
 }
+/* === version sobre === */
+.progress{display:none!important}
+.hero::before,.rcpt-hero::before,.avis-card::before,.avis-card::after,.info .side::before{display:none!important}
+.hero h1 .w>span,.arch img,.float,.live::after,.wave i,.anim{animation:none!important}
+.arch,.float{translate:none!important;transition:none!important}
+.float{box-shadow:0 1px 2px rgba(13,34,51,.06),0 6px 16px -8px rgba(13,34,51,.18)}
+.score{background:none!important;-webkit-text-fill-color:currentColor;color:var(--on-deep)}
+.score small{-webkit-text-fill-color:var(--deep-muted)}
+.info a.tel{background:none!important;-webkit-text-fill-color:currentColor;color:var(--ink)}
+.hero h1 em{color:var(--ink)}
+dl.care div:hover{transform:none;box-shadow:none}
+dl.care div::after{display:none}
+.btn:hover{transform:none;box-shadow:none;filter:brightness(1.06)}
+.btn.arrow::after{display:none}
+.team article:hover .ph img{transform:none}
+.team article.rv .ph{clip-path:none!important}
+.team article.rv .ph img{transform:none!important}
+.gal figure:hover img{transform:none}
+.rcpt-brand:hover{transform:none}
+.js .rv,.rv{transform:none!important;transition:opacity .6s ease!important}
+.bot-fab{box-shadow:0 4px 14px -6px rgba(13,34,51,.4)}
+.hero-art .arch{box-shadow:none}
 </style>
 </head>
 <body>
@@ -916,7 +938,7 @@ dl.care div:hover::after{opacity:1}
   /* halo sur les cartes */
   [].forEach.call(document.querySelectorAll('dl.care>div'),function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--x',e.clientX-r.left+'px');c.style.setProperty('--y',e.clientY-r.top+'px');});});
   /* compteurs */
-  function count(el){var txt=el.textContent.trim(),dec=txt.indexOf(',')>-1,to=parseFloat(txt.replace(/\s/g,'').replace(',','.'));if(isNaN(to))return;
+  function count(el){return;var txt=el.textContent.trim(),dec=txt.indexOf(',')>-1,to=parseFloat(txt.replace(/\s/g,'').replace(',','.'));if(isNaN(to))return;
     var t0=null,dur=1600;function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/dur),v=to*(1-Math.pow(1-p,4));
       el.textContent=dec?v.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1}):Math.round(v).toLocaleString('fr-FR');
       if(p<1&&!el.dataset.final)requestAnimationFrame(step);else el.textContent=el.dataset.final||txt;}requestAnimationFrame(step);}

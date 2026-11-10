@@ -355,6 +355,11 @@ section.bot{padding:0}
 .faq-link{margin-top:24px}
 @media(min-width:901px){.conseils .faq-link{grid-column:2;justify-self:start;margin-top:-48px}}
 
+.routes{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px}
+.routes span{width:100%;font-size:.85rem;color:var(--muted);font-weight:600}
+.routes a{padding:8px 14px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:600;font-size:.9rem;color:var(--ink);background:var(--surface)}
+.routes a:hover{border-color:var(--accent);color:var(--accent)}
+
 /* animations */
 .progress{position:fixed;left:0;right:0;top:0;height:2px;z-index:25;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
 .hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
@@ -486,6 +491,6 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
   </div>
 </footer>
 <script>(function(){var h=document.querySelector('header');function f(){h.classList.toggle('scrolled',scrollY>8)}addEventListener('scroll',f,{passive:true});f();})();</script>
-<script data-goatcounter="https://cabinetdentairedubourg.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://cabinetdentairedubourg.goatcounter.com/count" async src="/js/count.js"></script>
 </body>
 </html>

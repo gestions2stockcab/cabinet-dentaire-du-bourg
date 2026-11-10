@@ -357,6 +357,11 @@ section.bot{padding:0}
 .faq-link{margin-top:24px}
 @media(min-width:901px){.conseils .faq-link{grid-column:2;justify-self:start;margin-top:-48px}}
 
+.routes{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px}
+.routes span{width:100%;font-size:.85rem;color:var(--muted);font-weight:600}
+.routes a{padding:8px 14px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:600;font-size:.9rem;color:var(--ink);background:var(--surface)}
+.routes a:hover{border-color:var(--accent);color:var(--accent)}
+
 /* animations */
 .progress{position:fixed;left:0;right:0;top:0;height:2px;z-index:25;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
 .hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
@@ -642,7 +647,12 @@ dl.care div:hover::after{opacity:1}
         </div>
         <div class="cta">
           <a class="btn arrow" href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Prendre rendez-vous</a>
-          <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=36+rue+de+Melun+77176+Savigny-le-Temple" target="_blank" rel="noopener">Itinéraire</a>
+          
+        </div>
+        <div class="routes"><span>Itinéraire Google Maps :</span>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=36+rue+de+Melun,+77176+Savigny-le-Temple&travelmode=driving" target="_blank" rel="noopener">En voiture</a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=36+rue+de+Melun,+77176+Savigny-le-Temple&travelmode=transit" target="_blank" rel="noopener">En transports</a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=36+rue+de+Melun,+77176+Savigny-le-Temple&travelmode=walking" target="_blank" rel="noopener">À pied</a>
         </div>
       </div>
       <div class="side" data-rv style="--d:.1s">
@@ -917,7 +927,7 @@ dl.care div:hover::after{opacity:1}
   var m=document.getElementById('carte'),f=document.createElement('iframe');f.src=m.getAttribute('data-src');f.title='Plan d’accès au Cabinet Dentaire du Bourg';f.loading='lazy';f.referrerPolicy='no-referrer-when-downgrade';f.allowFullscreen=true;
   m.innerHTML='';m.appendChild(f);});})();
 </script>
-<script data-goatcounter="https://cabinetdentairedubourg.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://cabinetdentairedubourg.goatcounter.com/count" async src="/js/count.js"></script>
 <script>
 /* Statistiques GoatCounter (sans cookies) : compte aussi les pages #recept et #mentions-legales */
 (function(){function hit(){var h=location.hash;if(h!=='#recept'&&h!=='#mentions-legales')return;

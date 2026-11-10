@@ -12,25 +12,25 @@
 <style>
 @font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url(fonts/manrope-latin.woff2) format("woff2")}
 :root{
-  --bg:#f7f8fa; --surface:#ffffff; --ink:#0f1e2e; --muted:#5d6b7a; --line:#e3e7ec;
-  --accent:#2b5a8a; --accent-ink:#ffffff; --tint:#eef2f6; --mint:#d5e0eb;
-  --deep:#0f1e2e; --deep-2:#172839; --on-deep:#eef2f6; --deep-muted:#9aa8b6;
-  --hi:#b9cde1; --live:#6fa3d6; --deep-line:rgba(255,255,255,.12);
+  --bg:#f8f9fc; --surface:#ffffff; --ink:#121a2b; --muted:#5b6475; --line:#e3e8f2;
+  --accent:#2f67ff; --accent-ink:#ffffff; --tint:#edf3ff; --mint:#dce8ff;
+  --deep:#00347e; --deep-2:#0a418f; --on-deep:#f2f6ff; --deep-muted:#b3c6ec;
+  --hi:#9fc6ff; --live:#7bb1ff; --deep-line:rgba(255,255,255,.12);
   --r:22px; --r-sm:14px; --shadow:0 1px 2px rgba(13,34,51,.04),0 12px 32px -12px rgba(13,34,51,.14);
   --ease:cubic-bezier(.2,.7,.2,1);
   box-sizing:border-box; color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0b1118; --surface:#121b25; --ink:#e9eef3; --muted:#9aa8b6; --line:#223040;
-    --accent:#8fb3d9; --accent-ink:#0b1118; --tint:#16222f; --mint:#2a3d52;
-    --deep:#070c12; --deep-2:#111b26; --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6); color-scheme:dark;
+    --bg:#0a0f1c; --surface:#111a2c; --ink:#eaf0fb; --muted:#9ba8c0; --line:#22304a;
+    --accent:#88a8ff; --accent-ink:#0a0f1c; --tint:#121e38; --mint:#1d3163;
+    --deep:#071636; --deep-2:#0d2048; --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0b1118; --surface:#121b25; --ink:#e9eef3; --muted:#9aa8b6; --line:#223040;
-  --accent:#8fb3d9; --accent-ink:#0b1118; --tint:#16222f; --mint:#2a3d52;
-  --deep:#070c12; --deep-2:#111b26; --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6); color-scheme:dark;
+  --bg:#0a0f1c; --surface:#111a2c; --ink:#eaf0fb; --muted:#9ba8c0; --line:#22304a;
+  --accent:#88a8ff; --accent-ink:#0a0f1c; --tint:#121e38; --mint:#1d3163;
+  --deep:#071636; --deep-2:#0d2048; --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6); color-scheme:dark;
 }
 html{scroll-behavior:smooth;scroll-padding-top:84px;interpolate-size:allow-keywords}
 *,*::before,*::after{box-sizing:border-box}
@@ -89,7 +89,7 @@ nav .btn{margin-left:10px;padding:12px 22px;white-space:nowrap}
 .hero-art{position:relative;aspect-ratio:4/5;max-height:640px;justify-self:end;width:100%;max-width:500px}
 .arch{position:absolute;inset:0;border-radius:999px 999px 28px 28px;overflow:hidden;background:
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--accent) 60%,#b9cde1) 0%,transparent 60%),
-  linear-gradient(180deg,#34587d 0%,#0f1e2e 80%);box-shadow:var(--shadow)}
+  linear-gradient(180deg,#2f67ff 0%,#00347e 80%);box-shadow:var(--shadow)}
 .arch img{width:100%;height:100%;object-fit:cover;display:block}
 .arch .place{position:absolute;left:0;right:0;bottom:30px;text-align:center;color:rgba(238,245,244,.82);font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;font-weight:600}
 .float{position:absolute;display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:18px;background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid color-mix(in srgb,var(--line) 70%,transparent);box-shadow:var(--shadow);font-size:.88rem;line-height:1.3;color:var(--muted);animation:bob 7s ease-in-out infinite}
@@ -156,8 +156,8 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 .stars{color:var(--accent);letter-spacing:.14em}
 .avis{position:relative;padding:0;margin:0 24px;}
 .avis-card{position:relative;max-width:1200px;margin:0 auto;padding:96px 72px;border-radius:32px;background:var(--deep);color:var(--on-deep);overflow:hidden;isolation:isolate}
-.avis-card::before{content:"";position:absolute;z-index:-1;width:620px;height:620px;right:-160px;top:-220px;border-radius:50%;background:radial-gradient(closest-side,rgba(111,163,214,.22),transparent)}
-.avis-card::after{content:"";position:absolute;z-index:-1;width:480px;height:480px;left:-180px;bottom:-260px;border-radius:50%;background:radial-gradient(closest-side,rgba(43,90,138,.35),transparent)}
+.avis-card::before{content:"";position:absolute;z-index:-1;width:620px;height:620px;right:-160px;top:-220px;border-radius:50%;background:radial-gradient(closest-side,rgba(47,103,255,.45),transparent)}
+.avis-card::after{content:"";position:absolute;z-index:-1;width:480px;height:480px;left:-180px;bottom:-260px;border-radius:50%;background:radial-gradient(closest-side,rgba(123,177,255,.25),transparent)}
 .avis .wrap{display:grid;grid-template-columns:auto 1fr;gap:80px;align-items:center;padding:0}
 .score{font:600 clamp(5rem,13vw,10rem)/.85 "Manrope",system-ui,sans-serif;letter-spacing:-.07em;background:linear-gradient(180deg,#ffffff 30%,var(--hi));-webkit-background-clip:text;background-clip:text;color:transparent}
 .score small{font-size:.26em;letter-spacing:0;font-weight:500;margin-left:.12em;-webkit-text-fill-color:var(--deep-muted)}
@@ -209,10 +209,10 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 .info a.tel{font:700 clamp(2rem,4vw,2.8rem)/1 "Manrope",sans-serif;letter-spacing:-.04em;text-decoration:none;display:inline-block;margin-bottom:32px;background:linear-gradient(90deg,var(--ink),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .info ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
 .info .side{display:flex;flex-direction:column;justify-content:space-between;gap:32px;background:var(--deep)!important;color:var(--on-deep);border-color:transparent!important;position:relative;overflow:hidden;isolation:isolate}
-.info .side::before{content:"";position:absolute;z-index:-1;width:420px;height:420px;right:-140px;bottom:-180px;border-radius:50%;background:radial-gradient(closest-side,rgba(111,163,214,.22),transparent)}
+.info .side::before{content:"";position:absolute;z-index:-1;width:420px;height:420px;right:-140px;bottom:-180px;border-radius:50%;background:radial-gradient(closest-side,rgba(47,103,255,.45),transparent)}
 .info .side h3{font-size:1.5rem;letter-spacing:-.025em}
 .info li{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:var(--r-sm);background:rgba(255,255,255,.06);border:1px solid var(--deep-line)}
-.info li::before{content:"";flex:none;width:8px;height:8px;margin-top:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 4px rgba(111,163,214,.18)}
+.info li::before{content:"";flex:none;width:8px;height:8px;margin-top:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 4px rgba(123,177,255,.2)}
 .info li a{color:var(--hi);font-weight:600}
 @media(max-width:900px){.info .grid{grid-template-columns:1fr}.info .grid>div{padding:36px 26px;border-radius:24px}}
 
@@ -293,6 +293,19 @@ footer .bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12p
 .legal .prose{max-width:46rem}
 .legal .prose h3:first-child{margin-top:0}
 .todo{padding:1px 8px;border-radius:6px;background:#fff3cd;color:#7a5b00;font-size:.9em;font-weight:600}
+
+/* Recept AI */
+.rcpt-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.rcpt-brand{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:40px;aspect-ratio:1/1;max-width:440px;width:100%;justify-self:end;padding:40px;border-radius:32px;text-decoration:none;color:#fff;overflow:hidden;isolation:isolate;
+  background:radial-gradient(90% 70% at 25% 15%,#3d7bff 0%,transparent 60%),linear-gradient(160deg,#2f67ff 0%,#1846d6 55%,#0f3bb8 100%);box-shadow:0 30px 60px -24px rgba(47,103,255,.55);transition:transform .5s var(--ease)}
+.rcpt-brand:hover{transform:translateY(-4px)}
+.rcpt-brand img{width:min(240px,70%);height:auto}
+.rcpt-brand .rb-foot{font-size:.82rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.wave{display:flex;align-items:center;gap:7px;height:72px}
+.wave i{display:block;width:7px;border-radius:7px;background:#fff;height:30%;animation:wave 1.4s ease-in-out infinite;animation-delay:calc(var(--n)*-.15s)}
+.wave i:nth-child(1){--n:1}.wave i:nth-child(2){--n:4}.wave i:nth-child(3){--n:2}.wave i:nth-child(4){--n:6}.wave i:nth-child(5){--n:3}.wave i:nth-child(6){--n:7}.wave i:nth-child(7){--n:5}.wave i:nth-child(8){--n:8}.wave i:nth-child(9){--n:2}
+@keyframes wave{0%,100%{height:22%}50%{height:100%}}
+@media(max-width:900px){.rcpt-grid{grid-template-columns:1fr;gap:40px}.rcpt-brand{justify-self:start;aspect-ratio:auto;min-height:280px;padding:32px}}
 
 /* animations */
 .progress{position:fixed;left:0;right:0;top:0;height:2px;z-index:25;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
@@ -586,12 +599,21 @@ dl.care div:hover::after{opacity:1}
 <div id="view-recept" hidden>
   <div class="rcpt-hero">
     <div class="wrap">
-      <span class="status"><i class="live" aria-hidden="true"></i>En ligne maintenant</span>
-      <h1>Le cabinet répond, même la nuit et le week-end.</h1>
-      <p class="lead">Le Cabinet Dentaire du Bourg est joignable 24 h/24 et 7 j/7 grâce à Recept AI, un assistant téléphonique qui décroche à chaque appel.</p>
-      <div class="cta">
-        <a class="btn arrow" href="tel:+33183869781">Appeler le 01 83 86 97 81</a>
-        <a class="btn ghost" href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Prendre rendez-vous sur Doctolib</a>
+      <div class="rcpt-grid">
+        <div>
+          <span class="status"><i class="live" aria-hidden="true"></i>En ligne maintenant</span>
+          <h1>Le cabinet répond, même la nuit et le week-end.</h1>
+          <p class="lead">Le Cabinet Dentaire du Bourg est joignable 24 h/24 et 7 j/7 grâce à Recept AI, un assistant téléphonique qui décroche à chaque appel.</p>
+          <div class="cta">
+            <a class="btn arrow" href="tel:+33183869781">Appeler le 01 83 86 97 81</a>
+            <a class="btn ghost" href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Prendre rendez-vous sur Doctolib</a>
+          </div>
+        </div>
+        <a class="rcpt-brand" href="https://rcpt.ai" target="_blank" rel="noopener" aria-label="Recept AI, site officiel">
+          <img src="img/recept-ai-logo-blanc.webp" alt="Recept AI" width="640" height="117">
+          <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="rb-foot">Télésecrétariat du cabinet · 24/7</span>
+        </a>
       </div>
     </div>
   </div>
@@ -601,7 +623,7 @@ dl.care div:hover::after{opacity:1}
       <dl class="care rcpt-list">
         <div><dt>Un appel n’est plus jamais sans réponse</dt><dd>Quand l’équipe est en soin, en pause ou que le cabinet est fermé, Recept AI prend l’appel à sa place.</dd></div>
         <div><dt>Un rendez-vous sans attendre</dt><dd>Vous pouvez demander un rendez-vous par téléphone à n’importe quelle heure, sans attendre l’ouverture.</dd></div>
-        <div><dt>Des rappels par SMS ou WhatsApp</dt><dd>Vous recevez la confirmation de votre rendez-vous et un rappel avant la date, directement sur votre téléphone.</dd></div>
+        <div><dt>Confirmation et rappel sur WhatsApp</dt><dd>Votre rendez-vous est confirmé sur WhatsApp, puis vous recevez un rappel avant la date.</dd></div>
         <div><dt>Le même numéro pour tout</dt><dd>Pas de numéro spécial : vous appelez le cabinet, au 01 83 86 97 81.</dd></div>
       </dl>
       <p class="note">Pour en savoir plus : <a href="https://rcpt.ai" target="_blank" rel="noopener">rcpt.ai</a>.</p>

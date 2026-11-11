@@ -26,6 +26,9 @@ base = f"https://mybusiness.googleapis.com/v4/accounts/{env('GBP_ACCOUNT_ID')}/l
 data = get(base + "?pageSize=50&orderBy=updateTime%20desc", token)
 
 STARS = {"ONE": 1, "TWO": 2, "THREE": 3, "FOUR": 4, "FIVE": 5}
+# Avis affichés sur le site : les plus récents, 4 ou 5 étoiles, avec au moins MIN_LEN caractères
+MIN_STARS = 4
+MIN_LEN = 60
 def original(t):
     # Google ajoute parfois une traduction : on garde le texte d'origine
     if "(Original)" in t:
@@ -33,8 +36,10 @@ def original(t):
     return t.split("(Translated by Google)", 1)[0].strip()
 
 reviews = []
-for v in data.get("reviews", []):
-    if not v.get("comment"):
+for v in sorted(data.get("reviews", []), key=lambda v: v.get("createTime", ""), reverse=True):
+    if not v.get("comment") or STARS.get(v.get("starRating"), 0) < MIN_STARS:
+        continue
+    if len(original(v["comment"])) < MIN_LEN:
         continue
     r = v.get("reviewer", {})
     reviews.append({
@@ -47,7 +52,7 @@ for v in data.get("reviews", []):
         break
 
 out = {
-    "rating": data.get("averageRating"),
+    "rating": round(data["averageRating"], 1) if data.get("averageRating") else None,
     "count": data.get("totalReviewCount"),
     "reviews": reviews,
     "updatedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),

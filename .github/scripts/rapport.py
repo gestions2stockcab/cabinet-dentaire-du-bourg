@@ -104,6 +104,6 @@ print(body)
 repo, gh = os.environ.get("GITHUB_REPOSITORY"), os.environ.get("GITHUB_TOKEN")
 if repo and gh:
     req(f"https://api.github.com/repos/{repo}/issues",
-        {"title": f"Rapport hebdomadaire du site – semaine du {fr(deb)}", "body": body, "labels": ["rapport"]},
+        {"title": f"Rapport hebdomadaire du site – semaine du {fr(deb)}", "body": body},
         {"Authorization": f"Bearer {gh}", "Content-Type": "application/json", "Accept": "application/vnd.github+json"}, "POST")
     print("Rapport publié.")

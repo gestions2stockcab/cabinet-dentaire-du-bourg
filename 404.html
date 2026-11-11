@@ -499,9 +499,16 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .schema svg{width:100%;height:auto;display:block;border-radius:10px;overflow:hidden}
 .schema figcaption{font-size:.86rem;line-height:1.35;color:#1c2a3a}
 .schema .sch-n{position:absolute;top:10px;left:10px;z-index:1;width:22px;height:22px;border-radius:50%;background:#2f67ff;color:#fff;font:700 .75rem/22px Manrope,sans-serif;text-align:center}
+/* logo « trait » */
+.brand{gap:10px;font-weight:600;font-size:1.06rem;letter-spacing:-.02em}
+.brand-ic{flex:none;width:26px;height:27px;color:var(--accent)}
+.brand em{font-style:normal;color:var(--accent)}
+.brand span{white-space:nowrap}
+@media(max-width:480px){.brand{font-size:.86rem;gap:7px}.brand-ic{width:20px;height:21px}}
+@media(max-width:360px){.brand em{display:none}}
 </style></head><body><header>
   <div class="wrap">
-    <a class="brand" href="/"><span>Cabinet Dentaire du Bourg<small>Savigny-le-Temple</small></span></a>
+    <a class="brand" href="/" aria-label="Cabinet Dentaire du Bourg, accueil"><svg class="brand-ic" viewBox="8 6 48 50" aria-hidden="true"><path d="M20 15c-6 0-9 5-9 11 0 7 3 11 5 16 1.6 4 2 9 4 9.5 2.6.6 3.4-4.5 4.4-8.5.8-3.2 1.8-5 3.6-5s2.8 1.8 3.6 5c1 4 1.8 9.1 4.4 8.5 2-.5 2.4-5.5 4-9.5 2-5 5-9 5-16 0-6-3-11-9-11-4 0-6 2-8 2s-4-2-8-2z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg><span>Cabinet Dentaire <em>du Bourg</em></span></a>
     <nav aria-label="Navigation principale">
       <a class="link" href="/#soins">Soins</a>
       <a class="link" href="/#equipe">Équipe</a>
@@ -518,7 +525,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
   <div class="wrap">
     <div class="top">
       <div>
-        <a class="brand" href="/"><span>Cabinet Dentaire du Bourg<small>Savigny-le-Temple</small></span></a>
+        <a class="brand" href="/" aria-label="Cabinet Dentaire du Bourg, accueil"><svg class="brand-ic" viewBox="8 6 48 50" aria-hidden="true"><path d="M20 15c-6 0-9 5-9 11 0 7 3 11 5 16 1.6 4 2 9 4 9.5 2.6.6 3.4-4.5 4.4-8.5.8-3.2 1.8-5 3.6-5s2.8 1.8 3.6 5c1 4 1.8 9.1 4.4 8.5 2-.5 2.4-5.5 4-9.5 2-5 5-9 5-16 0-6-3-11-9-11-4 0-6 2-8 2s-4-2-8-2z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg><span>Cabinet Dentaire <em>du Bourg</em></span></a>
         <p class="big">Tous vos soins dentaires, près de chez vous.</p>
       </div>
       <div>

@@ -594,7 +594,6 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
       </div>
     </div>
     <div class="g-reviews" data-g-reviews hidden></div>
-    <p class="g-src" data-g-src hidden>Derniers avis 4 et 5 étoiles publiés sur Google, affichés sans modification. Mise à jour chaque nuit.</p>
    </div>
   </section>
 
@@ -960,7 +959,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
       var n=Math.round(v.rating||0),who=v.authorUrl?'<a href="'+esc(v.authorUrl)+'" target="_blank" rel="noopener">'+esc(v.author)+'</a>':esc(v.author);
       return '<figure class="g-review"><span class="stars" aria-label="'+n+' sur 5">'+'★★★★★'.slice(0,n)+'</span><blockquote>'+esc(v.text)+'</blockquote><figcaption>'+who+((v.when||v.date)?' · '+esc(v.when||ago(v.date)):'')+'</figcaption></figure>';
     }).join('');
-    box.hidden=false;document.querySelector('[data-g-src]').hidden=false;
+    box.hidden=false;
   }).catch(function(){});
 })();
 </script>

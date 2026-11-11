@@ -462,6 +462,11 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 /* g-review verre */
 .avis-card .g-review{background:rgba(8,14,24,.45);border-color:rgba(255,255,255,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .avis-card .g-review figcaption{color:rgba(255,255,255,.75)}
+/* assistantes */
+.sub-title{font-size:1.5rem;letter-spacing:-.025em;margin:72px 0 28px}
+.team-ast{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.team-ast{grid-template-columns:repeat(2,1fr)}.sub-title{margin-top:48px}}
+@media(max-width:560px){.team-ast{grid-template-columns:1fr 1fr;gap:14px}.team-ast h3{font-size:1.1rem!important;bottom:36px!important}.team-ast article>p{font-size:.8rem!important}}
 </style>
 </head>
 <body>
@@ -559,6 +564,11 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
         <article><div class="ph"><img src="img/dr-simon-atlan.webp" loading="lazy" alt="Dr Simon Atlan, chirurgien-dentiste" width="640" height="640" style="object-position:50% 20%"></div><h3>Dr Simon Atlan</h3><p>Chirurgien-dentiste</p></article>
         <article><div class="ph ph-empty" data-initials="NG"><span>Photo à venir</span></div><h3>Dr Nils Godkine</h3><p>Chirurgien-dentiste</p></article>
         <article><div class="ph"><img src="img/dr-ruben-dray.webp" alt="Dr Ruben Dray, chirurgien-dentiste" width="800" height="1000" loading="lazy" style="object-position:50% 20%"></div><h3>Dr Ruben Dray</h3><p>Chirurgien-dentiste</p></article>
+      </div>
+      <h3 class="sub-title">Les assistantes</h3>
+      <div class="team team-ast">
+        <article><div class="ph"><img src="img/mariana.webp" alt="Mariana, assistante dentaire" width="800" height="1000" loading="lazy"></div><h3>Mariana</h3><p>Assistante dentaire</p></article>
+        <article><div class="ph"><img src="img/carole.webp" alt="Carole, assistante dentaire" width="800" height="1000" loading="lazy"></div><h3>Carole</h3><p>Assistante dentaire</p></article>
       </div>
     </div>
   </section>

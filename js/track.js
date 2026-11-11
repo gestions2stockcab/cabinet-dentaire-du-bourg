@@ -17,6 +17,6 @@
     var h=a.getAttribute('href'),kind=null;
     if(h.indexOf('doctolib.fr')>-1)kind='rdv-doctolib';else if(h.indexOf('tel:')===0)kind='appel-telephone';
     if(!kind||!window.goatcounter||!window.goatcounter.count)return;
-    window.goatcounter.count({path:kind+'/'+page()+'/'+where(a),title:kind==='rdv-doctolib'?'Clic Doctolib':'Clic téléphone',event:true});
+    window.goatcounter.count({path:kind==='rdv-doctolib'?'Clic Doctolib':'Clic téléphone',title:kind==='rdv-doctolib'?'Clic vers Doctolib':'Clic sur le numéro',event:true});
   },true);
 })();

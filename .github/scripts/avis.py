@@ -4,19 +4,40 @@ Secrets GitHub nécessaires : GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 GOOGLE_REFRESH_TOKEN, GBP_ACCOUNT_ID, GBP_LOCATION_ID."""
 import json, os, sys, urllib.parse, urllib.request, datetime
 
-env = os.environ.get
+def env(k, d=None):
+    v = os.environ.get(k, d)
+    return v.strip().strip('"').strip("'").strip() if isinstance(v, str) else v
 need = ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_REFRESH_TOKEN", "GBP_ACCOUNT_ID", "GBP_LOCATION_ID"]
-if not all(env(k) for k in need):
-    print("Secrets manquants : rien à faire pour l'instant.")
+manquants = [k for k in need if not env(k)]
+if manquants:
+    print("Secrets manquants : " + ", ".join(manquants) + ". Rien à faire pour l'instant.")
     sys.exit(0)
+print("Longueur des secrets :", {k: len(env(k)) for k in need})
+
+def fail(step, e):
+    body = e.read().decode("utf-8", "replace")[:500] if hasattr(e, "read") else str(e)
+    print(f"ERREUR à l'étape « {step} » : {getattr(e, 'code', '')} {body}")
+    if "invalid_grant" in body:
+        print("→ Le secret GOOGLE_REFRESH_TOKEN est invalide ou mal copié (il doit commencer par 1//).")
+    if "invalid_client" in body:
+        print("→ GOOGLE_CLIENT_ID ou GOOGLE_CLIENT_SECRET est mal copié.")
+    if "404" in str(getattr(e, "code", "")):
+        print("→ GBP_ACCOUNT_ID ou GBP_LOCATION_ID est incorrect.")
+    sys.exit(1)
 
 def post(url, data):
     req = urllib.request.Request(url, data=urllib.parse.urlencode(data).encode(), method="POST")
-    return json.load(urllib.request.urlopen(req, timeout=30))
+    try:
+        return json.load(urllib.request.urlopen(req, timeout=30))
+    except Exception as e:
+        fail("connexion à Google", e)
 
 def get(url, token):
     req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
-    return json.load(urllib.request.urlopen(req, timeout=30))
+    try:
+        return json.load(urllib.request.urlopen(req, timeout=30))
+    except Exception as e:
+        fail("lecture des avis", e)
 
 token = post("https://oauth2.googleapis.com/token", {
     "client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),

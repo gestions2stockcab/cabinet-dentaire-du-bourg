@@ -513,8 +513,9 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 @keyframes schPulse{from{fill:#e5352b}to{fill:#ff8a7f}}
 .sch .gutta path{stroke:#e8832f}
 .sch .bio path{fill:#ecebe6;stroke:#6f7783}
-.sch-slide.on .mv-brush{animation:schBrush 5s ease-in-out .5s 2}
-@keyframes schBrush{0%,100%{transform:translate(0,0)}6%{transform:translate(-2.5px,2.5px)}12%{transform:translate(1.5px,-1.5px)}18%{transform:translate(-2.5px,2.5px)}24%{transform:translate(1.5px,-1.5px)}30%{transform:translate(-2.5px,2.5px)}36%{transform:translate(1.5px,-1.5px)}42%{transform:translate(0,0)}68%{transform:translate(-5px,-30px)}80%{transform:translate(-5px,-30px)}}
+.sch .mv-brush{transform-box:view-box;transform-origin:150px 104px}
+.sch-slide.on .mv-brush{animation:schBrush 5.5s ease-in-out .5s 2}
+@keyframes schBrush{0%,100%{transform:translate(0,0) rotate(0)}6%{transform:translate(-2px,2px)}12%{transform:translate(1.5px,-1.5px)}18%{transform:translate(-2px,2px)}24%{transform:translate(1.5px,-1.5px)}30%{transform:translate(-2px,2px)}36%{transform:translate(1.5px,-1.5px)}42%{transform:translate(0,0) rotate(0)}70%{transform:translate(-6px,-34px) rotate(55deg)}82%{transform:translate(-6px,-34px) rotate(55deg)}}
 .sch-slide.on .mv-ib{animation:schIb 2.6s ease-in-out .6s 3}@keyframes schIb{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 .sch-slide.on .mv-fill{animation:schFill 3.2s cubic-bezier(.45,0,.3,1) .5s both}@keyframes schFill{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @media (prefers-reduced-motion:reduce){.sch .mv-fill{stroke-dashoffset:0}}

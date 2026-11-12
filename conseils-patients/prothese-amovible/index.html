@@ -487,6 +487,12 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch .sch-c{font-style:normal}
 .sch-v{animation:schFade .6s ease both}
 .sch .mv-fill{stroke-dasharray:1;stroke-dashoffset:1}
+/* pulpe en rouge, pulpe enflammée qui pulse, gutta orange */
+.sch .pulpe{fill:#f6d3cf;stroke:#c2463d}
+.sch .inf .pulpe{fill:#e5352b;stroke:#b3241b}
+.sch-slide.on .inf .pulpe{animation:schPulse 1.3s ease-in-out infinite alternate}
+@keyframes schPulse{from{fill:#e5352b}to{fill:#ff8a7f}}
+.sch .gutta path{stroke:#e8832f}
 .sch-slide.on .mv-fill{animation:schFill 3.2s cubic-bezier(.45,0,.3,1) .5s both}@keyframes schFill{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @media (prefers-reduced-motion:reduce){.sch .mv-fill{stroke-dashoffset:0}}
 .sch .mv-out{opacity:0}.sch .mv-float{transform:translateY(-14px)}

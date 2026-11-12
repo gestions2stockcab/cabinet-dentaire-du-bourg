@@ -478,6 +478,9 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch[data-v="1"] .v0,.sch[data-v="0"] .v1{display:none}
 .sch .sch-c{font-style:normal}
 .sch-v{animation:schFade .6s ease both}
+.sch .mv-fill{stroke-dasharray:1;stroke-dashoffset:1}
+.sch-slide.on .mv-fill{animation:schFill 3.2s cubic-bezier(.45,0,.3,1) .5s both}@keyframes schFill{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.sch .mv-fill{stroke-dashoffset:0}}
 .sch .mv-out{opacity:0}.sch .mv-float{transform:translateY(-14px)}
 .sch-slide.on .mv-drop,.sch-slide.on .mv-float{animation:schFade 1.4s ease both}
 .sch-slide.on .mv-out{animation:schOut 1.6s ease .2s both}@keyframes schOut{from{opacity:1}to{opacity:0}}

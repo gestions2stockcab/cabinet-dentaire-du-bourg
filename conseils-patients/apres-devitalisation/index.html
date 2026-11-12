@@ -337,6 +337,18 @@ section.bot{padding:0}
   @keyframes sheet{from{transform:translateY(40px);opacity:0}}
 }
 
+/* parcours des praticiens */
+#equipe article:has(.cv){cursor:pointer}
+.cv{margin-top:14px;text-align:left;border-top:1px solid var(--line)}
+.cv summary{list-style:none;cursor:pointer;padding:12px 0 2px;font-size:.85rem;font-weight:600;color:var(--accent);display:flex;justify-content:space-between;gap:8px}
+.cv summary::-webkit-details-marker{display:none}
+.cv summary::after{content:"+";font-weight:400}
+.cv[open] summary::after{content:"−"}
+.cv h4{margin:16px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.cv ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cv li{font-size:.86rem;line-height:1.45;color:var(--ink)}
+.cv li b{display:inline-block;min-width:3.2em;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.cv a{color:var(--accent)}
 /* carte */
 .map{position:relative;margin-top:24px;height:380px;border-radius:32px;overflow:hidden;border:1px solid var(--line);
   background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px,var(--tint)}

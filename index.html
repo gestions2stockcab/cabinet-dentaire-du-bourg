@@ -348,6 +348,18 @@ section.bot{padding:0}
   @keyframes sheet{from{transform:translateY(40px);opacity:0}}
 }
 
+/* parcours des praticiens */
+#equipe article:has(.cv){cursor:pointer}
+.cv{margin-top:14px;text-align:left;border-top:1px solid var(--line)}
+.cv summary{list-style:none;cursor:pointer;padding:12px 0 2px;font-size:.85rem;font-weight:600;color:var(--accent);display:flex;justify-content:space-between;gap:8px}
+.cv summary::-webkit-details-marker{display:none}
+.cv summary::after{content:"+";font-weight:400}
+.cv[open] summary::after{content:"−"}
+.cv h4{margin:16px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.cv ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cv li{font-size:.86rem;line-height:1.45;color:var(--ink)}
+.cv li b{display:inline-block;min-width:3.2em;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.cv a{color:var(--accent)}
 /* carte */
 .map{position:relative;margin-top:24px;height:380px;border-radius:32px;overflow:hidden;border:1px solid var(--line);
   background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px,var(--tint)}
@@ -634,7 +646,22 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
         <p>Trois praticiens qui travaillent ensemble et se relaient pour vous soigner.</p>
       </div>
       <div class="team">
-        <article><div class="ph"><img src="img/dr-simon-atlan.webp" loading="lazy" alt="Dr Simon Atlan, chirurgien-dentiste" width="640" height="640" style="object-position:50% 20%"></div><h3>Dr Simon Atlan</h3><p>Chirurgien-dentiste</p></article>
+        <article><div class="ph"><img src="img/dr-simon-atlan.webp" loading="lazy" alt="Dr Simon Atlan, chirurgien-dentiste" width="640" height="640" style="object-position:50% 20%"></div><h3>Dr Simon Atlan</h3><p>Chirurgien-dentiste</p>
+          <details class="cv"><summary>Formations et publication</summary>
+            <h4>Diplôme d’État</h4>
+            <ul><li><b>2017</b> Docteur en chirurgie dentaire, Université Paris 5 Descartes (Université Paris Cité)</li></ul>
+            <h4>Autres formations</h4>
+            <ul>
+              <li><b>2025</b> DU Techniques chirurgicales réparatrices et reconstructrices osseuses en implantologie orale, Université Paris Cité</li>
+              <li><b>2022</b> Pathologie muqueuse buccale, Paris Sorbonne</li>
+              <li><b>2022</b> International Certificate in Periodontology and Implantology, CEIOP et New York University</li>
+              <li><b>2020</b> Diplôme d’implantologie orale, AIIO (Académie internationale d’implantologie orale)</li>
+              <li><b>2020</b> Cycle de formation continue en parodontologie, SFPIO</li>
+              <li><b>2020</b> Chirurgie muco-gingivale, ACMG</li>
+            </ul>
+            <h4>Publication</h4>
+            <ul><li><a href="https://www.em-consulte.com/article/1204475/tableaux/comment-les-patients-se-plaignent-ils-de-leurs-chi" target="_blank" rel="noopener">Comment les patients se plaignent-ils de leurs chirurgiens-dentistes ?</a> (EM consulte)</li></ul>
+          </details></article>
         <article><div class="ph ph-empty" data-initials="NG"><span>Photo à venir</span></div><h3>Dr Nils Godkine</h3><p>Chirurgien-dentiste</p></article>
         <article><div class="ph"><img src="img/dr-ruben-dray.webp" alt="Dr Ruben Dray, chirurgien-dentiste" width="800" height="1000" loading="lazy" style="object-position:50% 20%"></div><h3>Dr Ruben Dray</h3><p>Chirurgien-dentiste</p></article>
       </div>
@@ -1259,6 +1286,11 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 /* Cartes de soins entièrement cliquables */
 document.querySelectorAll('dl.care > div').forEach(function(c){var a=c.querySelector('a.care-link');if(!a)return;
   c.addEventListener('click',function(e){if(e.target.closest('a'))return;location.href=a.getAttribute('href');});});
+</script>
+<script>
+/* un clic sur la carte du praticien ouvre son parcours */
+document.querySelectorAll('#equipe article').forEach(function(a){var d=a.querySelector('.cv');if(!d)return;
+  a.addEventListener('click',function(e){if(e.target.closest('.cv'))return;d.open=!d.open;});});
 </script>
 <script src="/js/schemas.js?v=9d1ff481" defer></script>
 <script src="/js/track.js?v=100fd103" defer></script>

@@ -521,6 +521,12 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch-slide.on .inf .pulpe{animation:schPulse 1.3s ease-in-out infinite alternate}
 @keyframes schPulse{from{fill:#e5352b}to{fill:#ff8a7f}}
 .sch .gutta path{stroke:#e8832f}
+.sch .mv-screw,.sch .mv-thr{transform-box:view-box}
+.sch-slide.on .mv-site{animation:schFade .8s ease both}
+.sch-slide.on .mv-screw{animation:schScrew 3.2s cubic-bezier(.3,.1,.3,1) .9s both}
+@keyframes schScrew{from{transform:translateY(-78px)}to{transform:translateY(0)}}
+.sch-slide.on .mv-thr{animation:schThr .8s linear .9s 4}
+@keyframes schThr{from{transform:translateY(0)}to{transform:translateY(-12px)}}
 .sch .necro .pulpe{fill:#8b7d73;stroke:#4f433b}
 .sch .bio path{fill:#ecebe6;stroke:#6f7783}
 .sch .mv-brush{transform-box:view-box;transform-origin:148px 92px}

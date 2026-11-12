@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="fr" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page introuvable – Cabinet Dentaire du Bourg</title><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#2f67ff"><meta name="robots" content="noindex">
 <style>
 @font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url(/fonts/manrope-latin.woff2) format("woff2")}
@@ -502,6 +502,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch-slide.on .inf .pulpe{animation:schPulse 1.3s ease-in-out infinite alternate}
 @keyframes schPulse{from{fill:#e5352b}to{fill:#ff8a7f}}
 .sch .gutta path{stroke:#e8832f}
+.sch-slide.on .mv-ib{animation:schIb 2.6s ease-in-out .6s 3}@keyframes schIb{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 .sch-slide.on .mv-fill{animation:schFill 3.2s cubic-bezier(.45,0,.3,1) .5s both}@keyframes schFill{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @media (prefers-reduced-motion:reduce){.sch .mv-fill{stroke-dashoffset:0}}
 .sch .mv-out{opacity:0}.sch .mv-float{transform:translateY(-14px)}

@@ -518,10 +518,13 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 @keyframes schScrew{from{transform:translateY(-78px)}to{transform:translateY(0)}}
 .sch-slide.on .mv-thr{animation:schThr .8s linear .9s 4}
 @keyframes schThr{from{transform:translateY(0)}to{transform:translateY(-12px)}}
-.sch .mv-abut,.sch .mv-crown{transform-box:view-box}
+.sch .mv-abut,.sch .mv-crown,.sch .mv-vis{transform-box:view-box}
 .sch-slide.on .mv-abut{animation:schAbut 1.6s cubic-bezier(.3,.1,.3,1) .5s both}
 @keyframes schAbut{from{transform:translateY(-48px);opacity:0}25%{opacity:1}to{transform:none;opacity:1}}
-.sch-slide.on .mv-crown{animation:schCrown 1.8s cubic-bezier(.3,.1,.3,1) 2.2s both}
+.sch-slide.on .mv-crown{animation:schCrown 1.8s cubic-bezier(.3,.1,.3,1) .5s both}
+.sch-slide.on .mv-vis{animation:schVis 2.4s cubic-bezier(.3,.1,.3,1) 2.4s both}
+@keyframes schVis{from{transform:translateY(-70px);opacity:0}20%{opacity:1}to{transform:none;opacity:1}}
+.sch-slide.on .mv-seal{animation:schFade 1s ease 5s both}
 @keyframes schCrown{from{transform:translateY(-64px);opacity:0}25%{opacity:1}to{transform:none;opacity:1}}
 .sch .necro .pulpe{fill:#8b7d73;stroke:#4f433b}
 .sch .bio path{fill:#ecebe6;stroke:#6f7783}

@@ -179,6 +179,16 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 @keyframes schFile{0%{opacity:0;transform:translateY(-36px)}10%{opacity:1;transform:translateY(-36px)}28%{transform:translateY(0)}37%{transform:translateY(-7px)}46%{transform:translateY(0)}55%{transform:translateY(-7px)}64%{transform:translateY(0)}73%{transform:translateY(-7px)}82%{opacity:1;transform:translateY(0)}92%{opacity:1;transform:translateY(-36px)}100%{opacity:0;transform:translateY(-36px)}}
 .sch-slide.on .mv-deb1{animation:schOut 1.6s ease 1.3s both}.sch-slide.on .mv-deb2{animation:schOut 1.6s ease 4.6s both}
 @media (prefers-reduced-motion:reduce){.sch .mv-obt{transform:none!important;animation:none!important}.sch .mv-deb1,.sch .mv-deb2{opacity:0}}
+/* endo : seringue d'hypochlorite */
+.sch .mv-syr,.sch .mv-irr{opacity:0}
+.sch .mv-irr{transform-box:fill-box;transform-origin:50% 0}
+.sch .mv-liq{transform-box:fill-box;transform-origin:0 50%}
+.sch-slide.on .mv-syr{animation:schSyr 4s ease-in-out 7s both}
+@keyframes schSyr{0%{opacity:0;transform:translate(6px,-34px)}12%{opacity:1;transform:translate(6px,-34px)}30%{transform:translate(0,0)}78%{opacity:1;transform:translate(0,0)}92%{opacity:1;transform:translate(6px,-34px)}100%{opacity:0;transform:translate(6px,-34px)}}
+.sch-slide.on .mv-liq{animation:schLiq 1.8s linear 8.3s both}@keyframes schLiq{from{transform:scaleX(1)}to{transform:scaleX(.3)}}
+.sch-slide.on .mv-plg{animation:schPlg 1.8s linear 8.3s both}@keyframes schPlg{from{transform:translateX(0)}to{transform:translateX(-30.8px)}}
+.sch-slide.on .mv-irr{animation:schIrr 4.6s ease 8.3s both}
+@keyframes schIrr{0%{opacity:.9;transform:scaleY(0)}40%{opacity:.9;transform:scaleY(1)}75%{opacity:.9;transform:scaleY(1)}100%{opacity:0;transform:scaleY(1)}}
 /* fiches conseils sur l'accueil */
 .cph{padding:96px 0;background:var(--tint)}
 .cph-head{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:end;margin-bottom:40px}

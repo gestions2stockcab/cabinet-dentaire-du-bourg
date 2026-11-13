@@ -187,6 +187,21 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 .g-review figcaption a{color:inherit}
 .avis .g-src{margin:16px 0 0;font-size:.82rem}
 
+/* fiches conseils sur l'accueil */
+.cph{padding:96px 0;background:var(--tint)}
+.cph-head{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:end;margin-bottom:40px}
+.cph-head h2{margin:0}.cph-head p{margin:0;color:var(--muted)}
+.cph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.cph-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:inherit;text-decoration:none;transition:border-color .25s,transform .25s}
+.cph-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cph-n{font-size:.7rem;letter-spacing:.16em;color:var(--muted);font-variant-numeric:tabular-nums}
+.cph-t{flex:1;font-weight:600;font-size:.95rem;line-height:1.3}
+.cph-pdf{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:var(--accent);border:1px solid currentColor;border-radius:6px;padding:3px 6px}
+.cph-all{margin:36px 0 0}
+.prose .cp-rel{margin-top:22px;padding:12px 16px;border-radius:12px;background:var(--tint);font-size:.88rem}
+.prose .cp-rel a{color:var(--accent);font-weight:600}
+@media(max-width:900px){.cph{padding:64px 0}.cph-head{grid-template-columns:1fr;gap:16px}}
+@media(max-width:600px){.cph-grid{grid-template-columns:1fr 1fr;gap:8px}.cph-card{padding:12px;gap:8px;align-items:flex-start;flex-direction:column}.cph-pdf{display:none}.cph-t{font-size:.86rem}}
 /* conseils : titre collant + accordéon */
 .conseils .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start}
 .conseils .head{display:block;position:sticky;top:120px;margin:0}
@@ -626,6 +641,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
       <a class="link" href="/#equipe">Équipe</a>
       <a class="link" href="/#cabinet">Cabinet</a>
       <a class="link" href="/#conseils">Conseils</a>
+      <a class="link" href="/conseils-patients/">Fiches conseils</a>
       <a class="link" href="/#recept">Joignable 24/7</a>
       <a class="link" href="/#contact">Accès</a>
       <a class="btn" href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Rendez-vous</a>
@@ -761,6 +777,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
             <p>Nous travaillons avec les implants IDI, conçus et fabriqués en France depuis 1987, à Montreuil. Chaque implant est tracé, de sa fabrication à sa pose.</p>
             <h3>À savoir</h3>
             <p>On ne pose pas d’implant avant la fin de la croissance. Le tabac et certaines maladies peuvent compliquer la cicatrisation : parlez-en lors du bilan.</p>
+            <p class="cp-rel">Fiches conseils : <a href="/conseils-patients/apres-implant/">Après la pose d’un implant</a> · <a href="/conseils-patients/tabac/">Tabac et dents</a></p>
             <p class="sources">Sources : <a href="https://www.idi-dental.com/" target="_blank" rel="noopener">IDI, fabricant des implants</a> · <a href="https://www.efp.org/fileadmin/uploads/efp/Documents/Other_publications/Clinical_guidelines/Peri-implantitis_GUIDELINE01_PREVENTION.pdf" target="_blank" rel="noopener">EFP, Prévention de la péri-implantite</a> · <a href="https://www.sfpio.com/" target="_blank" rel="noopener">SFPIO (Société française de parodontologie et d’implantologie orale)</a></p>
         </article>
         <div class="others"><h2>Les autres soins</h2><ul><li><a href="/soins/hygiene-dentaire/">Hygiène dentaire et prévention</a></li><li><a href="/soins/carie-dentaire/">Soigner une carie</a></li><li><a href="/soins/endodontie/">Soins endodontiques (dévitalisation)</a></li><li><a href="/soins/protheses-dentaires/">Prothèses dentaires : couronnes, bridges, dentiers</a></li><li><a href="/soins/greffe-osseuse/">Greffe osseuse et greffe de sinus</a></li><li><a href="/soins/parodontologie/">Soins des gencives (parodontologie)</a></li><li><a href="/soins/blanchiment-dentaire/">Blanchiment dentaire</a></li><li><a href="/soins/urgence-dentaire/">Urgence dentaire</a></li></ul></div>

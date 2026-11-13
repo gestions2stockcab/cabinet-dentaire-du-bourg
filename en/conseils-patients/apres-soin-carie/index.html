@@ -178,6 +178,21 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 .g-review figcaption a{color:inherit}
 .avis .g-src{margin:16px 0 0;font-size:.82rem}
 
+/* fiches conseils sur l'accueil */
+.cph{padding:96px 0;background:var(--tint)}
+.cph-head{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:end;margin-bottom:40px}
+.cph-head h2{margin:0}.cph-head p{margin:0;color:var(--muted)}
+.cph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.cph-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:inherit;text-decoration:none;transition:border-color .25s,transform .25s}
+.cph-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cph-n{font-size:.7rem;letter-spacing:.16em;color:var(--muted);font-variant-numeric:tabular-nums}
+.cph-t{flex:1;font-weight:600;font-size:.95rem;line-height:1.3}
+.cph-pdf{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:var(--accent);border:1px solid currentColor;border-radius:6px;padding:3px 6px}
+.cph-all{margin:36px 0 0}
+.prose .cp-rel{margin-top:22px;padding:12px 16px;border-radius:12px;background:var(--tint);font-size:.88rem}
+.prose .cp-rel a{color:var(--accent);font-weight:600}
+@media(max-width:900px){.cph{padding:64px 0}.cph-head{grid-template-columns:1fr;gap:16px}}
+@media(max-width:600px){.cph-grid{grid-template-columns:1fr 1fr;gap:8px}.cph-card{padding:12px;gap:8px;align-items:flex-start;flex-direction:column}.cph-pdf{display:none}.cph-t{font-size:.86rem}}
 /* conseils : titre collant + accordéon */
 .conseils .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start}
 .conseils .head{display:block;position:sticky;top:120px;margin:0}
@@ -610,6 +625,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
 .cp-cols ul{margin:0 0 30px;padding-left:1.1em;break-inside:avoid} .cp-cols li{margin-bottom:7px} .cp-cols li::marker{color:var(--muted)}
 .cp-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .cp-print-head,.cp-print-foot{display:none}
+.cp-sources{margin:8px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:.78rem;line-height:1.6;color:var(--muted)} .cp-sources a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
 @media print{
   @page{size:A4;margin:16mm 16mm 18mm}
   header,footer,.crumbs,.cp-actions,.cp-others,.bot-fab,.bot,.progress{display:none!important}
@@ -632,6 +648,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
       <a class="link" href="/en/#equipe">Team</a>
       <a class="link" href="/en/#cabinet">Practice</a>
       <a class="link" href="/en/#conseils">Advice</a>
+      <a class="link" href="/en/conseils-patients/">Advice sheets</a>
       <a class="link" href="/en/#recept">Reachable 24/7</a>
       <a class="link" href="/en/#contact">Find us</a>
       <a class="btn" href="https://www.doctolib.fr/cabinet-dentaire/savigny-le-temple/cabinet-dentaire-du-bourg" target="_blank" rel="noopener">Book</a>
@@ -649,6 +666,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
   </div></div>
   <section class="rcpt"><div class="wrap">
     <div class="cp-cols"><h3>Right after</h3><ul><li>Wait until the anaesthetic has worn off before eating or drinking anything hot.</li><li>Keep an eye on children: they can bite their lip or cheek without feeling it.</li></ul><h3>The following days</h3><ul><li>Sensitivity to cold or heat for a few days is common.</li></ul><h3>Call the practice if</h3><ul><li>the treated tooth feels high when you bite: a quick adjustment is enough;</li><li>the pain gets worse or comes on by itself;</li><li>the filling breaks or falls out.</li></ul></div>
+    <p class="cp-sources">Sources: <a href="https://www.ufsbd.fr/wp-content/uploads/2024/07/UFSBD-Fiche-patient-CARIE.pdf" target="_blank" rel="noopener">UFSBD, Sheet: tooth decay (in French)</a></p>
     <p class="cp-print-foot">Cabinet Dentaire du Bourg · 36 rue de Melun, 77176 Savigny-le-Temple, France · +33 1 83 86 97 81, reachable 24/7 · In a serious emergency, call 15. This advice does not replace the personal instructions given at the practice.</p>
     <div class="others cp-others"><h2>Other sheets</h2><ul><li><a href="/en/conseils-patients/apres-extraction/">After an extraction</a></li><li><a href="/en/conseils-patients/apres-implant/">After implant placement</a></li><li><a href="/en/conseils-patients/apres-devitalisation/">After root canal treatment</a></li><li><a href="/en/conseils-patients/prothese-amovible/">Removable denture</a></li><li><a href="/en/conseils-patients/blanchiment/">Whitening</a></li><li><a href="/en/conseils-patients/gencives/">Bleeding gums</a></li><li><a href="/en/conseils-patients/grossesse/">Pregnancy</a></li><li><a href="/en/conseils-patients/enfants/">Children’s teeth</a></li><li><a href="/en/conseils-patients/dents-de-sagesse/">Wisdom teeth</a></li><li><a href="/en/conseils-patients/apres-detartrage/">After a scale and polish</a></li><li><a href="/en/conseils-patients/couronne-provisoire/">Temporary crown</a></li><li><a href="/en/conseils-patients/sensibilite/">Sensitive teeth</a></li><li><a href="/en/conseils-patients/mauvaise-haleine/">Bad breath</a></li><li><a href="/en/conseils-patients/gouttiere-bruxisme/">Night guard</a></li><li><a href="/en/conseils-patients/tabac/">Smoking and teeth</a></li><li><a href="/en/conseils-patients/sport-protege-dents/">Sport and mouthguards</a></li><li><a href="/en/conseils-patients/diabete/">Diabetes and gums</a></li></ul></div>
   </div></section></main>

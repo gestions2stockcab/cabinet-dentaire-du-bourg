@@ -530,6 +530,19 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch-slide.on .mv-bur{animation:schBur 2.8s ease-in-out .3s both}
 @keyframes schBur{0%{opacity:0;transform:translate(0,-26px)}12%{opacity:1;transform:translate(0,0)}26%{transform:translate(-6px,2px)}40%{transform:translate(8px,5px)}54%{transform:translate(-4px,8px)}68%{transform:translate(8px,10px)}82%{opacity:1;transform:translate(0,10px)}100%{opacity:0;transform:translate(0,-26px)}}
 .sch-slide.on .mv-cut{animation:schOut 2.2s ease .5s both}
+.sch .mv-bur2,.sch .mv-burb,.sch .mv-ext,.sch .mv-side{transform-box:view-box}
+.sch .mv-bur2,.sch .mv-burb{opacity:0}
+.sch-slide.on .mv-bur2{animation:schBurW 3.2s ease-in-out .3s both}
+@keyframes schBurW{0%{opacity:0;transform:translate(0,-26px)}10%{opacity:1;transform:translate(0,0)}26%{transform:translate(-34px,14px)}40%{transform:translate(-36px,46px)}54%{transform:translate(0,2px)}68%{transform:translate(34px,14px)}84%{opacity:1;transform:translate(36px,46px)}100%{opacity:0;transform:translate(36px,-20px)}}
+.sch-slide.on .mv-burb{animation:schBurB 4.4s ease-in-out .3s both}
+@keyframes schBurB{0%{opacity:0;transform:translate(0,-26px)}8%{opacity:1;transform:translate(0,0)}20%{transform:translate(-24px,16px)}32%{transform:translate(24px,16px)}42%{transform:translate(0,0)}54%{transform:translate(156px,0)}66%{transform:translate(132px,16px)}78%{transform:translate(180px,16px)}90%{opacity:1;transform:translate(156px,0)}100%{opacity:0;transform:translate(156px,-26px)}}
+.sch-slide.on .mv-cut2{animation:schOut 3s ease .5s both}
+.sch-slide.on .mv-cut3{animation:schOut 4s ease .5s both}
+.sch-slide.on .mv-ext{animation:schExt 2.4s ease-in .5s both}
+@keyframes schExt{0%{opacity:1;transform:none}70%{opacity:1;transform:translateY(-70px)}100%{opacity:0;transform:translateY(-90px)}}
+.sch .mv-late{opacity:0}.sch-slide.on .mv-late{animation:schFade 1s ease 1.9s both}
+.sch-slide.on .mv-side{animation:schSide 2s cubic-bezier(.3,.1,.3,1) .3s both}
+@keyframes schSide{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
 .sch-slide.on .mv-abut{animation:schAbut 1.6s cubic-bezier(.3,.1,.3,1) .5s both}
 @keyframes schAbut{from{transform:translateY(-48px);opacity:0}25%{opacity:1}to{transform:none;opacity:1}}
 .sch-slide.on .mv-crown{animation:schCrown 1.8s cubic-bezier(.3,.1,.3,1) .5s both}
@@ -553,6 +566,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch-slide.on .mv-inn{animation:schFade 1.6s ease .2s both}@keyframes schFade{from{opacity:0}to{opacity:1}}
 .sch-slide.on .mv-shine,.sch-slide.on .mv-in{animation:none}
 .sch-slide.on .lab{animation:schFade 1s ease .8s both}
+.sch-slide.on svg text{animation:schFade 1s ease .8s both}
 @media (prefers-reduced-motion:reduce){.sch-slide.on *{animation:none!important}}
 /* schémas animés */
 .schema-wrap .schema{display:none}

@@ -187,6 +187,22 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 @keyframes schFile{0%{opacity:0;transform:translateY(-36px)}10%{opacity:1;transform:translateY(-36px)}28%{transform:translateY(0)}37%{transform:translateY(-7px)}46%{transform:translateY(0)}55%{transform:translateY(-7px)}64%{transform:translateY(0)}73%{transform:translateY(-7px)}82%{opacity:1;transform:translateY(0)}92%{opacity:1;transform:translateY(-36px)}100%{opacity:0;transform:translateY(-36px)}}
 .sch-slide.on .mv-deb1{animation:schOut 1.6s ease 1.3s both}.sch-slide.on .mv-deb2{animation:schOut 1.6s ease 4.6s both}
 @media (prefers-reduced-motion:reduce){.sch .mv-obt{transform:none!important;animation:none!important}.sch .mv-deb1,.sch .mv-deb2{opacity:0}}
+/* animations complémentaires (14/11) */
+.sch .mv-grow{transform-box:fill-box;transform-origin:50% 0}
+.sch-slide.on .mv-grow{animation:schGrow 2.6s cubic-bezier(.4,0,.3,1) .4s both}@keyframes schGrow{from{transform:scale(.45);opacity:.35}to{transform:scale(1);opacity:1}}
+.sch .mv-drip{opacity:0}
+.sch-slide.on .mv-drip{animation:schDrip 1.7s ease-in 1s 3}@keyframes schDrip{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
+.sch .mv-down{transform-box:fill-box;transform-origin:50% 0}
+.sch-slide.on .mv-down{animation:schDown 2.2s ease .8s both}@keyframes schDown{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.sch-slide.on .mv-heal{animation:schHeal 3.2s ease 1.1s both}@keyframes schHeal{from{opacity:1}to{opacity:0}}
+.sch .mv-up{transform-box:fill-box;transform-origin:50% 100%}
+.sch-slide.on .mv-up{animation:schUpY 2.6s ease 1.2s both}@keyframes schUpY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.sch-slide.on .mv-screwup{animation:schScrewUp 2.8s cubic-bezier(.3,.1,.3,1) 2.6s both}@keyframes schScrewUp{from{opacity:0;transform:translateY(46px)}25%{opacity:1}to{opacity:1;transform:translateY(0)}}
+.sch-slide.on .mv-late3{animation:schFade 1s ease 3.6s both}
+.sch .mv-clock{transform-box:view-box;transform-origin:110px 116px}
+.sch-slide.on .mv-clock{animation:schClock 3.4s ease-in-out .5s both}@keyframes schClock{from{transform:rotate(-360deg)}to{transform:rotate(0)}}
+.sch-slide.on .mv-chew{animation:schChew 3s ease-in-out .8s both}@keyframes schChew{0%,33%,66%,100%{transform:translateY(0)}16%,50%,83%{transform:translateY(10px)}}
+@media (prefers-reduced-motion:reduce){.sch [class*="mv-"]{animation:none!important}.sch .mv-drip,.sch .mv-heal{opacity:0}}
 /* endo : seringue d'hypochlorite */
 .sch .mv-syr,.sch .mv-irr{opacity:0}
 .sch .mv-irr{transform-box:fill-box;transform-origin:50% 0}

@@ -198,14 +198,14 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 @media (prefers-reduced-motion:reduce){.sch .mv-obt{transform:none!important;animation:none!important}.sch .mv-deb1,.sch .mv-deb2{opacity:0}}
 /* pédagogie : flèche « étape suivante » */
 .sch-pic{position:relative}
-.sch-hint{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:7px;padding:9px 13px 9px 15px;border:0;border-radius:999px;background:#2f67ff;color:#fff;font:600 .8rem/1 Manrope,sans-serif;letter-spacing:.01em;cursor:pointer;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;pointer-events:none;box-shadow:0 6px 18px rgba(47,103,255,.35)}
+.sch-hint{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:7px;padding:9px 13px 9px 15px;border:0;border-radius:999px;background:#2f67ff;color:#fff;font:600 .8rem/1 Manrope,sans-serif;letter-spacing:.01em;cursor:pointer;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;pointer-events:none;box-shadow:0 6px 18px rgba(47,103,255,.35)}
 .sch-hint.show{opacity:1;transform:none;pointer-events:auto}
 .sch-hint .ar{display:inline-block;font-size:1rem;line-height:1}
 .sch-hint.show .ar{animation:schNudge 1.1s ease-in-out infinite}
 @keyframes schNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 .sch-next.hint{border-color:#2f67ff;color:#2f67ff;animation:schRing 1.6s ease-out infinite}
 @keyframes schRing{0%{box-shadow:0 0 0 0 rgba(47,103,255,.45)}100%{box-shadow:0 0 0 12px rgba(47,103,255,0)}}
-@media(max-width:600px){.sch-hint{right:8px;bottom:8px;padding:7px 11px 7px 12px;font-size:.72rem}}
+@media(max-width:600px){.sch-hint{left:8px;bottom:8px;padding:7px 11px 7px 12px;font-size:.72rem}}
 @media (prefers-reduced-motion:reduce){.sch-hint.show .ar,.sch-next.hint{animation:none}}
 /* animations complémentaires (14/11) */
 .sch .mv-grow{transform-box:fill-box;transform-origin:50% 0}
@@ -551,9 +551,9 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 @media(max-width:860px){.team-ast{grid-template-columns:repeat(2,1fr)}.sub-title{margin-top:48px}}
 @media(max-width:560px){.team-ast{grid-template-columns:1fr 1fr;gap:14px}.team-ast h3{font-size:1.1rem!important;bottom:36px!important}.team-ast article>p{font-size:.8rem!important}}
 /* pièces prothétiques */
-.sch .pp [fill="#ffffff"]{fill:#edf2ff}
-.sch .pp [stroke]:not([stroke="none"]){stroke:#2f67ff}
-.sch .pp [stroke="#c9d6e8"],.sch .pp [stroke="#e7ecf3"]{stroke:#9db8ff}
+.sch .pp [fill="#ffffff"]{fill:#f7f8f9}
+.sch .pp [stroke]:not([stroke="none"]){stroke:#7d8a99}
+.sch .pp [stroke="#c9d6e8"],.sch .pp [stroke="#e7ecf3"]{stroke:#c8d0d9}
 .sch .pp [stroke="#fff"]{display:none}
 /* schémas : carrousel (style gravure) */
 .sch{margin:24px 0 32px;max-width:520px}

@@ -7,6 +7,9 @@ on:
       forcer:
         description: "Publier même si déjà fait ce mois-ci (1 = oui)"
         default: "0"
+      mode:
+        description: "vide = publier ; etat = voir l'état des actualités ; nettoyer = supprimer les refusées"
+        default: ""
 permissions:
   contents: write
 jobs:
@@ -22,6 +25,7 @@ jobs:
           GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
           GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
           FORCER: ${{ github.event.inputs.forcer }}
+          MODE: ${{ github.event.inputs.mode }}
         run: python3 .github/scripts/actu.py
       - name: Mémoriser
         run: |

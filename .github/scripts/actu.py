@@ -24,6 +24,17 @@ ORDRE = ["gencives", "enfants", "sensibilite", "mauvaise-haleine", "tabac", "dia
 fiches = {f["slug"]: f for f in json.load(open("actu.json", encoding="utf-8"))}
 liste = [fiches[s] for s in ORDRE if s in fiches] + [f for s, f in fiches.items() if s not in ORDRE]
 
+MODE = os.environ.get("MODE", "")
+if MODE in ("etat", "nettoyer"):
+    tok = call("https://oauth2.googleapis.com/token", {"client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),
+               "refresh_token": env("GOOGLE_REFRESH_TOKEN"), "grant_type": "refresh_token"})["access_token"]
+    base = f"https://mybusiness.googleapis.com/v4/accounts/{env('GBP_ACCOUNT_ID')}/locations/{env('GBP_LOCATION_ID')}/localPosts"
+    for p_ in call(base + "?pageSize=10", token=tok).get("localPosts", []):
+        print("ACTU", p_.get("createTime"), p_.get("state"), "|", (p_.get("summary") or "")[:70].replace("\n", " "))
+        if MODE == "nettoyer" and p_.get("state") == "REJECTED":
+            urllib.request.urlopen(urllib.request.Request("https://mybusiness.googleapis.com/v4/" + p_["name"], headers={"Authorization": f"Bearer {tok}"}, method="DELETE"), timeout=40)
+            print("   supprimée")
+    sys.exit(0)
 mois = dt.date.today().strftime("%Y-%m")
 last = json.load(open("actu_last.json")) if os.path.exists("actu_last.json") else {"mois": None, "n": -1}
 if last.get("mois") == mois and os.environ.get("FORCER") != "1":

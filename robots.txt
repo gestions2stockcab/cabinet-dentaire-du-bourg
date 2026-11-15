@@ -3,3 +3,4 @@ Allow: /
 Sitemap: https://www.cabinetdentairedubourg.fr/sitemap.xml
 Disallow: /sch/
 Disallow: /tableau-de-bord/
+Disallow: /admin/

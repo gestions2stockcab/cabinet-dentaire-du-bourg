@@ -4,8 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Tableau de bord – Cabinet Dentaire du Bourg</title>
+<title>Espace cabinet – Cabinet Dentaire du Bourg</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cabinet">
+<meta name="theme-color" content="#0a0f1c">
 <style>
 @font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url(/fonts/manrope-latin.woff2) format("woff2")}
 :root{--bg:#0a0f1c;--surface:#111a2c;--line:#22304a;--ink:#eaf0fb;--muted:#9ba8c0;--faint:#5d6b85;--accent:#5b8cff;--tel:#c97f1e;--good:#3fb27f;--bad:#e5675f}
@@ -49,6 +53,13 @@ td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);white-s
 td .bar{height:4px;border-radius:2px;background:var(--accent);opacity:.55;margin-top:5px}
 td small{color:var(--muted)}
 .empty{color:var(--muted);font-size:.85rem}
+.links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.links a{display:block;padding:14px 16px;border:1px solid var(--line);border-radius:14px;color:var(--ink);text-decoration:none;background:var(--bg);transition:border-color .2s}
+.links a:hover{border-color:var(--accent)}
+.links a b{display:block;font-weight:600;font-size:.92rem}
+.links a span{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+.tipi{font-size:.8rem;color:var(--muted);margin:12px 0 0}
+@media(max-width:860px){.links{grid-template-columns:1fr 1fr}}
 details.data summary{cursor:pointer;color:var(--muted);font-size:.8rem;margin-top:10px}
 footer{color:var(--faint);font-size:.78rem;margin-top:24px}
 @media(max-width:860px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.grid3{grid-template-columns:1fr}}
@@ -62,8 +73,8 @@ footer{color:var(--faint);font-size:.78rem;margin-top:24px}
   </header>
 
   <form class="lock" id="lock">
-    <h1>Tableau de bord</h1>
-    <p class="sub" style="margin:0">Statistiques de visite du site. Accès réservé.</p>
+    <h1>Espace cabinet</h1>
+    <p class="sub" style="margin:0">Statistiques de visite et outils du site. Accès réservé.</p>
     <label for="pw">Mot de passe</label>
     <input type="password" id="pw" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" required>
     <div class="row"><span class="chk"><input type="checkbox" id="rem" checked><label for="rem" style="margin:0">Se souvenir sur cet appareil</label></span><button class="primary" type="submit">Ouvrir</button></div>
@@ -71,8 +82,19 @@ footer{color:var(--faint);font-size:.78rem;margin-top:24px}
   </form>
 
   <main id="dash" hidden>
-    <h1>Tableau de bord</h1>
+    <h1>Espace cabinet</h1>
     <p class="sub" id="upd"></p>
+    <section class="card"><h2>Raccourcis</h2><p class="note">Les outils du site et du cabinet</p>
+      <div class="links">
+        <a href="https://cabinetdentairedubourg.goatcounter.com" target="_blank" rel="noopener"><b>Visites en direct</b><span>GoatCounter, temps réel</span></a>
+        <a href="https://github.com/gestions2stockcab/cabinet-dentaire-du-bourg/actions/workflows/stats.yml" target="_blank" rel="noopener"><b>Mettre à jour ce tableau</b><span>GitHub › Run workflow</span></a>
+        <a href="https://business.google.com/" target="_blank" rel="noopener"><b>Fiche Google</b><span>Avis, photos, actualités</span></a>
+        <a href="https://search.google.com/search-console?resource_id=sc-domain%3Acabinetdentairedubourg.fr" target="_blank" rel="noopener"><b>Search Console</b><span>Référencement Google</span></a>
+        <a href="https://pro.doctolib.fr/" target="_blank" rel="noopener"><b>Doctolib Pro</b><span>Agenda et rendez-vous</span></a>
+        <a href="https://github.com/gestions2stockcab/cabinet-dentaire-du-bourg/issues" target="_blank" rel="noopener"><b>Rapports et alertes</b><span>Rapport du lundi, vérifications</span></a>
+      </div>
+      <p class="tipi">Astuce iPhone : bouton Partager › « Sur l’écran d’accueil » pour ouvrir cet espace comme une application.</p>
+    </section>
     <section class="kpis" id="kpis" aria-label="Chiffres clés des 30 derniers jours"></section>
     <section class="card"><h2>Visiteurs par jour</h2><p class="note">90 derniers jours · survolez la courbe pour le détail</p><div id="c-vis"></div></section>
     <section class="card"><h2>Prises de contact par semaine</h2><p class="note">Clics vers Doctolib et sur le numéro de téléphone · 12 dernières semaines</p>

@@ -196,7 +196,7 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 @keyframes schFile{0%{opacity:0;transform:translateY(-36px)}10%{opacity:1;transform:translateY(-36px)}28%{transform:translateY(0)}37%{transform:translateY(-7px)}46%{transform:translateY(0)}55%{transform:translateY(-7px)}64%{transform:translateY(0)}73%{transform:translateY(-7px)}82%{opacity:1;transform:translateY(0)}92%{opacity:1;transform:translateY(-36px)}100%{opacity:0;transform:translateY(-36px)}}
 .sch-slide.on .mv-deb1{animation:schOut 1.6s ease 1.3s both}.sch-slide.on .mv-deb2{animation:schOut 1.6s ease 4.6s both}
 @media (prefers-reduced-motion:reduce){.sch .mv-obt{transform:none!important;animation:none!important}.sch .mv-deb1,.sch .mv-deb2{opacity:0}}
-@media(max-width:700px){.bot-fab{padding:0;width:52px;height:52px;justify-content:center;font-size:0;gap:0;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.bot-fab::after{content:'?';font:700 1.35rem/1 Manrope,sans-serif}.bot-fab .live{position:absolute;top:9px;right:9px}}
+
 /* schémas chargés à la demande */
 .sch-lazy{max-width:520px;aspect-ratio:3/4;margin:24px 0 32px;border-radius:4px;background:linear-gradient(90deg,rgba(127,140,160,.08),rgba(127,140,160,.16),rgba(127,140,160,.08));background-size:200% 100%;animation:schSk 1.4s linear infinite}
 @keyframes schSk{to{background-position:-200% 0}}
@@ -668,6 +668,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .brand span{white-space:nowrap}
 @media(max-width:480px){.brand{font-size:.86rem;gap:7px}.brand-ic{width:20px;height:21px}}
 @media(max-width:360px){.brand em{display:none}}
+@media(max-width:700px){.bot-fab{padding:0!important;width:52px!important;height:52px!important;justify-content:center!important;font-size:0!important;gap:0!important;right:14px!important;overflow:hidden}.bot-fab::after{content:'?';font:700 1.35rem/1 Manrope,sans-serif}.bot-fab .live{position:absolute;top:9px;right:9px}}
 </style>
 <style>
 header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--line)}
@@ -913,7 +914,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
     </div>
     <div class="bottom">
       <span>© <span data-year>2026</span> Cabinet Dentaire du Bourg<script>document.querySelectorAll('[data-year]').forEach(function(e){e.textContent=new Date().getFullYear()})</script></span>
-      <a href="/#mentions-legales">Mentions légales</a>
+      <span class="bottom-links"><a href="/#mentions-legales">Mentions légales</a> · <a href="/tableau-de-bord/" rel="nofollow">Espace cabinet</a></span>
     </div>
   </div>
 </footer>

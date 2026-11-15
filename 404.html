@@ -179,6 +179,10 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 @keyframes schFile{0%{opacity:0;transform:translateY(-36px)}10%{opacity:1;transform:translateY(-36px)}28%{transform:translateY(0)}37%{transform:translateY(-7px)}46%{transform:translateY(0)}55%{transform:translateY(-7px)}64%{transform:translateY(0)}73%{transform:translateY(-7px)}82%{opacity:1;transform:translateY(0)}92%{opacity:1;transform:translateY(-36px)}100%{opacity:0;transform:translateY(-36px)}}
 .sch-slide.on .mv-deb1{animation:schOut 1.6s ease 1.3s both}.sch-slide.on .mv-deb2{animation:schOut 1.6s ease 4.6s both}
 @media (prefers-reduced-motion:reduce){.sch .mv-obt{transform:none!important;animation:none!important}.sch .mv-deb1,.sch .mv-deb2{opacity:0}}
+@media(max-width:700px){.bot-fab{padding:0;width:52px;height:52px;justify-content:center;font-size:0;gap:0;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.bot-fab::after{content:'?';font:700 1.35rem/1 Manrope,sans-serif}.bot-fab .live{position:absolute;top:9px;right:9px}}
+/* schémas chargés à la demande */
+.sch-lazy{max-width:520px;aspect-ratio:3/4;margin:24px 0 32px;border-radius:4px;background:linear-gradient(90deg,rgba(127,140,160,.08),rgba(127,140,160,.16),rgba(127,140,160,.08));background-size:200% 100%;animation:schSk 1.4s linear infinite}
+@keyframes schSk{to{background-position:-200% 0}}
 /* pédagogie : flèche « étape suivante » */
 .sch-pic{position:relative}
 .sch-hint{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:7px;padding:9px 13px 9px 15px;border:0;border-radius:999px;background:#2f67ff;color:#fff;font:600 .8rem/1 Manrope,sans-serif;letter-spacing:.01em;cursor:pointer;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;pointer-events:none;box-shadow:0 6px 18px rgba(47,103,255,.35)}
@@ -247,7 +251,7 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 .arts details[open]::details-content{block-size:auto}
 .prose{max-width:44rem;padding:0 0 32px;color:color-mix(in srgb,var(--ink) 82%,var(--muted))}
 .prose p{margin:0 0 14px}
-.prose h3{font-size:1.1rem;margin:24px 0 8px;letter-spacing:-.015em;color:var(--ink)}
+.prose h3,.prose h2.h3{font-size:1.1rem;margin:24px 0 8px;letter-spacing:-.015em;color:var(--ink);font-weight:600;line-height:1.06}
 .prose ul{margin:0 0 14px;padding-left:1.2em}
 .prose li{margin-bottom:6px}
 .prose li::marker{color:var(--accent)}
@@ -290,7 +294,7 @@ dl.rcpt-list dt{font-size:1.4rem}
 /* footer */
 footer{padding:72px 0 calc(40px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:.94rem}
 footer .top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid var(--line)}
-footer h4{margin:0 0 14px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+footer h3{margin:0 0 14px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 footer ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 footer a{text-decoration:none}
 footer a:hover{color:var(--ink)}
@@ -671,7 +675,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
         <p class="big">Tous vos soins dentaires, près de chez vous.</p>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h3>Contact</h3>
         <ul>
           <li>36 rue de Melun, 77176 Savigny-le-Temple</li>
           <li><a href="tel:+33183869781">01 83 86 97 81</a></li>
@@ -681,7 +685,7 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
         </ul>
       </div>
       <div>
-        <h4>Le cabinet</h4>
+        <h3>Le cabinet</h3>
         <ul>
           <li><a href="/#soins">Soins</a></li>
           <li><a href="/#equipe">Équipe</a></li>

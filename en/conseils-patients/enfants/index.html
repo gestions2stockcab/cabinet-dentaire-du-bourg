@@ -187,6 +187,10 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 @keyframes schFile{0%{opacity:0;transform:translateY(-36px)}10%{opacity:1;transform:translateY(-36px)}28%{transform:translateY(0)}37%{transform:translateY(-7px)}46%{transform:translateY(0)}55%{transform:translateY(-7px)}64%{transform:translateY(0)}73%{transform:translateY(-7px)}82%{opacity:1;transform:translateY(0)}92%{opacity:1;transform:translateY(-36px)}100%{opacity:0;transform:translateY(-36px)}}
 .sch-slide.on .mv-deb1{animation:schOut 1.6s ease 1.3s both}.sch-slide.on .mv-deb2{animation:schOut 1.6s ease 4.6s both}
 @media (prefers-reduced-motion:reduce){.sch .mv-obt{transform:none!important;animation:none!important}.sch .mv-deb1,.sch .mv-deb2{opacity:0}}
+@media(max-width:700px){.bot-fab{padding:0;width:52px;height:52px;justify-content:center;font-size:0;gap:0;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.bot-fab::after{content:'?';font:700 1.35rem/1 Manrope,sans-serif}.bot-fab .live{position:absolute;top:9px;right:9px}}
+/* schémas chargés à la demande */
+.sch-lazy{max-width:520px;aspect-ratio:3/4;margin:24px 0 32px;border-radius:4px;background:linear-gradient(90deg,rgba(127,140,160,.08),rgba(127,140,160,.16),rgba(127,140,160,.08));background-size:200% 100%;animation:schSk 1.4s linear infinite}
+@keyframes schSk{to{background-position:-200% 0}}
 /* pédagogie : flèche « étape suivante » */
 .sch-pic{position:relative}
 .sch-hint{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:7px;padding:9px 13px 9px 15px;border:0;border-radius:999px;background:#2f67ff;color:#fff;font:600 .8rem/1 Manrope,sans-serif;letter-spacing:.01em;cursor:pointer;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;pointer-events:none;box-shadow:0 6px 18px rgba(47,103,255,.35)}
@@ -255,7 +259,7 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 .arts details[open]::details-content{block-size:auto}
 .prose{max-width:44rem;padding:0 0 32px;color:color-mix(in srgb,var(--ink) 82%,var(--muted))}
 .prose p{margin:0 0 14px}
-.prose h3{font-size:1.1rem;margin:24px 0 8px;letter-spacing:-.015em;color:var(--ink)}
+.prose h3,.prose h2.h3{font-size:1.1rem;margin:24px 0 8px;letter-spacing:-.015em;color:var(--ink);font-weight:600;line-height:1.06}
 .prose ul{margin:0 0 14px;padding-left:1.2em}
 .prose li{margin-bottom:6px}
 .prose li::marker{color:var(--accent)}
@@ -298,7 +302,7 @@ dl.rcpt-list dt{font-size:1.4rem}
 /* footer */
 footer{padding:72px 0 calc(40px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:.94rem}
 footer .top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid var(--line)}
-footer h4{margin:0 0 14px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+footer h3{margin:0 0 14px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 footer ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 footer a{text-decoration:none}
 footer a:hover{color:var(--ink)}
@@ -667,7 +671,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
 .cp-hook{margin:0;font-weight:600} .cp-card p{margin:0;color:var(--muted);font-size:.93rem}
 .cp-more{margin-top:auto;padding-top:14px;font-size:.85rem;font-weight:600;color:var(--accent)}
 .cp-cols{columns:2 320px;column-gap:64px;margin-top:8px}
-.cp-cols h3{margin:0 0 10px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;break-after:avoid}
+.cp-cols h2{margin:0 0 10px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;break-after:avoid}
 .cp-cols ul{margin:0 0 30px;padding-left:1.1em;break-inside:avoid} .cp-cols li{margin-bottom:7px} .cp-cols li::marker{color:var(--muted)}
 .cp-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .cp-print-head,.cp-print-foot{display:none}
@@ -711,7 +715,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
     <div class="cp-actions"><a class="btn" href="/en/conseils-patients/pdf/enfants.pdf" download>Download the PDF</a><a class="btn ghost" href="tel:+33183869781">+33 1 83 86 97 81</a></div>
   </div></div>
   <section class="rcpt"><div class="wrap">
-    <div class="cp-cols"><h3>Brushing</h3><ul><li>Brush your child’s teeth from the first tooth, morning and evening.</li><li>Use a small amount of fluoride toothpaste suited to their age. Ask us for advice.</li></ul><h3>Fissure sealants</h3><ul><li>It protects permanent molars from decay: a flowable resin is applied in the grooves, in a few minutes and painlessly.</li></ul><h3>Preventive check-ups</h3><ul><li>Regular check-ups catch decay early. The “M’T dents” preventive check-ups are covered by French national health insurance (Assurance Maladie).</li></ul><h3>Avoid</h3><ul><li>A bottle or sugary drinks at bedtime.</li><li>Snacking throughout the day.</li></ul></div>
+    <div class="cp-cols"><h2>Brushing</h2><ul><li>Brush your child’s teeth from the first tooth, morning and evening.</li><li>Use a small amount of fluoride toothpaste suited to their age. Ask us for advice.</li></ul><h2>Fissure sealants</h2><ul><li>It protects permanent molars from decay: a flowable resin is applied in the grooves, in a few minutes and painlessly.</li></ul><h2>Preventive check-ups</h2><ul><li>Regular check-ups catch decay early. The “M’T dents” preventive check-ups are covered by French national health insurance (Assurance Maladie).</li></ul><h2>Avoid</h2><ul><li>A bottle or sugary drinks at bedtime.</li><li>Snacking throughout the day.</li></ul></div>
     <p class="cp-sources">Sources: <a href="https://www.ufsbd.fr/wp-content/uploads/2024/07/ufsbd-fiche-conseil-patient-Comment-brosser-les-dents-de-vos-enfants.pdf" target="_blank" rel="noopener">UFSBD, How to brush your children’s teeth (in French)</a> · <a href="https://www.has-sante.fr/jcms/c_240379/fr/appreciation-du-risque-carieux-et-indications-du-scellement-prophylactique-des-sillons-des-premieres-et-deuxiemes-molaires-permanentes-chez-les-sujets-de-moins-de-18-ans" target="_blank" rel="noopener">HAS, Decay risk and fissure sealants (in French)</a> · <a href="https://www.ufsbd.fr/wp-content/uploads/2025/04/UFSBD-fiche-patient-Visite-EBD-MTDENTS.pdf" target="_blank" rel="noopener">UFSBD, Sheet: M’T dents check-up (in French)</a></p>
     <p class="cp-print-foot">Cabinet Dentaire du Bourg · 36 rue de Melun, 77176 Savigny-le-Temple, France · +33 1 83 86 97 81, reachable 24/7 · In a serious emergency, call 15. This advice does not replace the personal instructions given at the practice.</p>
     <div class="others cp-others"><h2>Other sheets</h2><ul><li><a href="/en/conseils-patients/apres-extraction/">After an extraction</a></li><li><a href="/en/conseils-patients/apres-implant/">After implant placement</a></li><li><a href="/en/conseils-patients/apres-devitalisation/">After root canal treatment</a></li><li><a href="/en/conseils-patients/prothese-amovible/">Removable denture</a></li><li><a href="/en/conseils-patients/blanchiment/">Whitening</a></li><li><a href="/en/conseils-patients/gencives/">Bleeding gums</a></li><li><a href="/en/conseils-patients/grossesse/">Pregnancy</a></li><li><a href="/en/conseils-patients/dents-de-sagesse/">Wisdom teeth</a></li><li><a href="/en/conseils-patients/apres-detartrage/">After a scale and polish</a></li><li><a href="/en/conseils-patients/apres-soin-carie/">After a filling</a></li><li><a href="/en/conseils-patients/couronne-provisoire/">Temporary crown</a></li><li><a href="/en/conseils-patients/sensibilite/">Sensitive teeth</a></li><li><a href="/en/conseils-patients/mauvaise-haleine/">Bad breath</a></li><li><a href="/en/conseils-patients/gouttiere-bruxisme/">Night guard</a></li><li><a href="/en/conseils-patients/tabac/">Smoking and teeth</a></li><li><a href="/en/conseils-patients/sport-protege-dents/">Sport and mouthguards</a></li><li><a href="/en/conseils-patients/diabete/">Diabetes and gums</a></li></ul></div>
@@ -724,7 +728,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
         <p class="big">All your dental care, close to home.</p>
       </div>
       <div>
-        <h4>Contact point</h4>
+        <h3>Contact point</h3>
         <ul>
           <li>36 rue de Melun, 77176 Savigny-le-Temple, France</li>
           <li><a href="tel:+33183869781">+33 1 83 86 97 81</a></li>
@@ -734,7 +738,7 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
         </ul>
       </div>
       <div>
-        <h4>The practice</h4>
+        <h3>The practice</h3>
         <ul>
           <li><a href="/en/#soins">Treatments</a></li>
           <li><a href="/en/#equipe">Team</a></li>
@@ -754,5 +758,5 @@ header{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:b
 <script>(function(){var h=document.querySelector('header');function f(){h.classList.toggle('scrolled',scrollY>8)}addEventListener('scroll',f,{passive:true});f();})();</script>
 <script data-goatcounter="https://cabinetdentairedubourg.goatcounter.com/count" async src="/js/count.js?v=2293a56d"></script>
 <script src="/js/track.js?v=100fd103" defer></script>
-<style>.lang-sw{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--surface,#fff);border:1px solid var(--line,#ddd);box-shadow:0 4px 14px rgba(0,0,0,.18);font:600 .75rem/1 Manrope,sans-serif;letter-spacing:.06em}.lang-sw a{padding:8px 11px;border-radius:999px;color:var(--muted,#667);text-decoration:none}.lang-sw a[aria-current]{background:var(--accent,#2f67ff);color:#fff}.lang-sw{transition:opacity .3s}.lang-sw.off{opacity:0;pointer-events:none}@media(max-width:700px){.lang-sw{left:12px;bottom:12px;font-size:.68rem}.lang-sw a{padding:7px 9px}}@media print{.lang-sw{display:none}}</style><nav class="lang-sw" aria-label="Langue / Language"><a href="/conseils-patients/enfants/" hreflang="fr" lang="fr">FR</a><a href="/en/conseils-patients/enfants/" hreflang="en" lang="en" aria-current="true">EN</a></nav><script>(function(){var n=document.querySelector(".lang-sw");if(!n)return;function f(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;n.classList.toggle("off",y>160&&y<h-160);}addEventListener("scroll",f,{passive:true});f();})();</script></body>
+<style>.lang-sw{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--surface,#fff);border:1px solid var(--line,#ddd);box-shadow:0 4px 14px rgba(0,0,0,.18);font:600 .75rem/1 Manrope,sans-serif;letter-spacing:.06em}.lang-sw a{padding:8px 11px;border-radius:999px;color:var(--muted,#667);text-decoration:none}.lang-sw a[aria-current]{background:#1d4ed8;color:#fff}.lang-sw{transition:opacity .3s}.lang-sw.off{opacity:0;pointer-events:none}@media(max-width:700px){.lang-sw{left:12px;bottom:12px;font-size:.68rem}.lang-sw a{padding:7px 9px}}@media print{.lang-sw{display:none}}</style><nav class="lang-sw" aria-label="Langue / Language"><a href="/conseils-patients/enfants/" hreflang="fr" lang="fr">FR</a><a href="/en/conseils-patients/enfants/" hreflang="en" lang="en" aria-current="true">EN</a></nav><script>(function(){var n=document.querySelector(".lang-sw");if(!n)return;function f(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;n.classList.toggle("off",y>160&&y<h-160);}addEventListener("scroll",f,{passive:true});f();})();</script></body>
 </html>

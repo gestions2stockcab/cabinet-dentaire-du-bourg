@@ -30,5 +30,11 @@
     set(0);
   }
   document.querySelectorAll('[data-sch]').forEach(init);
+  // schémas chargés à la demande (quand ils approchent de l'écran ou qu'on ouvre la fiche)
+  var lz=[].slice.call(document.querySelectorAll('.sch-lazy'));
+  function load(el){if(el._l)return;el._l=1;fetch(el.getAttribute('data-src')).then(function(r){return r.text();}).then(function(h){
+    var t=document.createElement('div');t.innerHTML=h;var n=t.firstElementChild;if(!n)return;el.replaceWith(n);n.querySelectorAll('[data-sch]').forEach(init);if(n.hasAttribute('data-sch'))init(n);});}
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);load(e.target);}});},{rootMargin:'900px 0px'});lz.forEach(function(e){io.observe(e);});}
+  else lz.forEach(load);
   document.addEventListener('toggle',function(e){if(e.target.open)e.target.querySelectorAll('[data-sch]').forEach(function(w){w._replay&&w._replay();});},true);
 })();

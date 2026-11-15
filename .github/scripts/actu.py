@@ -44,8 +44,8 @@ f = liste[n]
 url = f"{SITE}/conseils-patients/{f['slug']}/"
 puces = "\n".join("• " + c for c in f.get("conseils", [])[:3])
 texte = (f"Conseil du mois : {f['accroche']}\n\n{f['resume']}\n\n{puces}\n\n"
-         "La fiche complète, à lire en ligne ou à télécharger en PDF, est sur notre site. "
-         "Une question ? Le cabinet est joignable 24 h/24 au 01 83 86 97 81.")[:1450]
+         "La fiche complète, à lire en ligne ou à télécharger en PDF, est sur notre site.")[:1450]
+# Règles Google : pas de numéro de téléphone ni d'adresse e-mail dans le texte d'une actualité
 
 tok = call("https://oauth2.googleapis.com/token", {"client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),
            "refresh_token": env("GOOGLE_REFRESH_TOKEN"), "grant_type": "refresh_token"})["access_token"]

@@ -65,7 +65,7 @@ footer{color:var(--faint);font-size:.78rem;margin-top:24px}
     <h1>Tableau de bord</h1>
     <p class="sub" style="margin:0">Statistiques de visite du site. Accès réservé.</p>
     <label for="pw">Mot de passe</label>
-    <input type="password" id="pw" autocomplete="current-password" required>
+    <input type="password" id="pw" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" required>
     <div class="row"><span class="chk"><input type="checkbox" id="rem" checked><label for="rem" style="margin:0">Se souvenir sur cet appareil</label></span><button class="primary" type="submit">Ouvrir</button></div>
     <div class="msg" id="msg" role="alert"></div>
   </form>
@@ -100,6 +100,7 @@ async function unlock(pw){
   var r=await fetch('/stats.enc.json?'+Date.now(),{cache:'no-store'});
   if(!r.ok) throw new Error('none');
   var e=await r.json();
+  pw=String(pw).normalize('NFC').trim();
   var base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
   var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.it,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
   var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},key,b64(e.ct));
@@ -108,7 +109,7 @@ async function unlock(pw){
 async function go(pw,remember){
   $('#msg').textContent='Ouverture…';
   try{var d=await unlock(pw);}catch(err){
-    $('#msg').textContent=err.message==='none'?'Les statistiques ne sont pas encore disponibles (première mise à jour automatique en attente).':'Mot de passe incorrect.';
+    $('#msg').textContent=err.message==='none'?'Les statistiques ne sont pas encore disponibles (première mise à jour automatique en attente).':(err.name==='OperationError'?'Mot de passe incorrect (il doit être identique au secret STATS_KEY sur GitHub, majuscules comprises).':'Erreur : '+err.message);
     store('dbk',null);return;}
   if(remember)store('dbk',pw);
   $('#lock').hidden=true;$('#dash').hidden=false;$('#out').hidden=false;render(d);var rw;addEventListener('resize',function(){clearTimeout(rw);rw=setTimeout(function(){render(d)},200)});

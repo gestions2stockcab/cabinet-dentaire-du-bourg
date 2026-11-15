@@ -69,7 +69,8 @@ try:
 except Exception as e:
     out["gsc"] = {"error": "Search Console non autorisée (refaire le jeton avec le scope webmasters.readonly)."}
 
-key_src = env("STATS_KEY")
+import unicodedata
+key_src = unicodedata.normalize("NFC", os.environ.get("STATS_KEY", "")).strip()
 if not key_src: raise SystemExit("Secret STATS_KEY manquant : ajoutez-le dans Settings > Secrets and variables > Actions.")
 salt = os.urandom(16); iv = os.urandom(12)
 key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=250000).derive(key_src.encode())

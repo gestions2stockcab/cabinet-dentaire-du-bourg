@@ -1,7 +1,7 @@
 name: Statistiques (tableau de bord)
 on:
   schedule:
-    - cron: "17 4 * * *"   # chaque nuit vers 5 h 15 (heure de Paris)
+    - cron: "17 * * * *"   # toutes les heures (à la 17e minute)
   workflow_dispatch: {}
 permissions:
   contents: write

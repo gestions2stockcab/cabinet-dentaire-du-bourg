@@ -103,6 +103,10 @@ if nouveaux:
         nom = "Anonyme" if r.get("isAnonymous") else r.get("displayName", "Patient")
         txt = original(v.get("comment", "")) or "(sans commentaire)"
         lignes += [f"**{'★' * s}{'☆' * (5 - s)}** — {nom}" + ("  ⚠️ à traiter" if s <= 3 else ""), "", "> " + txt.replace("\n", "\n> "), ""]
+    if bas:
+        lignes += ["**Proposition de réponse** (à adapter puis publier vous-même) :", "",
+                   "> Bonjour, merci d’avoir pris le temps de nous faire part de votre ressenti. Nous sommes sincèrement désolés que votre expérience n’ait pas été à la hauteur de vos attentes. N’hésitez pas à contacter directement le cabinet afin que nous puissions en parler ensemble. L’équipe du Cabinet Dentaire du Bourg", "",
+                   "_Les avis à 4 ou 5 étoiles reçoivent une réponse automatique ; ceux à 3 étoiles ou moins jamais._", ""]
     lignes += [f"Avis encore sans réponse (sur les 50 derniers) : {sans_reponse}.", "",
                "Répondre aux avis : https://business.google.com/reviews"]
     open("/tmp/alerte_avis.md", "w", encoding="utf-8").write("\n".join(lignes))

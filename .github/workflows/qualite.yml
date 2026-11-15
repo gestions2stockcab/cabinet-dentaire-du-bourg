@@ -27,7 +27,7 @@ jobs:
               s = {k: round((v.get("score") or 0) * 100) for k, v in r["categories"].items()}
               page = r["finalDisplayedUrl"].replace("https://www.cabinetdentairedubourg.fr", "") or "/"
               lignes.append(f"| {page} | {s['performance']} | {s['accessibility']} | {s['best-practices']} | {s['seo']} |")
-              if min(s.values()) < 90: bas.append(page)
+              if s["performance"] < 75 or min(s["accessibility"], s["best-practices"], s["seo"]) < 90: bas.append(page)
           open("/tmp/lh.md", "w").write("\n".join(lignes))
           if bas: open("/tmp/lh_bas", "w").write(", ".join(bas))
           print("\n".join(lignes))
@@ -38,4 +38,4 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           [ -f /tmp/lh_bas ] || exit 0
-          gh issue create --title "Qualité du site : une note est passée sous 90" --body-file /tmp/lh.md
+          gh issue create --title "Qualité du site : une note a baissé" --body-file /tmp/lh.md

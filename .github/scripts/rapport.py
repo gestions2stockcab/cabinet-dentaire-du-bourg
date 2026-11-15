@@ -1,4 +1,4 @@
-"""Rapport hebdomadaire : visiteurs et clics (GoatCounter) + référencement (Search Console).
+"""Rapport hebdomadaire : visiteurs et clics (GoatCounter) + lien vers la Search Console.
 Publié sous forme de ticket GitHub (GitHub prévient par e-mail).
 Secrets : GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN (scopes business.manage + webmasters.readonly),
 GOATCOUNTER_TOKEN (droit « lire les statistiques »). GITHUB_TOKEN et GITHUB_REPOSITORY fournis par GitHub."""
@@ -61,41 +61,9 @@ if gc:
 else:
     lines += ["_Secret GOATCOUNTER_TOKEN manquant._", ""]
 
-# ---------- Search Console ----------
-lines += ["### Google (Search Console)", ""]
-try:
-    tok = req("https://oauth2.googleapis.com/token", {"client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),
-              "refresh_token": env("GOOGLE_REFRESH_TOKEN"), "grant_type": "refresh_token"})["access_token"]
-    site = urllib.parse.quote("sc-domain:cabinetdentairedubourg.fr", safe="")
-    url = f"https://www.googleapis.com/webmasters/v3/sites/{site}/searchAnalytics/query"
-    H = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json"}
-    # Les données Google ont environ 3 jours de retard : on décale la fenêtre.
-    g_fin = today - dt.timedelta(days=3); g_deb = g_fin - dt.timedelta(days=6)
-    gp_fin = g_deb - dt.timedelta(days=1); gp_deb = gp_fin - dt.timedelta(days=6)
-    def tot(a, b):
-        rows = req(url, {"startDate": str(a), "endDate": str(b)}, H, "POST").get("rows", [])
-        return rows[0] if rows else {"clicks": 0, "impressions": 0, "position": None}
-    cur, prev = tot(g_deb, g_fin), tot(gp_deb, gp_fin)
-    pos = f"{cur['position']:.1f}" if cur.get("position") else "–"
-    ppos = f"{prev['position']:.1f}" if prev.get("position") else "–"
-    lines += [f"_Du {fr(g_deb)} au {fr(g_fin)} (Google publie ses chiffres avec environ 3 jours de retard)._", "",
-              "| | Cette semaine | Semaine précédente |", "|---|---:|---:|",
-              f"| Affichages dans Google | **{int(cur['impressions'])}**{evol(cur['impressions'], prev['impressions'])} | {int(prev['impressions'])} |",
-              f"| Clics depuis Google | **{int(cur['clicks'])}**{evol(cur['clicks'], prev['clicks'])} | {int(prev['clicks'])} |",
-              f"| Position moyenne | **{pos}** | {ppos} |", ""]
-    q = req(url, {"startDate": str(g_deb), "endDate": str(g_fin), "dimensions": ["query"], "rowLimit": 5}, H, "POST").get("rows", [])
-    if q:
-        lines += ["**Top 5 des recherches**", "", "| Recherche | Affichages | Clics | Position |", "|---|---:|---:|---:|"]
-        lines += [f"| {r['keys'][0]} | {int(r['impressions'])} | {int(r['clicks'])} | {r['position']:.1f} |" for r in q]
-        lines.append("")
-    else:
-        lines += ["_Pas encore assez de recherches enregistrées par Google._", ""]
-except urllib.error.HTTPError as ex:
-    msg = ex.read().decode("utf-8", "replace")[:300]
-    hint = " Le jeton Google n’a pas l’autorisation Search Console : refaire l’étape du Playground avec les deux autorisations." if ("insufficient" in msg.lower() or ex.code == 403) else ""
-    lines += [f"_Données Google indisponibles ({ex.code}).{hint}_", ""]
-except Exception as ex:
-    lines += [f"_Données Google indisponibles ({ex})._", ""]
+# ---------- Google ----------
+# (le jeton Search Console n'est pas configuré : les recherches Google se consultent directement dans la Search Console)
+lines += ["### Recherches Google", "", "À consulter dans la [Search Console](https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain:cabinetdentairedubourg.fr) : recherches tapées, position du site, clics.", ""]
 
 lines += ["---", "Détails : [GoatCounter](https://cabinetdentairedubourg.goatcounter.com) · [Search Console](https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain:cabinetdentairedubourg.fr)"]
 body = "\n".join(lines)

@@ -1,0 +1,33 @@
+name: Conseil du mois (fiche Google)
+on:
+  schedule:
+    - cron: "37 7 3 * *"   # le 3 de chaque mois vers 8 h 40 (heure de Paris)
+  workflow_dispatch:
+    inputs:
+      forcer:
+        description: "Publier même si déjà fait ce mois-ci (1 = oui)"
+        default: "0"
+permissions:
+  contents: write
+jobs:
+  actu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Publier le conseil du mois
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
+          GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
+          FORCER: ${{ github.event.inputs.forcer }}
+        run: python3 .github/scripts/actu.py
+      - name: Mémoriser
+        run: |
+          [ -f actu_last.json ] || exit 0
+          git add actu_last.json
+          git diff --cached --quiet && exit 0
+          git config user.name "actu-bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Conseil du mois publié sur la fiche Google"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done

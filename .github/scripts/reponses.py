@@ -15,17 +15,19 @@ def call(url, data=None, token=None, method=None, form=False):
 
 MAX = int(env("MAX") or 40)
 MODELES = [
-    "Merci beaucoup pour votre message, il fait plaisir à toute l’équipe ! À bientôt au cabinet.",
+    "Merci beaucoup pour votre message, il fait plaisir à toute l’équipe !",
     "Merci pour votre confiance et pour ce retour. Toute l’équipe du Cabinet Dentaire du Bourg vous remercie.",
-    "Un grand merci pour ces mots, nous sommes ravis. À très bientôt !",
-    "Merci d’avoir pris le temps de laisser cet avis. Toute l’équipe est très touchée. À bientôt !",
-    "Merci beaucoup ! Votre satisfaction est notre plus belle récompense. Au plaisir de vous revoir.",
-    "Merci pour ce très beau retour, il est partagé avec toute l’équipe. À bientôt au Cabinet Dentaire du Bourg.",
-    "Nous vous remercions chaleureusement pour votre confiance. Toute l’équipe vous souhaite une très bonne continuation.",
-    "Merci infiniment pour votre avis ! C’est un plaisir de vous accueillir au cabinet.",
-    "Merci pour votre message et votre fidélité. Toute l’équipe vous dit à bientôt !",
-    "Un grand merci pour votre confiance. Nous sommes heureux d’avoir pu vous accueillir. À bientôt !",
+    "Un grand merci pour ces mots, toute l’équipe est ravie.",
+    "Merci d’avoir pris le temps de laisser cet avis. Toute l’équipe y est très sensible.",
+    "Merci beaucoup ! Ce retour fait chaud au cœur à toute l’équipe.",
+    "Merci pour ce très beau retour, il est partagé avec toute l’équipe du Cabinet Dentaire du Bourg.",
+    "Nous vous remercions chaleureusement pour votre confiance et pour ce message.",
+    "Merci infiniment pour votre avis, toute l’équipe vous remercie.",
+    "Merci pour votre message, il est très apprécié par toute l’équipe.",
+    "Un grand merci pour votre confiance et pour ces quelques mots.",
 ]
+# formulations retirées (elles laissaient entendre une relation de soin) : réponses à refaire si déjà publiées
+A_REFAIRE = ("accueillir", "vous revoir", "fidélité", "au cabinet.", "à bientôt")
 STARS = {"ONE": 1, "TWO": 2, "THREE": 3, "FOUR": 4, "FIVE": 5}
 
 def prenom(v):
@@ -48,7 +50,8 @@ a_faire, page = [], ""
 while True:
     d = call(base + "?pageSize=50&orderBy=updateTime%20desc" + (f"&pageToken={page}" if page else ""), token=tok)
     for v in d.get("reviews", []):
-        if not v.get("reviewReply") and STARS.get(v.get("starRating"), 0) >= 4:
+        rep = (v.get("reviewReply") or {}).get("comment", "")
+        if STARS.get(v.get("starRating"), 0) >= 4 and (not rep or (rep.startswith("Bonjour") and any(x in rep.lower() for x in A_REFAIRE) and "équipe" in rep)):
             a_faire.append(v)
     page = d.get("nextPageToken")
     if not page: break

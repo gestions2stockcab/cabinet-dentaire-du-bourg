@@ -154,7 +154,7 @@ function render(d){
   table('#t-refs',(d.toprefs||[]).map(function(x){return {name:x.name==='(direct)'||!x.name?'Accès direct / favoris':x.name,n:x.n}}));
   ['sizes','systems','locations'].forEach(function(k){table('#t-'+k,(d[k]||[]).map(function(x){return {name:FR[x.name]||x.name,n:x.n}}))});
   var g=d.gsc||{};
-  if(g.error){$('#gsc-note').textContent=g.error;$('#gsc-body').innerHTML='';}
+  if(g.error){$('#gsc-note').textContent='Les recherches Google se consultent directement dans la Search Console.';$('#gsc-body').innerHTML='<div class="links"><a href="https://search.google.com/search-console?resource_id=sc-domain%3Acabinetdentairedubourg.fr" target="_blank" rel="noopener"><b>Ouvrir la Search Console</b><span>Requêtes tapées, position, clics</span></a></div>';}
   else{$('#gsc-note').textContent='28 jours, du '+g.start+' au '+g.end+' (Google a environ 3 jours de retard)';
     $('#gsc-body').innerHTML='<div class="kpis" style="margin-bottom:12px"><div class="kpi"><div class="k">Clics depuis Google</div><div class="v">'+fmt(g.clicks)+'</div></div><div class="kpi"><div class="k">Affichages</div><div class="v">'+fmt(g.impressions)+'</div></div><div class="kpi"><div class="k">Position moyenne</div><div class="v">'+(g.position?g.position.toFixed(1).replace('.',','):'–')+'</div></div></div>'
       +'<table>'+(g.queries||[]).map(function(q){return '<tr><td>'+esc(q.q)+'<br><small>position '+q.pos.toFixed(1).replace('.',',')+'</small></td><td class="n">'+fmt(q.clicks)+' clic'+(q.clicks>1?'s':'')+'<br><small>'+fmt(q.impr)+' affichages</small></td></tr>'}).join('')+'</table>';}

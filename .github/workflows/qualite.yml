@@ -1,0 +1,41 @@
+name: Contrôle qualité (Lighthouse)
+on:
+  schedule:
+    - cron: "23 5 1 * *"   # le 1er de chaque mois
+  workflow_dispatch: {}
+permissions:
+  issues: write
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i -g lighthouse@12 >/dev/null 2>&1
+      - name: Mesure mobile
+        run: |
+          for u in / /soins/implant-dentaire/ /conseils-patients/apres-extraction/ /en/; do
+            n=$(echo $u | tr '/' '_')
+            lighthouse "https://www.cabinetdentairedubourg.fr$u" --quiet --chrome-flags="--headless --no-sandbox" --output=json --output-path=/tmp/r$n.json --form-factor=mobile || true
+          done
+          python3 - <<'PY'
+          import json, glob
+          bas = []; lignes = ["| Page | Performance | Accessibilité | Bonnes pratiques | SEO |", "|---|---:|---:|---:|---:|"]
+          for f in sorted(glob.glob("/tmp/r*.json")):
+              try: r = json.load(open(f))
+              except Exception: continue
+              s = {k: round((v.get("score") or 0) * 100) for k, v in r["categories"].items()}
+              page = r["finalDisplayedUrl"].replace("https://www.cabinetdentairedubourg.fr", "") or "/"
+              lignes.append(f"| {page} | {s['performance']} | {s['accessibility']} | {s['best-practices']} | {s['seo']} |")
+              if min(s.values()) < 90: bas.append(page)
+          open("/tmp/lh.md", "w").write("\n".join(lignes))
+          if bas: open("/tmp/lh_bas", "w").write(", ".join(bas))
+          print("\n".join(lignes))
+          PY
+      - name: Alerte si une note passe sous 90
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          [ -f /tmp/lh_bas ] || exit 0
+          gh issue create --title "Qualité du site : une note est passée sous 90" --body-file /tmp/lh.md

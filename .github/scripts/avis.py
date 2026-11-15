@@ -80,3 +80,31 @@ out = {
 }
 json.dump(out, open("avis.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(f"{out['count']} avis, note {out['rating']}, {len(reviews)} avis affichés")
+
+# ---------- Alerte : nouveaux avis depuis le dernier passage ----------
+# avis_vus.json garde les identifiants déjà vus ; au premier passage on initialise sans alerter.
+import os as _os
+vus_path = "avis_vus.json"
+toutes = data.get("reviews", [])
+ids = [v.get("reviewId") or v.get("name") for v in toutes]
+premier = not _os.path.exists(vus_path)
+vus = set() if premier else set(json.load(open(vus_path, encoding="utf-8")))
+nouveaux = [] if premier else [v for v in toutes if (v.get("reviewId") or v.get("name")) not in vus]
+json.dump(sorted(vus | set(ids)), open(vus_path, "w", encoding="utf-8"), indent=0)
+sans_reponse = sum(1 for v in toutes if not v.get("reviewReply"))
+if nouveaux:
+    bas = [v for v in nouveaux if STARS.get(v.get("starRating"), 0) <= 3]
+    titre = (f"⚠️ Nouvel avis Google à {STARS.get(bas[0].get('starRating'))} étoile(s)" if bas
+             else f"Nouvel avis Google ({len(nouveaux)})")
+    lignes = [f"{len(nouveaux)} nouvel(s) avis sur la fiche Google. Note moyenne : {out['rating']} ({out['count']} avis).", ""]
+    for v in sorted(nouveaux, key=lambda v: v.get("createTime", ""), reverse=True):
+        s = STARS.get(v.get("starRating"), 0)
+        r = v.get("reviewer", {})
+        nom = "Anonyme" if r.get("isAnonymous") else r.get("displayName", "Patient")
+        txt = original(v.get("comment", "")) or "(sans commentaire)"
+        lignes += [f"**{'★' * s}{'☆' * (5 - s)}** — {nom}" + ("  ⚠️ à traiter" if s <= 3 else ""), "", "> " + txt.replace("\n", "\n> "), ""]
+    lignes += [f"Avis encore sans réponse (sur les 50 derniers) : {sans_reponse}.", "",
+               "Répondre aux avis : https://business.google.com/reviews"]
+    open("/tmp/alerte_avis.md", "w", encoding="utf-8").write("\n".join(lignes))
+    open("/tmp/alerte_avis_titre.txt", "w", encoding="utf-8").write(titre)
+    print("Alerte :", titre)

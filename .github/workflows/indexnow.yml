@@ -1,0 +1,23 @@
+name: Indexation (IndexNow)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Attendre la mise en ligne
+        run: sleep 90
+      - name: Prévenir Bing et les moteurs IndexNow
+        run: |
+          python3 - <<'PY'
+          import re, json, urllib.request
+          urls = re.findall(r"<loc>([^<]+)</loc>", open("sitemap.xml", encoding="utf-8").read())
+          body = {"host": "www.cabinetdentairedubourg.fr", "key": "4acf31f2738e1d8d2c17293412dc33c2",
+                  "keyLocation": "https://www.cabinetdentairedubourg.fr/4acf31f2738e1d8d2c17293412dc33c2.txt", "urlList": urls}
+          r = urllib.request.Request("https://api.indexnow.org/indexnow", data=json.dumps(body).encode(),
+                                     headers={"Content-Type": "application/json; charset=utf-8"})
+          print(len(urls), "pages envoyées, réponse", urllib.request.urlopen(r, timeout=30).status)
+          PY

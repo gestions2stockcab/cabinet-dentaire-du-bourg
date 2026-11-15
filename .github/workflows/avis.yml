@@ -1,10 +1,11 @@
 name: Avis Google
 on:
   schedule:
-    - cron: "17 4 * * *"   # chaque nuit vers 5 h (heure de Paris)
+    - cron: "41 */3 * * *"   # toutes les 3 heures
   workflow_dispatch: {}
 permissions:
   contents: write
+  issues: write
 jobs:
   avis:
     runs-on: ubuntu-latest
@@ -18,12 +19,19 @@ jobs:
           GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
           GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
         run: python3 .github/scripts/avis.py
+      - name: Alerte e-mail si nouvel avis
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          [ -f /tmp/alerte_avis.md ] || exit 0
+          gh label create "avis" --color FBCA04 2>/dev/null || true
+          gh issue create --title "$(cat /tmp/alerte_avis_titre.txt)" --body-file /tmp/alerte_avis.md --label avis
       - name: Publier si changement
         run: |
           [ -f avis.json ] || exit 0
-          git add avis.json
+          git add avis.json avis_vus.json
           git diff --cached --quiet && exit 0
           git config user.name "avis-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Mise à jour des avis Google"
-          git push
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Tableau de bord – Cabinet Dentaire du Bourg</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url(/fonts/manrope-latin.woff2) format("woff2")}
+:root{--bg:#0a0f1c;--surface:#111a2c;--line:#22304a;--ink:#eaf0fb;--muted:#9ba8c0;--faint:#5d6b85;--accent:#5b8cff;--tel:#c97f1e;--good:#3fb27f;--bad:#e5675f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 16px 64px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em}
+.brand em{font-style:normal;color:var(--accent)}
+.brand svg{width:26px;height:26px;color:var(--accent)}
+h1{font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:600;letter-spacing:-.03em;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 28px;font-size:.92rem}
+button,.btn{font:600 .85rem/1 Manrope,sans-serif;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 16px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#06102a}
+.lock{max-width:380px;margin:12vh auto 0;padding:32px;border:1px solid var(--line);border-radius:20px;background:var(--surface)}
+.lock h1{font-size:1.5rem}
+.lock label{display:block;font-size:.8rem;color:var(--muted);margin:18px 0 6px}
+.lock input[type=password]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 1rem Manrope,sans-serif}
+.lock .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.lock .chk{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.msg{margin-top:14px;font-size:.85rem;color:var(--bad);min-height:1.2em}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.kpi{padding:18px 18px 16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.kpi .k{font-size:.78rem;color:var(--muted);letter-spacing:.02em}
+.kpi .v{font-size:2rem;font-weight:600;letter-spacing:-.03em;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:.8rem;color:var(--muted)}
+.up{color:var(--good)} .down{color:var(--bad)}
+.card{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:20px;margin-bottom:16px;position:relative}
+.card h2{font-size:1rem;font-weight:600;margin:0 0 2px;letter-spacing:-.01em}
+.card .note{font-size:.8rem;color:var(--muted);margin:0 0 14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.legend{display:flex;gap:16px;font-size:.8rem;color:var(--muted);margin:0 0 10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+svg.chart{display:block;width:100%;height:auto;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:#1b2740;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:.8rem;line-height:1.35;white-space:nowrap;opacity:0;transition:opacity .12s;z-index:5}
+.tip b{font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+td{padding:7px 0;border-top:1px solid var(--line);vertical-align:top}
+td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap;padding-left:12px}
+td .bar{height:4px;border-radius:2px;background:var(--accent);opacity:.55;margin-top:5px}
+td small{color:var(--muted)}
+.empty{color:var(--muted);font-size:.85rem}
+details.data summary{cursor:pointer;color:var(--muted);font-size:.8rem;margin-top:10px}
+footer{color:var(--faint);font-size:.78rem;margin-top:24px}
+@media(max-width:860px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><svg viewBox="8 6 48 50" aria-hidden="true"><path d="M20 15c-6 0-9 5-9 11 0 7 3 11 5 16 1.6 4 2 9 4 9.5 2.6.6 3.4-4.5 4.4-8.5.8-3.2 1.8-5 3.6-5s2.8 1.8 3.6 5c1 4 1.8 9.1 4.4 8.5 2-.5 2.4-5.5 4-9.5 2-5 5-9 5-16 0-6-3-11-9-11-4 0-6 2-8 2s-4-2-8-2z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/></svg><span>Cabinet Dentaire <em>du Bourg</em></span></div>
+    <button id="out" hidden>Verrouiller</button>
+  </header>
+
+  <form class="lock" id="lock">
+    <h1>Tableau de bord</h1>
+    <p class="sub" style="margin:0">Statistiques de visite du site. Accès réservé.</p>
+    <label for="pw">Mot de passe</label>
+    <input type="password" id="pw" autocomplete="current-password" required>
+    <div class="row"><span class="chk"><input type="checkbox" id="rem" checked><label for="rem" style="margin:0">Se souvenir sur cet appareil</label></span><button class="primary" type="submit">Ouvrir</button></div>
+    <div class="msg" id="msg" role="alert"></div>
+  </form>
+
+  <main id="dash" hidden>
+    <h1>Tableau de bord</h1>
+    <p class="sub" id="upd"></p>
+    <section class="kpis" id="kpis" aria-label="Chiffres clés des 30 derniers jours"></section>
+    <section class="card"><h2>Visiteurs par jour</h2><p class="note">90 derniers jours · survolez la courbe pour le détail</p><div id="c-vis"></div></section>
+    <section class="card"><h2>Prises de contact par semaine</h2><p class="note">Clics vers Doctolib et sur le numéro de téléphone · 12 dernières semaines</p>
+      <div class="legend"><span><i style="background:var(--accent)"></i>Doctolib</span><span><i style="background:var(--tel)"></i>Téléphone</span></div><div id="c-ev"></div></section>
+    <div class="grid2">
+      <section class="card"><h2>Pages les plus vues</h2><p class="note">30 derniers jours</p><div id="t-pages"></div></section>
+      <section class="card"><h2>D'où viennent les visiteurs</h2><p class="note">30 derniers jours</p><div id="t-refs"></div></section>
+    </div>
+    <div class="grid3">
+      <section class="card"><h2>Appareils</h2><p class="note">Taille d'écran · 30 jours</p><div id="t-sizes"></div></section>
+      <section class="card"><h2>Systèmes</h2><p class="note">30 jours</p><div id="t-systems"></div></section>
+      <section class="card"><h2>Lieux</h2><p class="note">30 jours</p><div id="t-locations"></div></section>
+    </div>
+    <section class="card" id="gsc"><h2>Recherche Google</h2><p class="note" id="gsc-note"></p><div id="gsc-body"></div></section>
+    <footer>Sources : GoatCounter (sans cookies) et Google Search Console. Mise à jour automatique chaque nuit. Un visiteur = une personne par jour ; la réservation finale sur Doctolib n'est pas mesurable.</footer>
+  </main>
+</div>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)},fmt=function(n){return (n||0).toLocaleString('fr-FR')};
+function b64(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
+function store(k,v){try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}
+function read(k){try{return localStorage.getItem(k)}catch(e){return null}}
+async function unlock(pw){
+  var r=await fetch('/stats.enc.json?'+Date.now(),{cache:'no-store'});
+  if(!r.ok) throw new Error('none');
+  var e=await r.json();
+  var base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.it,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},key,b64(e.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function go(pw,remember){
+  $('#msg').textContent='Ouverture…';
+  try{var d=await unlock(pw);}catch(err){
+    $('#msg').textContent=err.message==='none'?'Les statistiques ne sont pas encore disponibles (première mise à jour automatique en attente).':'Mot de passe incorrect.';
+    store('dbk',null);return;}
+  if(remember)store('dbk',pw);
+  $('#lock').hidden=true;$('#dash').hidden=false;$('#out').hidden=false;render(d);var rw;addEventListener('resize',function(){clearTimeout(rw);rw=setTimeout(function(){render(d)},200)});
+}
+$('#lock').addEventListener('submit',function(e){e.preventDefault();go($('#pw').value,$('#rem').checked);});
+$('#out').addEventListener('click',function(){store('dbk',null);location.reload();});
+var saved=read('dbk');if(saved)go(saved,true);
+
+function delta(c,p){if(!p)return '<span class="d">—</span>';var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">vs 30 j précédents</span>';}
+function render(d){
+  var up=new Date(d.updated);$('#upd').textContent='30 derniers jours · mis à jour le '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  var c=d.cur||{},p=d.prev||{},contact=(c.doctolib||0)+(c.tel||0),pc=(p.doctolib||0)+(p.tel||0);
+  var rate=c.visitors?(contact/c.visitors*100):0,prate=p.visitors?(pc/p.visitors*100):0;
+  $('#kpis').innerHTML=[['Visiteurs',fmt(c.visitors),delta(c.visitors,p.visitors)],['Clics Doctolib',fmt(c.doctolib),delta(c.doctolib,p.doctolib)],['Clics téléphone',fmt(c.tel),delta(c.tel,p.tel)],
+    ['Taux de contact',rate.toFixed(1).replace('.',',')+' %','<span class="d">visiteurs qui cliquent Doctolib ou téléphone</span>']]
+    .map(function(k){return '<div class="kpi"><div class="k">'+k[0]+'</div><div class="v">'+k[1]+'</div>'+k[2]+'</div>'}).join('');
+  line('#c-vis',d.daily||[]);
+  bars('#c-ev',weekly((d.events_daily||{}).doctolib||[]),weekly((d.events_daily||{}).tel||[]));
+  table('#t-pages',(d.pages||[]).map(function(x){return {name:(x.title?x.title.replace(/ [–-] Cabinet Dentaire du Bourg.*$/,''):x.path),sub:x.path,n:x.n}}));
+  table('#t-refs',(d.toprefs||[]).map(function(x){return {name:x.name==='(direct)'||!x.name?'Accès direct / favoris':x.name,n:x.n}}));
+  ['sizes','systems','locations'].forEach(function(k){table('#t-'+k,(d[k]||[]).map(function(x){return {name:FR[x.name]||x.name,n:x.n}}))});
+  var g=d.gsc||{};
+  if(g.error){$('#gsc-note').textContent=g.error;$('#gsc-body').innerHTML='';}
+  else{$('#gsc-note').textContent='28 jours, du '+g.start+' au '+g.end+' (Google a environ 3 jours de retard)';
+    $('#gsc-body').innerHTML='<div class="kpis" style="margin-bottom:12px"><div class="kpi"><div class="k">Clics depuis Google</div><div class="v">'+fmt(g.clicks)+'</div></div><div class="kpi"><div class="k">Affichages</div><div class="v">'+fmt(g.impressions)+'</div></div><div class="kpi"><div class="k">Position moyenne</div><div class="v">'+(g.position?g.position.toFixed(1).replace('.',','):'–')+'</div></div></div>'
+      +'<table>'+(g.queries||[]).map(function(q){return '<tr><td>'+esc(q.q)+'<br><small>position '+q.pos.toFixed(1).replace('.',',')+'</small></td><td class="n">'+fmt(q.clicks)+' clic'+(q.clicks>1?'s':'')+'<br><small>'+fmt(q.impr)+' affichages</small></td></tr>'}).join('')+'</table>';}
+}
+var FR={'Phones':'Téléphones','Large phones, small tablets':'Grands téléphones, petites tablettes','Tablets and small laptops':'Tablettes, petits portables','Computer monitors':'Ordinateurs','Computer monitors larger than HD':'Grands écrans','(unknown)':'Inconnu','Unknown':'Inconnu','Belgium':'Belgique','Switzerland':'Suisse','Germany':'Allemagne','Spain':'Espagne','Italy':'Italie','United Kingdom':'Royaume-Uni','United States':'États-Unis','Netherlands':'Pays-Bas','Morocco':'Maroc','Algeria':'Algérie','Tunisia':'Tunisie','Portugal':'Portugal','Canada':'Canada','Israel':'Israël','Ireland':'Irlande','Luxembourg':'Luxembourg','Other':'Autres'};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function table(sel,rows){var max=Math.max.apply(null,rows.map(function(r){return r.n}).concat([1]));
+  $(sel).innerHTML=rows.length?'<table>'+rows.map(function(r){return '<tr><td>'+esc(r.name)+(r.sub&&r.sub!==r.name?'<br><small>'+esc(r.sub)+'</small>':'')+'<div class="bar" style="width:'+(r.n/max*100).toFixed(1)+'%"></div></td><td class="n">'+fmt(r.n)+'</td></tr>'}).join('')+'</table>':'<p class="empty">Pas encore de données.</p>';}
+function weekly(arr){var w=[];for(var i=arr.length;i>0;i-=7){var s=arr.slice(Math.max(0,i-7),i);if(!s.length)break;w.unshift({d:s[0].d,v:s.reduce(function(a,b){return a+(b.v||0)},0)});if(w.length>=12)break;}return w;}
+function dlabel(s){var d=new Date(s+'T12:00:00');return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});}
+function tipFor(host){var t=document.createElement('div');t.className='tip';host.parentNode.appendChild(t);return t;}
+function niceMax(m){if(m<=5)return 5;var p=Math.pow(10,Math.floor(Math.log10(m))),f=m/p;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p;}
+function line(sel,data){var host=$(sel);if(!data.length){host.innerHTML='<p class="empty">Pas encore de données.</p>';return;}
+  var W=Math.max(300,host.clientWidth||1000),H=W<600?200:260,L=34,R=8,T=10,B=26,max=niceMax(Math.max.apply(null,data.map(function(x){return x.v}))),n=data.length;
+  var X=function(i){return L+(W-L-R)*i/(n-1||1)},Y=function(v){return T+(H-T-B)*(1-v/max)};
+  var grid='';for(var k=0;k<=5;k++){var v=max*k/5,y=Y(v);grid+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#22304a" stroke-width="1"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#9ba8c0">'+fmt(Math.round(v))+'</text>';}
+  var ticks='';for(var i=0;i<n;i+=Math.ceil(n/(W<600?4:6)))ticks+='<text x="'+X(i)+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+dlabel(data[i].d)+'</text>';
+  var pts=data.map(function(x,i){return X(i).toFixed(1)+','+Y(x.v).toFixed(1)}).join(' ');
+  host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Visiteurs par jour sur 90 jours">'+grid+ticks
+    +'<polygon points="'+X(0)+','+Y(0)+' '+pts+' '+X(n-1)+','+Y(0)+'" fill="#5b8cff" opacity=".12"/><polyline points="'+pts+'" fill="none" stroke="#5b8cff" stroke-width="2" stroke-linejoin="round"/>'
+    +'<line id="xh" y1="'+T+'" y2="'+(H-B)+'" stroke="#9ba8c0" stroke-width="1" opacity="0"/><circle id="xd" r="5" fill="#5b8cff" stroke="#111a2c" stroke-width="2" opacity="0"/><rect x="'+L+'" y="0" width="'+(W-L-R)+'" height="'+H+'" fill="transparent" id="hit"/></svg>'
+    +'<details class="data"><summary>Voir les données</summary><table>'+data.slice().reverse().map(function(x){return '<tr><td>'+dlabel(x.d)+'</td><td class="n">'+fmt(x.v)+'</td></tr>'}).join('')+'</table></details>';
+  var svg=host.querySelector('svg'),tip=tipFor(host),xh=svg.querySelector('#xh'),xd=svg.querySelector('#xd');
+  function mv(e){var r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,i=Math.max(0,Math.min(n-1,Math.round((px-L)/(W-L-R)*(n-1))));
+    xh.setAttribute('x1',X(i));xh.setAttribute('x2',X(i));xh.setAttribute('opacity',.5);xd.setAttribute('cx',X(i));xd.setAttribute('cy',Y(data[i].v));xd.setAttribute('opacity',1);
+    tip.innerHTML=dlabel(data[i].d)+'<br><b>'+fmt(data[i].v)+'</b> visiteur'+(data[i].v>1?'s':'');tip.style.opacity=1;
+    var hr=host.getBoundingClientRect(),cr=host.parentNode.getBoundingClientRect(),x=r.left-cr.left+X(i)/W*r.width;tip.style.left=Math.min(Math.max(x-50,8),cr.width-120)+'px';tip.style.top=(hr.top-cr.top+Y(data[i].v)/H*r.height-58)+'px';}
+  function lv(){tip.style.opacity=0;xh.setAttribute('opacity',0);xd.setAttribute('opacity',0);}
+  svg.addEventListener('pointermove',mv);svg.addEventListener('pointerleave',lv);
+}
+function bars(sel,a,b){var host=$(sel);if(!a.length&&!b.length){host.innerHTML='<p class="empty">Pas encore de données.</p>';return;}
+  var n=Math.max(a.length,b.length),W=Math.max(300,host.clientWidth||1000),H=W<600?190:240,L=34,R=8,T=10,B=26,max=niceMax(Math.max.apply(null,a.concat(b).map(function(x){return x.v}).concat([1])));
+  var gw=(W-L-R)/n,bw=Math.max(3,Math.min(28,(gw-(W<600?6:14))/2)),Y=function(v){return T+(H-T-B)*(1-v/max)};
+  var grid='';for(var k=0;k<=5;k++){var v=max*k/5,y=Y(v);grid+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#22304a"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#9ba8c0">'+fmt(Math.round(v))+'</text>';}
+  var bs='',ticks='';
+  for(var i=0;i<n;i++){var cx=L+gw*i+gw/2,av=(a[i]||{}).v||0,bv=(b[i]||{}).v||0,d=(a[i]||b[i]).d;
+    [[av,'#5b8cff',cx-bw-1],[bv,'#c97f1e',cx+1]].forEach(function(s){var h=Math.max(0,Y(0)-Y(s[0]));bs+='<path d="'+rbar(s[2],Y(0),bw,h)+'" fill="'+s[1]+'"/>';});
+    bs+='<rect class="hb" data-i="'+i+'" x="'+(L+gw*i)+'" y="0" width="'+gw+'" height="'+H+'" fill="transparent"/>';
+    if(i%Math.ceil(n/(W<600?4:6))===0)ticks+='<text x="'+cx+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+dlabel(d)+'</text>';}
+  host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Clics Doctolib et téléphone par semaine">'+grid+bs+ticks+'</svg>';
+  var svg=host.querySelector('svg'),tip=tipFor(host);
+  svg.querySelectorAll('.hb').forEach(function(r){r.addEventListener('pointerenter',function(){var i=+r.dataset.i,x=a[i]||{},y=b[i]||{};
+    tip.innerHTML='Semaine du '+dlabel((x.d||y.d))+'<br><span style="color:#5b8cff">■</span> Doctolib <b>'+fmt(x.v)+'</b><br><span style="color:#c97f1e">■</span> Téléphone <b>'+fmt(y.v)+'</b>';tip.style.opacity=1;
+    var rr=r.getBoundingClientRect(),cr=host.parentNode.getBoundingClientRect();tip.style.left=Math.min(Math.max(rr.left-cr.left+rr.width/2-60,8),cr.width-140)+'px';tip.style.top=(rr.top-cr.top+20)+'px';});
+    r.addEventListener('pointerleave',function(){tip.style.opacity=0;});});
+}
+function rbar(x,y0,w,h){if(h<=0)return '';var r=Math.min(4,h,w/2);return 'M'+x+' '+y0+' V'+(y0-h+r)+' Q'+x+' '+(y0-h)+' '+(x+r)+' '+(y0-h)+' H'+(x+w-r)+' Q'+(x+w)+' '+(y0-h)+' '+(x+w)+' '+(y0-h+r)+' V'+y0+' Z';}
+})();
+</script>
+</body>
+</html>

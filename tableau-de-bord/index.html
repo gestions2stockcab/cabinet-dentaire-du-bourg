@@ -35,6 +35,14 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#06102a
 .seg button[aria-pressed=true]{background:var(--accent);color:#06102a}
 .alert{border:1px solid var(--bad);background:rgba(229,103,95,.08);border-radius:14px;padding:14px 16px;margin:0 0 16px;font-size:.88rem}
 .alert b{color:var(--bad)}
+.hb2{display:grid;grid-template-columns:repeat(24,1fr);gap:3px;align-items:end;height:110px;margin:6px 0 4px}
+.hb2 i,.wd i{display:block;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px;opacity:.85}
+.hx{display:grid;grid-template-columns:repeat(24,1fr);font-size:.7rem;color:var(--faint);text-align:center}
+.wd{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:90px;margin:18px 0 4px}
+.wdx{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;font-size:.75rem;color:var(--muted);text-align:center}
+.ok{color:var(--good)} .ko{color:var(--bad)}
+.stars{color:#e8b33a;letter-spacing:1px}
+.avis-bas td{font-size:.85rem}
 .msg{margin-top:14px;font-size:.85rem;color:var(--bad);min-height:1.2em}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
 .kpi{padding:18px 18px 16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
@@ -106,6 +114,12 @@ footer{color:var(--faint);font-size:.78rem;margin-top:24px}
     <section class="card"><h2 id="h-vis">Visiteurs par jour</h2><p class="note" id="n-vis"></p><div id="c-vis"></div></section>
     <section class="card"><h2 id="h-ev">Prises de contact par semaine</h2><p class="note" id="n-ev"></p>
       <div class="legend"><span><i style="background:var(--accent)"></i>Doctolib</span><span><i style="background:var(--tel)"></i>Téléphone</span></div><div id="c-ev"></div></section>
+    <section class="card"><h2>Fiche Google</h2><p class="note" id="n-gbp"></p><div class="kpis" id="k-gbp" style="margin-bottom:14px"></div><div id="c-gbp"></div></section>
+    <section class="card"><h2>Avis Google</h2><p class="note" id="n-avis"></p><div class="kpis" id="k-avis" style="margin-bottom:14px"></div><div id="c-avis"></div><div id="t-avis"></div></section>
+    <div class="grid2">
+      <section class="card"><h2>Quand les visiteurs viennent</h2><p class="note">30 derniers jours</p><div id="c-hours"></div></section>
+      <section class="card"><h2>État du site</h2><p class="note">Automatisations, qualité, conseil du mois</p><div id="t-etat"></div></section>
+    </div>
     <div class="grid2">
       <section class="card"><h2>Pages les plus vues</h2><p class="note pl">30 derniers jours</p><div id="t-pages"></div></section>
       <section class="card"><h2>D'où viennent les visiteurs</h2><p class="note pl">30 derniers jours</p><div id="t-refs"></div></section>
@@ -183,12 +197,49 @@ function render(d){DATA=d;var P=PL[PER];
   table('#t-pages',(B.pages||[]).map(function(x){return {name:(x.title?x.title.replace(/ [–-] Cabinet Dentaire du Bourg.*$/,''):x.path),sub:x.path,n:x.n}}));
   table('#t-refs',(B.toprefs||[]).map(function(x){return {name:x.name==='(direct)'||!x.name?'Accès direct / favoris':x.name,n:x.n}}));
   ['sizes','systems','locations'].forEach(function(k){table('#t-'+k,(d[k]||[]).map(function(x){return {name:FR[x.name]||x.name,n:x.n}}))});
+
+  renderGbp(d);renderAvis(d);renderHours(d);renderEtat(d);
   var g=d.gsc||{};
   if(g.error){$('#gsc-note').textContent='Les recherches Google se consultent directement dans la Search Console.';$('#gsc-body').innerHTML='<div class="links"><a href="https://search.google.com/search-console?resource_id=sc-domain%3Acabinetdentairedubourg.fr" target="_blank" rel="noopener"><b>Ouvrir la Search Console</b><span>Requêtes tapées, position, clics</span></a></div>';}
   else{$('#gsc-note').textContent='28 jours, du '+g.start+' au '+g.end+' (Google a environ 3 jours de retard)';
     $('#gsc-body').innerHTML='<div class="kpis" style="margin-bottom:12px"><div class="kpi"><div class="k">Clics depuis Google</div><div class="v">'+fmt(g.clicks)+'</div></div><div class="kpi"><div class="k">Affichages</div><div class="v">'+fmt(g.impressions)+'</div></div><div class="kpi"><div class="k">Position moyenne</div><div class="v">'+(g.position?g.position.toFixed(1).replace('.',','):'–')+'</div></div></div>'
       +'<table>'+(g.queries||[]).map(function(q){return '<tr><td>'+esc(q.q)+'<br><small>position '+q.pos.toFixed(1).replace('.',',')+'</small></td><td class="n">'+fmt(q.clicks)+' clic'+(q.clicks>1?'s':'')+'<br><small>'+fmt(q.impr)+' affichages</small></td></tr>'}).join('')+'</table>';}
 }
+
+function kpiRow(sel,items){$(sel).innerHTML=items.map(function(k){return '<div class="kpi"><div class="k">'+k[0]+'</div><div class="v">'+k[1]+'</div>'+(k[2]||'')+'</div>'}).join('');}
+function renderGbp(d){var g=d.gbp||{},P=PL[PER];
+  if(g.error&&/has not been used|disabled/.test(g.error)){$('#n-gbp').textContent='Il reste à activer l’API « Business Profile Performance » dans Google Cloud (un clic, puis les chiffres arrivent à la mise à jour suivante).';$('#k-gbp').innerHTML='';$('#c-gbp').innerHTML='<div class="links"><a href="https://console.cloud.google.com/apis/library/businessprofileperformance.googleapis.com?project=167073614366" target="_blank" rel="noopener"><b>Activer l’API</b><span>Google Cloud › Activer</span></a></div>';return;}
+  if(g.error||!(g.daily||[]).length){$('#n-gbp').textContent=g.error?'Données indisponibles pour l’instant : '+g.error.slice(0,140):'Pas encore de données.';$('#k-gbp').innerHTML='';$('#c-gbp').innerHTML='';return;}
+  var S=g.daily,last=S[S.length-1].d,n=P.n,cur=S.slice(-n),prv=S.slice(-2*n,-n);
+  $('#n-gbp').textContent='Recherche Google et Maps · '+P.k.toLowerCase().replace('aujourd\'hui','dernier jour connu')+' jusqu’au '+dlabel(last)+' (Google publie avec quelques jours de retard)';
+  kpiRow('#k-gbp',[['Vues de la fiche',fmt(sum(cur,'vues')),delta(sum(cur,'vues'),sum(prv,'vues'))],['Appels',fmt(sum(cur,'appels')),delta(sum(cur,'appels'),sum(prv,'appels'))],
+    ['Itinéraires',fmt(sum(cur,'itin')),delta(sum(cur,'itin'),sum(prv,'itin'))],['Clics vers le site',fmt(sum(cur,'site')),delta(sum(cur,'site'),sum(prv,'site'))]]);
+  line('#c-gbp',agg(S,PER,'vues',PER==='j'?90:PER==='s'?26:12),'vue');}
+function renderAvis(d){var a=d.avis||{},P=PL[PER];
+  if(a.error||!a.total){$('#n-avis').textContent=a.error?'Données indisponibles : '+a.error.slice(0,140):'Pas encore de données.';return;}
+  var dates=a.dates||[],today=new Date((d.today||'')+'T12:00:00'),since=function(k){var t=new Date(today);t.setDate(t.getDate()-k+1);return t.toISOString().slice(0,10)};
+  var nw=dates.filter(function(x){return x[0]>=since(P.n)}),pv=dates.filter(function(x){return x[0]>=since(2*P.n)&&x[0]<since(P.n)});
+  var moy=nw.length?(nw.reduce(function(s,x){return s+x[1]},0)/nw.length).toFixed(1).replace('.',','):'—';
+  $('#n-avis').textContent='Fiche Google du cabinet · nouveaux avis : '+P.k.toLowerCase();
+  kpiRow('#k-avis',[['Note globale','<span class="stars">★</span> '+String(a.note).replace('.',','),'<span class="d">sur '+fmt(a.total)+' avis</span>'],
+    ['Nouveaux avis',fmt(nw.length),delta(nw.length,pv.length)],['Note des nouveaux avis',moy,'<span class="d">sur 5</span>'],
+    ['Sans réponse',fmt(a.sans_reponse),'<span class="d '+(a.sans_reponse_bas?'down':'')+'">'+(a.sans_reponse_bas?a.sans_reponse_bas+' à 3 étoiles ou moins':'réponses automatiques aux 4-5 étoiles')+'</span>']]);
+  var S=[],m={};dates.forEach(function(x){m[x[0]]=(m[x[0]]||0)+1});
+  for(var i=(PER==='j'?29:PER==='s'?83:364);i>=0;i--){var t=new Date(today);t.setDate(t.getDate()-i);var k=t.toISOString().slice(0,10);S.push({d:k,n:m[k]||0});}
+  bars('#c-avis',agg(S,PER,'n',PER==='j'?30:12),[],['Avis',null]);
+  var bas=a.bas||[];
+  $('#t-avis').innerHTML='<h2 style="margin:18px 0 6px;font-size:.95rem">Avis à 3 étoiles ou moins (les plus récents)</h2>'+(bas.length?'<table class="avis-bas">'+bas.map(function(x){return '<tr><td><span class="stars">'+'★'.repeat(x.s)+'</span> <b>'+esc(x.nom||'')+'</b> · '+dlabel(x.d)+(x.rep?' · <span class="ok">répondu</span>':' · <span class="ko">sans réponse</span>')+(x.txt?'<br><small>'+esc(x.txt)+'</small>':'')+'</td></tr>'}).join('')+'</table>':'<p class="empty">Aucun.</p>')
+    +'<div class="links" style="margin-top:12px"><a href="https://business.google.com/reviews" target="_blank" rel="noopener"><b>Répondre aux avis</b><span>Fiche Google</span></a></div>';}
+function renderHours(d){var h=d.hours||[],w=d.weekdays||[];if(!h.length){$('#c-hours').innerHTML='<p class="empty">Pas encore de données.</p>';return;}
+  var mh=Math.max.apply(null,h.concat([1])),mw=Math.max.apply(null,w.concat([1])),J=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  var best=h.indexOf(mh),bw=w.indexOf(mw);
+  $('#c-hours').innerHTML='<p class="note" style="margin:0">Par heure · pic vers '+best+' h</p><div class="hb2">'+h.map(function(v,i){return '<i title="'+i+' h : '+fmt(v)+'" style="height:'+(v/mh*100).toFixed(0)+'%"></i>'}).join('')+'</div><div class="hx">'+h.map(function(v,i){return '<span>'+(i%6===0?i+'h':'')+'</span>'}).join('')+'</div>'
+    +'<p class="note" style="margin:18px 0 0">Par jour de la semaine · surtout le '+['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'][bw]+'</p><div class="wd">'+w.map(function(v,i){return '<i title="'+J[i]+' : '+fmt(v)+'" style="height:'+(v/mw*100).toFixed(0)+'%"></i>'}).join('')+'</div><div class="wdx">'+J.map(function(j){return '<span>'+j+'</span>'}).join('')+'</div>';}
+function renderEtat(d){var e=d.etat||[],q=d.qualite||{},ac=d.actu||{},h='';
+  h+='<table>'+e.map(function(x){var ok=x.ok==='success',t=x.d?new Date(x.d):null;return '<tr><td>'+(x.url?'<a href="'+x.url+'" target="_blank" rel="noopener" style="color:inherit">'+esc(x.nom)+'</a>':esc(x.nom))+'<br><small>'+(t?'dernier passage le '+t.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+t.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'pas encore lancé')+'</small></td><td class="n '+(ok?'ok':(x.ok?'ko':''))+'">'+(ok?'✓ OK':(x.ok?'✗ '+(x.ok==='failure'?'échec':x.ok):'—'))+'</td></tr>'}).join('')+'</table>';
+  if((q.pages||[]).length){h+='<h2 style="margin:18px 0 6px;font-size:.95rem">Qualité Lighthouse (mobile)</h2><p class="note" style="margin:0 0 6px">Mesure du '+dlabel(q.date)+' · performance / accessibilité / bonnes pratiques / SEO</p><table>'+q.pages.map(function(p){return '<tr><td>'+esc(p.page==='/'?'Accueil':p.page)+'</td><td class="n">'+[p.performance,p.accessibility,p['best-practices'],p.seo].map(function(v){return '<span class="'+(v>=90?'ok':v>=75?'':'ko')+'">'+v+'</span>'}).join(' · ')+'</td></tr>'}).join('')+'</table>';}
+  if(ac.titre)h+='<h2 style="margin:18px 0 6px;font-size:.95rem">Conseil du mois sur Google</h2><table><tr><td>Publié ('+esc(ac.mois||'')+')</td><td class="n">'+esc(ac.titre)+'</td></tr><tr><td>Prochain, le 3 du mois</td><td class="n">'+esc(ac.suivant||'')+'</td></tr></table>';
+  $('#t-etat').innerHTML=h;}
 var FR={'Phones':'Téléphones','Large phones, small tablets':'Grands téléphones, petites tablettes','Tablets and small laptops':'Tablettes, petits portables','Computer monitors':'Ordinateurs','Computer monitors larger than HD':'Grands écrans','(unknown)':'Inconnu','Unknown':'Inconnu','Belgium':'Belgique','Switzerland':'Suisse','Germany':'Allemagne','Spain':'Espagne','Italy':'Italie','United Kingdom':'Royaume-Uni','United States':'États-Unis','Netherlands':'Pays-Bas','Morocco':'Maroc','Algeria':'Algérie','Tunisia':'Tunisie','Portugal':'Portugal','Canada':'Canada','Israel':'Israël','Ireland':'Irlande','Luxembourg':'Luxembourg','Other':'Autres'};
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function table(sel,rows){var max=Math.max.apply(null,rows.map(function(r){return r.n}).concat([1]));
@@ -197,7 +248,7 @@ function weekly(arr){var w=[];for(var i=arr.length;i>0;i-=7){var s=arr.slice(Mat
 function dlabel(s){var d=new Date(s+'T12:00:00');return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});}
 function tipFor(host){var t=document.createElement('div');t.className='tip';host.parentNode.appendChild(t);return t;}
 function niceMax(m){if(m<=5)return 5;var p=Math.pow(10,Math.floor(Math.log10(m))),f=m/p;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p;}
-function line(sel,data){var host=$(sel);if(!data.length){host.innerHTML='<p class="empty">Pas encore de données.</p>';return;}
+function line(sel,data,unit){unit=unit||'visiteur';var host=$(sel);if(!data.length){host.innerHTML='<p class="empty">Pas encore de données.</p>';return;}
   var W=Math.max(300,host.clientWidth||1000),H=W<600?200:260,L=34,R=8,T=10,B=26,max=niceMax(Math.max.apply(null,data.map(function(x){return x.v}))),n=data.length;
   var X=function(i){return L+(W-L-R)*i/(n-1||1)},Y=function(v){return T+(H-T-B)*(1-v/max)};
   var grid='';for(var k=0;k<=5;k++){var v=max*k/5,y=Y(v);grid+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#22304a" stroke-width="1"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#9ba8c0">'+fmt(Math.round(v))+'</text>';}
@@ -210,24 +261,24 @@ function line(sel,data){var host=$(sel);if(!data.length){host.innerHTML='<p clas
   var svg=host.querySelector('svg'),tip=tipFor(host),xh=svg.querySelector('#xh'),xd=svg.querySelector('#xd');
   function mv(e){var r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,i=Math.max(0,Math.min(n-1,Math.round((px-L)/(W-L-R)*(n-1))));
     xh.setAttribute('x1',X(i));xh.setAttribute('x2',X(i));xh.setAttribute('opacity',.5);xd.setAttribute('cx',X(i));xd.setAttribute('cy',Y(data[i].v));xd.setAttribute('opacity',1);
-    tip.innerHTML=data[i].tip+'<br><b>'+fmt(data[i].v)+'</b> visiteur'+(data[i].v>1?'s':'');tip.style.opacity=1;
+    tip.innerHTML=data[i].tip+'<br><b>'+fmt(data[i].v)+'</b> '+unit+(data[i].v>1?'s':'');tip.style.opacity=1;
     var hr=host.getBoundingClientRect(),cr=host.parentNode.getBoundingClientRect(),x=r.left-cr.left+X(i)/W*r.width;tip.style.left=Math.min(Math.max(x-50,8),cr.width-120)+'px';tip.style.top=(hr.top-cr.top+Y(data[i].v)/H*r.height-58)+'px';}
   function lv(){tip.style.opacity=0;xh.setAttribute('opacity',0);xd.setAttribute('opacity',0);}
   svg.addEventListener('pointermove',mv);svg.addEventListener('pointerleave',lv);
 }
-function bars(sel,a,b){var host=$(sel);if(!a.length&&!b.length){host.innerHTML='<p class="empty">Pas encore de données.</p>';return;}
+function bars(sel,a,b,names){names=names||['Doctolib','Téléphone'];var host=$(sel);if(!a.length&&!b.length){host.innerHTML='<p class="empty">Pas encore de données.</p>';return;}
   var n=Math.max(a.length,b.length),W=Math.max(300,host.clientWidth||1000),H=W<600?190:240,L=34,R=8,T=10,B=26,max=niceMax(Math.max.apply(null,a.concat(b).map(function(x){return x.v}).concat([1])));
   var gw=(W-L-R)/n,bw=Math.max(3,Math.min(28,(gw-(W<600?6:14))/2)),Y=function(v){return T+(H-T-B)*(1-v/max)};
   var grid='';for(var k=0;k<=5;k++){var v=max*k/5,y=Y(v);grid+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#22304a"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#9ba8c0">'+fmt(Math.round(v))+'</text>';}
   var bs='',ticks='';
   for(var i=0;i<n;i++){var cx=L+gw*i+gw/2,av=(a[i]||{}).v||0,bv=(b[i]||{}).v||0,d=(a[i]||b[i]).d;
-    [[av,'#5b8cff',cx-bw-1],[bv,'#c97f1e',cx+1]].forEach(function(s){var h=Math.max(0,Y(0)-Y(s[0]));bs+='<path d="'+rbar(s[2],Y(0),bw,h)+'" fill="'+s[1]+'"/>';});
+    (b.length?[[av,'#5b8cff',cx-bw-1],[bv,'#c97f1e',cx+1]]:[[av,'#5b8cff',cx-bw/2]]).forEach(function(s){var h=Math.max(0,Y(0)-Y(s[0]));bs+='<path d="'+rbar(s[2],Y(0),bw,h)+'" fill="'+s[1]+'"/>';});
     bs+='<rect class="hb" data-i="'+i+'" x="'+(L+gw*i)+'" y="0" width="'+gw+'" height="'+H+'" fill="transparent"/>';
     if(i%Math.ceil(n/(W<600?4:6))===0)ticks+='<text x="'+cx+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+(a[i]||b[i]).lab+'</text>';}
   host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Clics Doctolib et téléphone">'+grid+bs+ticks+'</svg>';
   var svg=host.querySelector('svg'),tip=tipFor(host);
   svg.querySelectorAll('.hb').forEach(function(r){r.addEventListener('pointerenter',function(){var i=+r.dataset.i,x=a[i]||{},y=b[i]||{};
-    tip.innerHTML=(x.tip||y.tip)+'<br><span style="color:#5b8cff">■</span> Doctolib <b>'+fmt(x.v)+'</b><br><span style="color:#c97f1e">■</span> Téléphone <b>'+fmt(y.v)+'</b>';tip.style.opacity=1;
+    tip.innerHTML=(x.tip||y.tip)+'<br><span style="color:#5b8cff">■</span> '+names[0]+' <b>'+fmt(x.v)+'</b>'+(names[1]?'<br><span style="color:#c97f1e">■</span> '+names[1]+' <b>'+fmt(y.v)+'</b>':'');tip.style.opacity=1;
     var rr=r.getBoundingClientRect(),cr=host.parentNode.getBoundingClientRect();tip.style.left=Math.min(Math.max(rr.left-cr.left+rr.width/2-60,8),cr.width-140)+'px';tip.style.top=(rr.top-cr.top+20)+'px';});
     r.addEventListener('pointerleave',function(){tip.style.opacity=0;});});
 }

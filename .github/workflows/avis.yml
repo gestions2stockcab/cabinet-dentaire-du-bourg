@@ -23,6 +23,13 @@ jobs:
           GBP_ACCOUNT_ID: ${{ secrets.GBP_ACCOUNT_ID }}
           GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
         run: python3 .github/scripts/avis.py
+      - name: Avis de Malakoff (fichier séparé, sans réponses ni alertes)
+        continue-on-error: true
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+        run: python3 .github/scripts/avis_malakoff.py
       - name: Répondre aux avis 4-5 étoiles
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
@@ -43,6 +50,7 @@ jobs:
         run: |
           [ -f avis.json ] || exit 0
           git add avis.json avis_vus.json
+          git add avis-malakoff.json malakoff_fiche.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git config user.name "avis-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

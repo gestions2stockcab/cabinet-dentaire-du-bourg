@@ -26,10 +26,6 @@ out = {"updated": dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
 base = "https://cabinetdentairedubourg.goatcounter.com/api/v0"
 H = {"Authorization": f"Bearer {env('GOATCOUNTER_TOKEN')}", "Content-Type": "application/json"}
 
-# diagnostic temporaire : codes de réponse seulement
-for q in ["me", "stats/total", f"stats/total?start={iso(d30)}&end={endiso}", f"stats/total?start={iso(d365)}&end={endiso}", f"stats/hits?start={iso(d30)}&end={endiso}&limit=5", f"stats/toprefs?start={iso(d30)}&end={endiso}"]:
-    try: r = req(f"{base}/{q}", headers=H); print("DIAG", q.split("?")[0], "OK", list(r)[:6])
-    except Exception as e: print("DIAG", q, str(e)[:160])
 def total(a, b_iso):
     return req(f"{base}/stats/total?start={iso(a)}&end={b_iso}", headers=H)
 def hits(a, b_iso, limit=50):

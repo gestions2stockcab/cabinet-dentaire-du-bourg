@@ -2,7 +2,7 @@
 Récupère GoatCounter (+ Search Console si autorisé), chiffre le tout (AES-256-GCM, clé dérivée
 du secret STATS_KEY par PBKDF2) et écrit stats.enc.json à la racine du dépôt.
 Secrets : GOATCOUNTER_TOKEN, STATS_KEY ; facultatifs : GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN."""
-import base64, datetime as dt, json, os, urllib.parse, urllib.request
+import base64, datetime as dt, json, os, urllib.error, urllib.parse, urllib.request
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
@@ -11,7 +11,10 @@ def env(k): return os.environ.get(k, "").strip().strip('"').strip("'").strip()
 def req(url, data=None, headers=None, method=None):
     h = {"Accept": "application/json"}; h.update(headers or {})
     body = json.dumps(data).encode() if isinstance(data, dict) and h.get("Content-Type") == "application/json" else (urllib.parse.urlencode(data).encode() if data else None)
-    return json.load(urllib.request.urlopen(urllib.request.Request(url, data=body, headers=h, method=method), timeout=60))
+    try:
+        return json.load(urllib.request.urlopen(urllib.request.Request(url, data=body, headers=h, method=method), timeout=60))
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"HTTP {e.code} sur {urllib.parse.urlparse(url).path} : {e.read()[:200].decode('utf-8','replace')}")
 
 today = dt.date.today(); end = today                     # jusqu'à aujourd'hui inclus
 d90 = today - dt.timedelta(days=89); d365 = today - dt.timedelta(days=364); d7 = today - dt.timedelta(days=6); d30 = today - dt.timedelta(days=29)

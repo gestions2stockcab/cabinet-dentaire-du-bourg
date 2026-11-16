@@ -65,6 +65,94 @@ try:
 except Exception as e:
     out.setdefault("errors", []).append(f"GoatCounter : {e}")
 
+
+# ---------- heures et jours de visite (30 jours, GoatCounter) ----------
+try:
+    tt = total(d30, endiso).get("stats", [])
+    hrs = [0]*24; wd = [0]*7
+    for x in tt:
+        for i, v in enumerate(x.get("hourly") or []): hrs[i % 24] += v or 0
+        wd[dt.date.fromisoformat(x["day"]).weekday()] += x.get("daily", 0) or 0
+    out["hours"] = hrs; out["weekdays"] = wd
+except Exception as e:
+    out.setdefault("errors", []).append(f"heures : {e}")
+
+# ---------- Google : jeton, fiche (performances) et avis ----------
+STARS = {"ONE": 1, "TWO": 2, "THREE": 3, "FOUR": 4, "FIVE": 5}
+gtok = None
+try:
+    gtok = req("https://oauth2.googleapis.com/token", {"client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),
+               "refresh_token": env("GOOGLE_REFRESH_TOKEN"), "grant_type": "refresh_token"})["access_token"]
+except Exception as e:
+    out.setdefault("errors", []).append(f"Google (jeton) : {e}")
+ACC, LOC = env("GBP_ACCOUNT_ID"), env("GBP_LOCATION_ID")
+if gtok and LOC:
+    GA = {"Authorization": f"Bearer {gtok}"}
+    try:
+        M = {"BUSINESS_IMPRESSIONS_DESKTOP_MAPS": "vues", "BUSINESS_IMPRESSIONS_DESKTOP_SEARCH": "vues", "BUSINESS_IMPRESSIONS_MOBILE_MAPS": "vues",
+             "BUSINESS_IMPRESSIONS_MOBILE_SEARCH": "vues", "CALL_CLICKS": "appels", "BUSINESS_DIRECTION_REQUESTS": "itin", "WEBSITE_CLICKS": "site"}
+        a, b = d365, today
+        q = "&".join(f"dailyMetrics={k}" for k in M) + (f"&dailyRange.startDate.year={a.year}&dailyRange.startDate.month={a.month}&dailyRange.startDate.day={a.day}"
+             f"&dailyRange.endDate.year={b.year}&dailyRange.endDate.month={b.month}&dailyRange.endDate.day={b.day}")
+        r = req(f"https://businessprofileperformance.googleapis.com/v1/locations/{LOC}:fetchMultiDailyMetricsTimeSeries?{q}", headers=GA)
+        days = {}
+        for grp in r.get("multiDailyMetricTimeSeries", []):
+            for ser in grp.get("dailyMetricTimeSeries", []):
+                k = M.get(ser.get("dailyMetric"))
+                for dv in ser.get("timeSeries", {}).get("datedValues", []):
+                    d = dv["date"]; key = f"{d['year']:04d}-{d['month']:02d}-{d['day']:02d}"
+                    days.setdefault(key, {"d": key, "vues": 0, "appels": 0, "itin": 0, "site": 0})[k] += int(dv.get("value", 0) or 0)
+        daily = [days[k] for k in sorted(days)]
+        while daily and not any(daily[-1][k] for k in ("vues", "appels", "itin", "site")): daily.pop()  # Google a quelques jours de retard
+        out["gbp"] = {"daily": daily}
+    except Exception as e:
+        out["gbp"] = {"error": str(e)[:300]}
+    try:
+        base_r = f"https://mybusiness.googleapis.com/v4/accounts/{ACC}/locations/{LOC}/reviews"
+        allr, tokn, info = [], "", {}
+        for _ in range(40):
+            r = req(f"{base_r}?pageSize=50" + (f"&pageToken={tokn}" if tokn else ""), headers=GA)
+            info = info or r; allr += r.get("reviews", []); tokn = r.get("nextPageToken")
+            if not tokn: break
+        rv = [{"d": v.get("createTime", "")[:10], "s": STARS.get(v.get("starRating"), 0), "rep": bool(v.get("reviewReply")),
+               "nom": (v.get("reviewer") or {}).get("displayName", ""), "txt": (v.get("comment") or "")[:280]} for v in allr]
+        low = [x for x in sorted(rv, key=lambda x: x["d"], reverse=True) if x["s"] and x["s"] <= 3][:6]
+        out["avis"] = {"note": round(info.get("averageRating") or 0, 2), "total": info.get("totalReviewCount", len(rv)),
+                       "sans_reponse": sum(1 for x in rv if not x["rep"]), "sans_reponse_bas": sum(1 for x in rv if not x["rep"] and x["s"] <= 3),
+                       "dates": [[x["d"], x["s"]] for x in rv if x["d"] >= str(d365)], "bas": low}
+    except Exception as e:
+        out["avis"] = {"error": str(e)[:300]}
+
+# ---------- état du site : automatisations, Lighthouse, conseil du mois ----------
+try:
+    GHH = {"Authorization": f"Bearer {env('GH_TOKEN')}", "Accept": "application/vnd.github+json"}
+    repo = env("GITHUB_REPOSITORY")
+    etat = []
+    for f, nom in (("verification.yml", "Vérification des pages et liens"), ("avis.yml", "Avis Google et réponses"), ("actu.yml", "Conseil du mois sur Google"),
+                   ("qualite.yml", "Contrôle qualité (Lighthouse)"), ("rapport.yml", "Rapport du lundi"), ("indexnow.yml", "Signalement à Bing (IndexNow)")):
+        try:
+            runs = req(f"https://api.github.com/repos/{repo}/actions/workflows/{f}/runs?per_page=1", headers=GHH).get("workflow_runs", [])
+            x = runs[0] if runs else {}
+            etat.append({"nom": nom, "ok": x.get("conclusion"), "d": x.get("created_at"), "url": x.get("html_url")})
+        except Exception as e:
+            etat.append({"nom": nom, "ok": None, "err": str(e)[:120]})
+    out["etat"] = etat
+except Exception as e:
+    out.setdefault("errors", []).append(f"état : {e}")
+for fn, k in (("qualite.json", "qualite"), ("actu_last.json", "actu_last")):
+    try: out[k] = json.load(open(fn))
+    except Exception: pass
+try:
+    fl0 = json.load(open("actu.json")); fd = {f["slug"]: f for f in fl0}
+    ORDRE = [l for l in open(".github/scripts/actu.py").read().split("ORDRE = ", 1)[1].split("]", 1)[0].replace("[", "").replace("\n", " ").split(",")]
+    ORDRE = [o.strip().strip('"') for o in ORDRE if o.strip()]
+    fl = [fd[x] for x in ORDRE if x in fd] + [f for f in fl0 if f["slug"] not in ORDRE]
+    al = out.get("actu_last") or {}
+    out["actu"] = {"titre": next((f.get("titre") for f in fl if f.get("slug") == al.get("slug")), al.get("slug")),
+                   "suivant": fl[(al.get("n", -1) + 1) % len(fl)].get("titre") if fl else None, "mois": al.get("mois")}
+except Exception as e:
+    out.setdefault("errors", []).append(f"actu : {e}")
+
 # Search Console (facultatif : nécessite le scope webmasters.readonly)
 try:
     tok = req("https://oauth2.googleapis.com/token", {"client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),

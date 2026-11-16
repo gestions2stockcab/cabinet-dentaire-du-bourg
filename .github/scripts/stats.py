@@ -14,7 +14,7 @@ def req(url, data=None, headers=None, method=None):
     return json.load(urllib.request.urlopen(urllib.request.Request(url, data=body, headers=h, method=method), timeout=60))
 
 today = dt.date.today(); end = today                     # jusqu'à aujourd'hui inclus
-d90 = today - dt.timedelta(days=89); d30 = today - dt.timedelta(days=29)
+d90 = today - dt.timedelta(days=89); d365 = today - dt.timedelta(days=364); d7 = today - dt.timedelta(days=6); d30 = today - dt.timedelta(days=29)
 p30e = d30 - dt.timedelta(days=1); p30s = p30e - dt.timedelta(days=29)
 iso = lambda d: f"{d}T00:00:00Z"
 endiso = f"{today + dt.timedelta(days=1)}T00:00:00Z"
@@ -31,7 +31,7 @@ def page(name, a, b_iso, limit=8):
     return [{"name": x.get("name") or "(direct)", "n": x.get("count", 0)} for x in (r.get("stats") or r.get("refs") or [])]
 
 try:
-    t = total(d90, endiso)
+    t = total(d365, endiso)
     out["daily"] = [{"d": s["day"], "v": s.get("daily", 0)} for s in t.get("stats", [])]
     h30 = hits(d30, endiso); hp = hits(p30s, iso(d30))
     def ev(hs, name):
@@ -43,10 +43,18 @@ try:
     ev30 = total(d30, endiso).get("total_events", 0); evp = total(p30s, iso(d30)).get("total_events", 0)
     out["cur"] = {"visitors": vis30 - ev30, "doctolib": cnt(h30, "Clic Doctolib"), "tel": cnt(h30, "Clic téléphone")}
     out["prev"] = {"visitors": visp - evp, "doctolib": cnt(hp, "Clic Doctolib"), "tel": cnt(hp, "Clic téléphone")}
-    h90 = hits(d90, endiso)
+    h90 = hits(d365, endiso)
     for key, name in (("doctolib", "Clic Doctolib"), ("tel", "Clic téléphone")):
         out.setdefault("events_daily", {})[key] = [{"d": s["day"], "v": s.get("daily", 0)} for s in ev(h90, name).get("stats", [])]
     out["pages"] = [{"path": x.get("path"), "title": x.get("title", ""), "n": x.get("count", 0)} for x in h30 if not x.get("event")][:12]
+    # tableaux par période : aujourd'hui (j), 7 jours (s), 30 jours (m)
+    out["by"] = {}
+    for per, a in (("j", today), ("s", d7), ("m", d30)):
+        hh = h30 if per == "m" else hits(a, endiso)
+        b = {"pages": [{"path": x.get("path"), "title": x.get("title", ""), "n": x.get("count", 0)} for x in hh if not x.get("event")][:12]}
+        try: b["toprefs"] = page("toprefs", a, endiso)
+        except Exception: b["toprefs"] = []
+        out["by"][per] = b
     for name in ("toprefs", "sizes", "systems", "browsers", "locations"):
         try: out[name] = page(name, d30, endiso)
         except Exception as e: out[name] = []; out.setdefault("errors", []).append(f"{name}: {e}")

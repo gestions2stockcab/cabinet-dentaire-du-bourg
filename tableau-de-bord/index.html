@@ -30,6 +30,11 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#06102a
 .lock input[type=password]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 1rem Manrope,sans-serif}
 .lock .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
 .lock .chk{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.seg{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--surface);margin:0 0 16px}
+.seg button{border:0;padding:9px 18px}
+.seg button[aria-pressed=true]{background:var(--accent);color:#06102a}
+.alert{border:1px solid var(--bad);background:rgba(229,103,95,.08);border-radius:14px;padding:14px 16px;margin:0 0 16px;font-size:.88rem}
+.alert b{color:var(--bad)}
 .msg{margin-top:14px;font-size:.85rem;color:var(--bad);min-height:1.2em}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
 .kpi{padding:18px 18px 16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
@@ -95,13 +100,15 @@ footer{color:var(--faint);font-size:.78rem;margin-top:24px}
       </div>
       <p class="tipi">Astuce iPhone : bouton Partager › « Sur l’écran d’accueil » pour ouvrir cet espace comme une application.</p>
     </section>
-    <section class="kpis" id="kpis" aria-label="Chiffres clés des 30 derniers jours"></section>
-    <section class="card"><h2>Visiteurs par jour</h2><p class="note">90 derniers jours · survolez la courbe pour le détail</p><div id="c-vis"></div></section>
-    <section class="card"><h2>Prises de contact par semaine</h2><p class="note">Clics vers Doctolib et sur le numéro de téléphone · 12 dernières semaines</p>
+    <div id="alert"></div>
+    <div class="seg" role="group" aria-label="Période"><button type="button" data-per="j">Jour</button><button type="button" data-per="s">Semaine</button><button type="button" data-per="m">Mois</button></div>
+    <section class="kpis" id="kpis" aria-label="Chiffres clés"></section>
+    <section class="card"><h2 id="h-vis">Visiteurs par jour</h2><p class="note" id="n-vis"></p><div id="c-vis"></div></section>
+    <section class="card"><h2 id="h-ev">Prises de contact par semaine</h2><p class="note" id="n-ev"></p>
       <div class="legend"><span><i style="background:var(--accent)"></i>Doctolib</span><span><i style="background:var(--tel)"></i>Téléphone</span></div><div id="c-ev"></div></section>
     <div class="grid2">
-      <section class="card"><h2>Pages les plus vues</h2><p class="note">30 derniers jours</p><div id="t-pages"></div></section>
-      <section class="card"><h2>D'où viennent les visiteurs</h2><p class="note">30 derniers jours</p><div id="t-refs"></div></section>
+      <section class="card"><h2>Pages les plus vues</h2><p class="note pl">30 derniers jours</p><div id="t-pages"></div></section>
+      <section class="card"><h2>D'où viennent les visiteurs</h2><p class="note pl">30 derniers jours</p><div id="t-refs"></div></section>
     </div>
     <div class="grid3">
       <section class="card"><h2>Appareils</h2><p class="note">Taille d'écran · 30 jours</p><div id="t-sizes"></div></section>
@@ -140,18 +147,41 @@ $('#lock').addEventListener('submit',function(e){e.preventDefault();go($('#pw').
 $('#out').addEventListener('click',function(){store('dbk',null);location.reload();});
 var saved=read('dbk');if(saved)go(saved,true);
 
-function delta(c,p){if(!p)return '<span class="d">—</span>';var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">vs 30 j précédents</span>';}
-function render(d){
-  var up=new Date(d.updated);$('#upd').textContent='30 derniers jours · mis à jour le '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-  var c=d.cur||{},p=d.prev||{},contact=(c.doctolib||0)+(c.tel||0),pc=(p.doctolib||0)+(p.tel||0);
-  var rate=c.visitors?(contact/c.visitors*100):0,prate=p.visitors?(pc/p.visitors*100):0;
+var PER=read('dbper')||'j',DATA=null;
+var PL={j:{k:'Aujourd\'hui',vs:'vs hier',n:1,tab:'aujourd\'hui',h1:'Visiteurs par jour',n1:'90 derniers jours',h2:'Prises de contact par jour',n2:'30 derniers jours'},
+        s:{k:'7 derniers jours',vs:'vs 7 jours précédents',n:7,tab:'7 derniers jours',h1:'Visiteurs par semaine',n1:'26 dernières semaines',h2:'Prises de contact par semaine',n2:'12 dernières semaines'},
+        m:{k:'30 derniers jours',vs:'vs 30 jours précédents',n:30,tab:'30 derniers jours',h1:'Visiteurs par mois',n1:'12 derniers mois',h2:'Prises de contact par mois',n2:'12 derniers mois'}};
+document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){PER=b.dataset.per;store('dbper',PER);if(DATA)render(DATA);});});
+function delta(c,p){var vs=PL[PER].vs;if(!p)return '<span class="d">'+(c?'':'— ')+vs+' : '+fmt(p)+'</span>';var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">'+vs+'</span>';}
+function mapd(a){var m={};(a||[]).forEach(function(x){m[x.d]=x.v||0});return m;}
+function series(d){var ev=d.events_daily||{},doc=mapd(ev.doctolib),tel=mapd(ev.tel);
+  return (d.daily||[]).map(function(x){var a=doc[x.d]||0,b=tel[x.d]||0;return {d:x.d,v:Math.max(0,(x.v||0)-a-b),doc:a,tel:b};});}
+function sum(a,k){return a.reduce(function(s,x){return s+(x[k]||0)},0);}
+function agg(a,per,k,max){if(per==='j')return a.slice(-max).map(function(x){return {d:x.d,v:x[k],lab:dlabel(x.d),tip:dlong(x.d)}});
+  var out=[];if(per==='s'){for(var i=a.length;i>0;i-=7){var s=a.slice(Math.max(0,i-7),i);out.unshift({d:s[0].d,v:sum(s,k),lab:dlabel(s[0].d),tip:'Semaine du '+dlabel(s[0].d)});}}
+  else{var g={};a.forEach(function(x){var m=x.d.slice(0,7);if(!g[m]){g[m]={d:m+'-01',v:0};out.push(g[m]);}g[m].v+=x[k]||0;});
+    out.forEach(function(o){var t=new Date(o.d+'T12:00:00');o.lab=t.toLocaleDateString('fr-FR',{month:'short'});o.tip=t.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});});}
+  return out.slice(-max);}
+function dlong(s){return new Date(s+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});}
+function render(d){DATA=d;var P=PL[PER];
+  document.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.per===PER?'true':'false')});
+  var up=new Date(d.updated);$('#upd').textContent='Mis à jour le '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  var err=(d.errors||[]).join(' ');
+  $('#alert').innerHTML=/GoatCounter.*(401|Unauthorized)/.test(err)?'<div class="alert"><b>Les chiffres ne remontent pas :</b> GoatCounter refuse la connexion (jeton invalide). Créez un nouveau jeton API dans GoatCounter et remplacez le secret GitHub GOATCOUNTER_TOKEN.</div>':(/GoatCounter/.test(err)?'<div class="alert"><b>Erreur GoatCounter :</b> '+esc(err)+'</div>':'');
+  var S=series(d),n=P.n,cur=S.slice(-n),prv=S.slice(-2*n,-n);
+  var c={visitors:sum(cur,'v'),doctolib:sum(cur,'doc'),tel:sum(cur,'tel')},p={visitors:sum(prv,'v'),doctolib:sum(prv,'doc'),tel:sum(prv,'tel')};
+  var contact=c.doctolib+c.tel,rate=c.visitors?(contact/c.visitors*100):0;
   $('#kpis').innerHTML=[['Visiteurs',fmt(c.visitors),delta(c.visitors,p.visitors)],['Clics Doctolib',fmt(c.doctolib),delta(c.doctolib,p.doctolib)],['Clics téléphone',fmt(c.tel),delta(c.tel,p.tel)],
     ['Taux de contact',rate.toFixed(1).replace('.',',')+' %','<span class="d">visiteurs qui cliquent Doctolib ou téléphone</span>']]
-    .map(function(k){return '<div class="kpi"><div class="k">'+k[0]+'</div><div class="v">'+k[1]+'</div>'+k[2]+'</div>'}).join('');
-  line('#c-vis',d.daily||[]);
-  bars('#c-ev',weekly((d.events_daily||{}).doctolib||[]),weekly((d.events_daily||{}).tel||[]));
-  table('#t-pages',(d.pages||[]).map(function(x){return {name:(x.title?x.title.replace(/ [–-] Cabinet Dentaire du Bourg.*$/,''):x.path),sub:x.path,n:x.n}}));
-  table('#t-refs',(d.toprefs||[]).map(function(x){return {name:x.name==='(direct)'||!x.name?'Accès direct / favoris':x.name,n:x.n}}));
+    .map(function(k){return '<div class="kpi"><div class="k">'+k[0]+' · '+P.k.toLowerCase()+'</div><div class="v">'+k[1]+'</div>'+k[2]+'</div>'}).join('');
+  $('#h-vis').textContent=P.h1;$('#n-vis').textContent=P.n1+' · survolez la courbe pour le détail';
+  $('#h-ev').textContent=P.h2;$('#n-ev').textContent='Clics vers Doctolib et sur le numéro de téléphone · '+P.n2;
+  line('#c-vis',agg(S,PER,'v',PER==='j'?90:PER==='s'?26:12));
+  bars('#c-ev',agg(S,PER,'doc',PER==='j'?30:12),agg(S,PER,'tel',PER==='j'?30:12));
+  var B=(d.by||{})[PER]||{pages:d.pages,toprefs:d.toprefs};
+  document.querySelectorAll('.note.pl').forEach(function(e){e.textContent=P.tab.charAt(0).toUpperCase()+P.tab.slice(1)});
+  table('#t-pages',(B.pages||[]).map(function(x){return {name:(x.title?x.title.replace(/ [–-] Cabinet Dentaire du Bourg.*$/,''):x.path),sub:x.path,n:x.n}}));
+  table('#t-refs',(B.toprefs||[]).map(function(x){return {name:x.name==='(direct)'||!x.name?'Accès direct / favoris':x.name,n:x.n}}));
   ['sizes','systems','locations'].forEach(function(k){table('#t-'+k,(d[k]||[]).map(function(x){return {name:FR[x.name]||x.name,n:x.n}}))});
   var g=d.gsc||{};
   if(g.error){$('#gsc-note').textContent='Les recherches Google se consultent directement dans la Search Console.';$('#gsc-body').innerHTML='<div class="links"><a href="https://search.google.com/search-console?resource_id=sc-domain%3Acabinetdentairedubourg.fr" target="_blank" rel="noopener"><b>Ouvrir la Search Console</b><span>Requêtes tapées, position, clics</span></a></div>';}
@@ -171,16 +201,16 @@ function line(sel,data){var host=$(sel);if(!data.length){host.innerHTML='<p clas
   var W=Math.max(300,host.clientWidth||1000),H=W<600?200:260,L=34,R=8,T=10,B=26,max=niceMax(Math.max.apply(null,data.map(function(x){return x.v}))),n=data.length;
   var X=function(i){return L+(W-L-R)*i/(n-1||1)},Y=function(v){return T+(H-T-B)*(1-v/max)};
   var grid='';for(var k=0;k<=5;k++){var v=max*k/5,y=Y(v);grid+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#22304a" stroke-width="1"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#9ba8c0">'+fmt(Math.round(v))+'</text>';}
-  var ticks='';for(var i=0;i<n;i+=Math.ceil(n/(W<600?4:6)))ticks+='<text x="'+X(i)+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+dlabel(data[i].d)+'</text>';
+  var ticks='';for(var i=0;i<n;i+=Math.ceil(n/(W<600?4:6)))ticks+='<text x="'+X(i)+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+data[i].lab+'</text>';
   var pts=data.map(function(x,i){return X(i).toFixed(1)+','+Y(x.v).toFixed(1)}).join(' ');
-  host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Visiteurs par jour sur 90 jours">'+grid+ticks
+  host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Visiteurs">'+grid+ticks
     +'<polygon points="'+X(0)+','+Y(0)+' '+pts+' '+X(n-1)+','+Y(0)+'" fill="#5b8cff" opacity=".12"/><polyline points="'+pts+'" fill="none" stroke="#5b8cff" stroke-width="2" stroke-linejoin="round"/>'
     +'<line id="xh" y1="'+T+'" y2="'+(H-B)+'" stroke="#9ba8c0" stroke-width="1" opacity="0"/><circle id="xd" r="5" fill="#5b8cff" stroke="#111a2c" stroke-width="2" opacity="0"/><rect x="'+L+'" y="0" width="'+(W-L-R)+'" height="'+H+'" fill="transparent" id="hit"/></svg>'
-    +'<details class="data"><summary>Voir les données</summary><table>'+data.slice().reverse().map(function(x){return '<tr><td>'+dlabel(x.d)+'</td><td class="n">'+fmt(x.v)+'</td></tr>'}).join('')+'</table></details>';
+    +'<details class="data"><summary>Voir les données</summary><table>'+data.slice().reverse().map(function(x){return '<tr><td>'+x.tip+'</td><td class="n">'+fmt(x.v)+'</td></tr>'}).join('')+'</table></details>';
   var svg=host.querySelector('svg'),tip=tipFor(host),xh=svg.querySelector('#xh'),xd=svg.querySelector('#xd');
   function mv(e){var r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,i=Math.max(0,Math.min(n-1,Math.round((px-L)/(W-L-R)*(n-1))));
     xh.setAttribute('x1',X(i));xh.setAttribute('x2',X(i));xh.setAttribute('opacity',.5);xd.setAttribute('cx',X(i));xd.setAttribute('cy',Y(data[i].v));xd.setAttribute('opacity',1);
-    tip.innerHTML=dlabel(data[i].d)+'<br><b>'+fmt(data[i].v)+'</b> visiteur'+(data[i].v>1?'s':'');tip.style.opacity=1;
+    tip.innerHTML=data[i].tip+'<br><b>'+fmt(data[i].v)+'</b> visiteur'+(data[i].v>1?'s':'');tip.style.opacity=1;
     var hr=host.getBoundingClientRect(),cr=host.parentNode.getBoundingClientRect(),x=r.left-cr.left+X(i)/W*r.width;tip.style.left=Math.min(Math.max(x-50,8),cr.width-120)+'px';tip.style.top=(hr.top-cr.top+Y(data[i].v)/H*r.height-58)+'px';}
   function lv(){tip.style.opacity=0;xh.setAttribute('opacity',0);xd.setAttribute('opacity',0);}
   svg.addEventListener('pointermove',mv);svg.addEventListener('pointerleave',lv);
@@ -193,11 +223,11 @@ function bars(sel,a,b){var host=$(sel);if(!a.length&&!b.length){host.innerHTML='
   for(var i=0;i<n;i++){var cx=L+gw*i+gw/2,av=(a[i]||{}).v||0,bv=(b[i]||{}).v||0,d=(a[i]||b[i]).d;
     [[av,'#5b8cff',cx-bw-1],[bv,'#c97f1e',cx+1]].forEach(function(s){var h=Math.max(0,Y(0)-Y(s[0]));bs+='<path d="'+rbar(s[2],Y(0),bw,h)+'" fill="'+s[1]+'"/>';});
     bs+='<rect class="hb" data-i="'+i+'" x="'+(L+gw*i)+'" y="0" width="'+gw+'" height="'+H+'" fill="transparent"/>';
-    if(i%Math.ceil(n/(W<600?4:6))===0)ticks+='<text x="'+cx+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+dlabel(d)+'</text>';}
-  host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Clics Doctolib et téléphone par semaine">'+grid+bs+ticks+'</svg>';
+    if(i%Math.ceil(n/(W<600?4:6))===0)ticks+='<text x="'+cx+'" y="'+(H-6)+'" text-anchor="middle" font-size="12" fill="#9ba8c0">'+(a[i]||b[i]).lab+'</text>';}
+  host.innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Clics Doctolib et téléphone">'+grid+bs+ticks+'</svg>';
   var svg=host.querySelector('svg'),tip=tipFor(host);
   svg.querySelectorAll('.hb').forEach(function(r){r.addEventListener('pointerenter',function(){var i=+r.dataset.i,x=a[i]||{},y=b[i]||{};
-    tip.innerHTML='Semaine du '+dlabel((x.d||y.d))+'<br><span style="color:#5b8cff">■</span> Doctolib <b>'+fmt(x.v)+'</b><br><span style="color:#c97f1e">■</span> Téléphone <b>'+fmt(y.v)+'</b>';tip.style.opacity=1;
+    tip.innerHTML=(x.tip||y.tip)+'<br><span style="color:#5b8cff">■</span> Doctolib <b>'+fmt(x.v)+'</b><br><span style="color:#c97f1e">■</span> Téléphone <b>'+fmt(y.v)+'</b>';tip.style.opacity=1;
     var rr=r.getBoundingClientRect(),cr=host.parentNode.getBoundingClientRect();tip.style.left=Math.min(Math.max(rr.left-cr.left+rr.width/2-60,8),cr.width-140)+'px';tip.style.top=(rr.top-cr.top+20)+'px';});
     r.addEventListener('pointerleave',function(){tip.style.opacity=0;});});
 }

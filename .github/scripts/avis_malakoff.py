@@ -57,3 +57,30 @@ out = {"rating": round(data["averageRating"], 1) if data.get("averageRating") el
        "reviews": reviews, "updatedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
 json.dump(out, open("avis-malakoff.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(f"Malakoff : {out['count']} avis, note {out['rating']}, {len(reviews)} avis retenus")
+
+# 3. alertes (activées par le Dr Atlan le 16/11/2026) : nouveaux avis depuis le dernier passage → ticket GitHub
+VUS = "avis_vus_malakoff.json"
+toutes = data.get("reviews", [])
+ids = [v.get("reviewId") or v.get("name") for v in toutes]
+premier = not os.path.exists(VUS)
+vus = set() if premier else set(json.load(open(VUS, encoding="utf-8")))
+nouveaux = [] if premier else [v for v in toutes if (v.get("reviewId") or v.get("name")) not in vus]
+json.dump(sorted(vus | set(ids)), open(VUS, "w", encoding="utf-8"), indent=0)
+if nouveaux:
+    sans_reponse = sum(1 for v in toutes if not v.get("reviewReply"))
+    bas = [v for v in nouveaux if STARS.get(v.get("starRating"), 0) <= 3]
+    titre = ("[Malakoff] " + (f"⚠️ Nouvel avis Google à {STARS.get(bas[0].get('starRating'))} étoile(s)" if bas else f"Nouvel avis Google ({len(nouveaux)})"))
+    L = [f"{len(nouveaux)} nouvel(s) avis sur la fiche Google de l’Espace dentaire Malakoff. Note moyenne : {out['rating']} ({out['count']} avis).", ""]
+    for v in sorted(nouveaux, key=lambda v: v.get("createTime", ""), reverse=True):
+        s = STARS.get(v.get("starRating"), 0); r = v.get("reviewer", {})
+        nom = "Anonyme" if r.get("isAnonymous") else r.get("displayName", "Patient")
+        txt = original(v.get("comment", "")) or "(sans commentaire)"
+        L += [f"**{'★' * s}{'☆' * (5 - s)}** — {nom}" + ("  ⚠️ à traiter" if s <= 3 else ""), "", "> " + txt.replace("\n", "\n> "), ""]
+    if bas:
+        L += ["**Proposition de réponse** (à adapter puis publier vous-même) :", "",
+              "> Bonjour, merci d’avoir pris le temps de nous faire part de votre ressenti. Nous sommes sincèrement désolés que votre expérience n’ait pas été à la hauteur de vos attentes. N’hésitez pas à contacter directement le centre afin que nous puissions en parler ensemble. L’équipe de l’Espace dentaire Malakoff", "",
+              "_Les avis à 4 ou 5 étoiles reçoivent une réponse automatique ; ceux à 3 étoiles ou moins jamais._", ""]
+    L += [f"Avis encore sans réponse (sur les 50 derniers) : {sans_reponse}.", "", "Répondre aux avis : https://business.google.com/reviews"]
+    open("/tmp/alerte_malakoff.md", "w", encoding="utf-8").write("\n".join(L))
+    open("/tmp/alerte_malakoff_titre.txt", "w", encoding="utf-8").write(titre)
+    print("Alerte :", titre)

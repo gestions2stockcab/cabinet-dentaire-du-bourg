@@ -57,11 +57,18 @@ jobs:
           [ -f /tmp/alerte_avis.md ] || exit 0
           gh label create "avis" --color FBCA04 2>/dev/null || true
           gh issue create --title "$(cat /tmp/alerte_avis_titre.txt)" --body-file /tmp/alerte_avis.md --label avis
+      - name: Alerte e-mail si nouvel avis à Malakoff
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          [ -f /tmp/alerte_malakoff.md ] || exit 0
+          gh label create "avis" --color FBCA04 2>/dev/null || true
+          gh issue create --title "$(cat /tmp/alerte_malakoff_titre.txt)" --body-file /tmp/alerte_malakoff.md --label avis
       - name: Publier si changement
         run: |
           [ -f avis.json ] || exit 0
           git add avis.json avis_vus.json
-          git add avis-malakoff.json malakoff_fiche.json 2>/dev/null || true
+          git add avis-malakoff.json malakoff_fiche.json avis_vus_malakoff.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git config user.name "avis-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

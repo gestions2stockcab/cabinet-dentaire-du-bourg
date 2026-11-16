@@ -170,6 +170,10 @@ except Exception as e:
     out["gsc"] = {"error": "Search Console non autorisée (refaire le jeton avec le scope webmasters.readonly)."}
 
 import unicodedata
+print("Résumé :", {"jours": len(out.get("daily", [])), "heures": bool(out.get("hours")),
+      "fiche": out.get("gbp", {}).get("error") or f'{len(out.get("gbp", {}).get("daily", []))} jours',
+      "avis": out.get("avis", {}).get("error") or f'{out.get("avis", {}).get("total")} avis',
+      "etat": [(x["nom"], x.get("ok"), x.get("err")) for x in out.get("etat", [])], "actu": out.get("actu"), "qualite": bool(out.get("qualite"))})
 key_src = unicodedata.normalize("NFC", os.environ.get("STATS_KEY", "")).strip()
 if not key_src: raise SystemExit("Secret STATS_KEY manquant : ajoutez-le dans Settings > Secrets and variables > Actions.")
 salt = os.urandom(16); iv = os.urandom(12)

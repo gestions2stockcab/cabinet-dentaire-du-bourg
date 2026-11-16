@@ -39,6 +39,7 @@ def prenom(v):
     if r.get("isAnonymous"): return ""
     p = (r.get("displayName") or "").strip().split(" ")[0]
     # prénom plausible uniquement (lettres, tirets, accents ; pas d'initiale seule, pas de pseudo)
+    p = p[:1].upper() + p[1:]
     return p if re.fullmatch(r"[A-Za-zÀ-ÖØ-öø-ÿ][a-zà-öø-ÿ'’-]{1,20}", p) else ""
 
 def texte(v):

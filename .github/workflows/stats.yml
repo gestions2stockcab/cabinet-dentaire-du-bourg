@@ -23,10 +23,20 @@ jobs:
           GBP_LOCATION_ID: ${{ secrets.GBP_LOCATION_ID }}
           GH_TOKEN: ${{ github.token }}
         run: python3 .github/scripts/stats.py
+      - name: Statistiques chiffrées de Malakoff (fichier séparé)
+        continue-on-error: true
+        env:
+          SITE: malakoff
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN_MALAKOFF }}
+          STATS_KEY: ${{ secrets.STATS_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+        run: python3 .github/scripts/stats.py
       - name: Enregistrer
         run: |
           git config user.name "stats-bot"; git config user.email "actions@users.noreply.github.com"
-          git add stats.enc.json
+          git add stats.enc.json stats-malakoff.enc.json 2>/dev/null || git add stats.enc.json
           git diff --cached --quiet && exit 0
           git commit -m "Statistiques du tableau de bord"
           for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done

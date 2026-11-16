@@ -23,7 +23,9 @@ iso = lambda d: f"{d}T00:00:00Z"
 endiso = f"{today + dt.timedelta(days=1)}T00:00:00Z"
 out = {"updated": dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z", "today": str(today)}
 
-base = "https://cabinetdentairedubourg.goatcounter.com/api/v0"
+# deuxième site (Malakoff) : SITE=malakoff → GoatCounter espacedentairemalakoff, fiche malakoff_fiche.json, sortie stats-malakoff.enc.json
+MK = env("SITE") == "malakoff"
+base = f"https://{'espacedentairemalakoff' if MK else 'cabinetdentairedubourg'}.goatcounter.com/api/v0"
 H = {"Authorization": f"Bearer {env('GOATCOUNTER_TOKEN')}", "Content-Type": "application/json"}
 
 def total(a, b_iso):
@@ -86,6 +88,8 @@ try:
 except Exception as e:
     out.setdefault("errors", []).append(f"Google (jeton) : {e}")
 ACC, LOC = env("GBP_ACCOUNT_ID"), env("GBP_LOCATION_ID")
+if MK:
+    _f = json.load(open("malakoff_fiche.json")); ACC, LOC = _f["account"], _f["location"]
 if gtok and LOC:
     GA = {"Authorization": f"Bearer {gtok}"}
     try:
@@ -124,40 +128,41 @@ if gtok and LOC:
         out["avis"] = {"error": str(e)[:300]}
 
 # ---------- état du site : automatisations, Lighthouse, conseil du mois ----------
-try:
-    GHH = {"Authorization": f"Bearer {env('GH_TOKEN')}", "Accept": "application/vnd.github+json"}
-    repo = env("GITHUB_REPOSITORY")
-    etat = []
-    for f, nom in (("verification.yml", "Vérification des pages et liens"), ("avis.yml", "Avis Google et réponses"), ("actu.yml", "Conseil du mois sur Google"),
-                   ("qualite.yml", "Contrôle qualité (Lighthouse)"), ("rapport.yml", "Rapport du lundi"), ("indexnow.yml", "Signalement à Bing (IndexNow)")):
-        try:
-            runs = req(f"https://api.github.com/repos/{repo}/actions/workflows/{f}/runs?per_page=1", headers=GHH).get("workflow_runs", [])
-            x = runs[0] if runs else {}
-            etat.append({"nom": nom, "ok": x.get("conclusion"), "d": x.get("created_at"), "url": x.get("html_url")})
-        except Exception as e:
-            etat.append({"nom": nom, "ok": None, "err": str(e)[:120]})
-    out["etat"] = etat
-except Exception as e:
-    out.setdefault("errors", []).append(f"état : {e}")
-for fn, k in (("qualite.json", "qualite"), ("actu_last.json", "actu_last")):
-    try: out[k] = json.load(open(fn))
-    except Exception: pass
-try:
-    fl0 = json.load(open("actu.json")); fd = {f["slug"]: f for f in fl0}
-    ORDRE = [l for l in open(".github/scripts/actu.py").read().split("ORDRE = ", 1)[1].split("]", 1)[0].replace("[", "").replace("\n", " ").split(",")]
-    ORDRE = [o.strip().strip('"') for o in ORDRE if o.strip()]
-    fl = [fd[x] for x in ORDRE if x in fd] + [f for f in fl0 if f["slug"] not in ORDRE]
-    al = out.get("actu_last") or {}
-    out["actu"] = {"titre": next((f.get("titre") for f in fl if f.get("slug") == al.get("slug")), al.get("slug")),
-                   "suivant": fl[(al.get("n", -1) + 1) % len(fl)].get("titre") if fl else None, "mois": al.get("mois")}
-except Exception as e:
-    out.setdefault("errors", []).append(f"actu : {e}")
+if not MK:
+    try:
+        GHH = {"Authorization": f"Bearer {env('GH_TOKEN')}", "Accept": "application/vnd.github+json"}
+        repo = env("GITHUB_REPOSITORY")
+        etat = []
+        for f, nom in (("verification.yml", "Vérification des pages et liens"), ("avis.yml", "Avis Google et réponses"), ("actu.yml", "Conseil du mois sur Google"),
+                       ("qualite.yml", "Contrôle qualité (Lighthouse)"), ("rapport.yml", "Rapport du lundi"), ("indexnow.yml", "Signalement à Bing (IndexNow)")):
+            try:
+                runs = req(f"https://api.github.com/repos/{repo}/actions/workflows/{f}/runs?per_page=1", headers=GHH).get("workflow_runs", [])
+                x = runs[0] if runs else {}
+                etat.append({"nom": nom, "ok": x.get("conclusion"), "d": x.get("created_at"), "url": x.get("html_url")})
+            except Exception as e:
+                etat.append({"nom": nom, "ok": None, "err": str(e)[:120]})
+        out["etat"] = etat
+    except Exception as e:
+        out.setdefault("errors", []).append(f"état : {e}")
+    for fn, k in (("qualite.json", "qualite"), ("actu_last.json", "actu_last")):
+        try: out[k] = json.load(open(fn))
+        except Exception: pass
+    try:
+        fl0 = json.load(open("actu.json")); fd = {f["slug"]: f for f in fl0}
+        ORDRE = [l for l in open(".github/scripts/actu.py").read().split("ORDRE = ", 1)[1].split("]", 1)[0].replace("[", "").replace("\n", " ").split(",")]
+        ORDRE = [o.strip().strip('"') for o in ORDRE if o.strip()]
+        fl = [fd[x] for x in ORDRE if x in fd] + [f for f in fl0 if f["slug"] not in ORDRE]
+        al = out.get("actu_last") or {}
+        out["actu"] = {"titre": next((f.get("titre") for f in fl if f.get("slug") == al.get("slug")), al.get("slug")),
+                       "suivant": fl[(al.get("n", -1) + 1) % len(fl)].get("titre") if fl else None, "mois": al.get("mois")}
+    except Exception as e:
+        out.setdefault("errors", []).append(f"actu : {e}")
 
 # Search Console (facultatif : nécessite le scope webmasters.readonly)
 try:
     tok = req("https://oauth2.googleapis.com/token", {"client_id": env("GOOGLE_CLIENT_ID"), "client_secret": env("GOOGLE_CLIENT_SECRET"),
               "refresh_token": env("GOOGLE_REFRESH_TOKEN"), "grant_type": "refresh_token"})["access_token"]
-    site = urllib.parse.quote("sc-domain:cabinetdentairedubourg.fr", safe="")
+    site = urllib.parse.quote("sc-domain:" + ("espace-dentaire-malakoff.fr" if MK else "cabinetdentairedubourg.fr"), safe="")
     url = f"https://www.googleapis.com/webmasters/v3/sites/{site}/searchAnalytics/query"
     GH = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json"}
     ge = today - dt.timedelta(days=3); gs = ge - dt.timedelta(days=27)
@@ -176,9 +181,10 @@ print("Résumé :", {"jours": len(out.get("daily", [])), "heures": bool(out.get(
       "etat": [(x["nom"], x.get("ok"), x.get("err")) for x in out.get("etat", [])], "actu": out.get("actu"), "qualite": bool(out.get("qualite"))})
 key_src = unicodedata.normalize("NFC", os.environ.get("STATS_KEY", "")).strip()
 if not key_src: raise SystemExit("Secret STATS_KEY manquant : ajoutez-le dans Settings > Secrets and variables > Actions.")
+OUTF = "stats-malakoff.enc.json" if MK else "stats.enc.json"
 salt = os.urandom(16); iv = os.urandom(12)
 key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=250000).derive(key_src.encode())
 ct = AESGCM(key).encrypt(iv, json.dumps(out, ensure_ascii=False).encode(), None)
 b = lambda x: base64.b64encode(x).decode()
-json.dump({"v": 1, "kdf": "PBKDF2-SHA256", "it": 250000, "salt": b(salt), "iv": b(iv), "ct": b(ct), "updated": out["updated"]}, open("stats.enc.json", "w"))
-print("stats.enc.json écrit ;", "erreurs :", out.get("errors", "aucune"))
+json.dump({"v": 1, "kdf": "PBKDF2-SHA256", "it": 250000, "salt": b(salt), "iv": b(iv), "ct": b(ct), "updated": out["updated"]}, open(OUTF, "w"))
+print(OUTF, "écrit ;", "erreurs :", out.get("errors", "aucune"))

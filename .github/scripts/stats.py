@@ -182,6 +182,9 @@ print("Résumé :", {"jours": len(out.get("daily", [])), "heures": bool(out.get(
 key_src = unicodedata.normalize("NFC", os.environ.get("STATS_KEY", "")).strip()
 if not key_src: raise SystemExit("Secret STATS_KEY manquant : ajoutez-le dans Settings > Secrets and variables > Actions.")
 OUTF = "stats-malakoff.enc.json" if MK else "stats.enc.json"
+# lecture en direct depuis la page (le planificateur GitHub saute souvent des passages) : jeton GoatCounter « Read statistics »,
+# stocké uniquement à l'intérieur du fichier chiffré (déchiffrable seulement avec le mot de passe STATS_KEY)
+out["gc"] = {"base": base, "token": env("GOATCOUNTER_TOKEN")}
 salt = os.urandom(16); iv = os.urandom(12)
 key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=250000).derive(key_src.encode())
 ct = AESGCM(key).encrypt(iv, json.dumps(out, ensure_ascii=False).encode(), None)

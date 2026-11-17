@@ -155,7 +155,7 @@ async function go(pw,remember){
     $('#msg').textContent=err.message==='none'?'Les statistiques ne sont pas encore disponibles (première mise à jour automatique en attente).':(err.name==='OperationError'?'Mot de passe incorrect (il doit être identique au secret STATS_KEY sur GitHub, majuscules comprises).':'Erreur : '+err.message);
     store('dbk',null);return;}
   if(remember)store('dbk',pw);
-  $('#lock').hidden=true;$('#dash').hidden=false;$('#out').hidden=false;render(d);var rw;addEventListener('resize',function(){clearTimeout(rw);rw=setTimeout(function(){render(d)},200)});
+  $('#lock').hidden=true;$('#dash').hidden=false;$('#out').hidden=false;render(d);live(d);setInterval(function(){live(d)},300000);var rw;addEventListener('resize',function(){clearTimeout(rw);rw=setTimeout(function(){render(d)},200)});
 }
 $('#lock').addEventListener('submit',function(e){e.preventDefault();go($('#pw').value,$('#rem').checked);});
 $('#out').addEventListener('click',function(){store('dbk',null);location.reload();});
@@ -166,6 +166,22 @@ var PL={j:{k:'Aujourd\'hui',vs:'vs hier',n:1,tab:'aujourd\'hui',h1:'Visiteurs pa
         s:{k:'7 derniers jours',vs:'vs 7 jours précédents',n:7,tab:'7 derniers jours',h1:'Visiteurs par semaine',n1:'26 dernières semaines',h2:'Prises de contact par semaine',n2:'12 dernières semaines'},
         m:{k:'30 derniers jours',vs:'vs 30 jours précédents',n:30,tab:'30 derniers jours',h1:'Visiteurs par mois',n1:'12 derniers mois',h2:'Prises de contact par mois',n2:'12 derniers mois'}};
 document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){PER=b.dataset.per;store('dbper',PER);if(DATA)render(DATA);});});
+
+// visites en direct depuis GoatCounter (le planificateur GitHub ne passe pas toujours toutes les heures)
+async function live(d){var g=d.gc;if(!g||!g.token)return;
+  try{var H={headers:{'Authorization':'Bearer '+g.token,'Content-Type':'application/json'}};
+    var t=new Date(),e=new Date(t.getTime()+864e5),st=new Date(t.getTime()-364*864e5),iso=function(x){return x.toISOString().slice(0,10)+'T00:00:00Z'};
+    var q='start='+iso(st)+'&end='+iso(e);
+    var tot=await (await fetch(g.base+'/stats/total?'+q,H)).json();
+    var hs=await (await fetch(g.base+'/stats/hits?'+q+'&limit=50&group=day',H)).json();
+    if(!tot.stats)return;
+    d.daily=tot.stats.map(function(x){return {d:x.day,v:x.daily||0}});
+    var ev=function(n){var h=(hs.hits||[]).filter(function(x){return x.event&&x.path===n})[0];return h?(h.stats||[]).map(function(x){return {d:x.day,v:x.daily||0}}):[]};
+    d.events_daily={doctolib:ev('Clic Doctolib'),tel:ev('Clic téléphone')};
+    d.errors=(d.errors||[]).filter(function(x){return !/GoatCounter/.test(x)});
+    d.liveAt=new Date().toISOString();render(d);
+  }catch(err){}
+}
 function delta(c,p){var vs=PL[PER].vs;if(!p)return '<span class="d">'+(c?'':'— ')+vs+' : '+fmt(p)+'</span>';var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">'+vs+'</span>';}
 function mapd(a){var m={};(a||[]).forEach(function(x){m[x.d]=x.v||0});return m;}
 function series(d){var ev=d.events_daily||{},doc=mapd(ev.doctolib),tel=mapd(ev.tel);
@@ -179,7 +195,7 @@ function agg(a,per,k,max){if(per==='j')return a.slice(-max).map(function(x){retu
 function dlong(s){return new Date(s+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});}
 function render(d){DATA=d;var P=PL[PER];
   document.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.per===PER?'true':'false')});
-  var up=new Date(d.updated);$('#upd').textContent='Mis à jour le '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  var up=new Date(d.updated);var lv=d.liveAt?new Date(d.liveAt):null;$('#upd').textContent=lv?'Visites en direct (mises à jour à l’instant, '+lv.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+') · fiche Google et avis : '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'Mis à jour le '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
   var err=(d.errors||[]).join(' ');
   $('#alert').innerHTML=/GoatCounter.*(401|Unauthorized)/.test(err)?'<div class="alert"><b>Les chiffres ne remontent pas :</b> GoatCounter refuse la connexion (jeton invalide). Créez un nouveau jeton API dans GoatCounter et remplacez le secret GitHub GOATCOUNTER_TOKEN.</div>':(/GoatCounter/.test(err)?'<div class="alert"><b>Erreur GoatCounter :</b> '+esc(err)+'</div>':'');
   var S=series(d),n=P.n,cur=S.slice(-n),prv=S.slice(-2*n,-n);

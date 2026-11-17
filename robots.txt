@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Sitemap: https://www.cabinetdentairedubourg.fr/sitemap.xml
 Disallow: /sch/
+Disallow: /actualites/_modele.html
 Disallow: /tableau-de-bord/
 Disallow: /admin/

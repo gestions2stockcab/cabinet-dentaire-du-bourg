@@ -56,3 +56,11 @@ post = {"languageCode": "fr", "topicType": "STANDARD", "summary": texte,
 r = call(base, post, tok, "POST")
 print("Publié :", f["titre"], "→", r.get("searchUrl") or r.get("name"), "| état :", r.get("state"))
 json.dump({"mois": mois, "n": n, "slug": f["slug"], "post": r.get("name")}, open("actu_last.json", "w"))
+# le même conseil devient un article de la rubrique Actualités du site
+arts = json.load(open("actualites.json")) if os.path.exists("actualites.json") else []
+if not any(x.get("mois") == mois for x in arts):
+    arts.append({"mois": mois, "date": str(dt.date.today()), "slug": f["slug"]})
+    json.dump(arts, open("actualites.json", "w"), ensure_ascii=False)
+import importlib.util as _iu
+_sp = _iu.spec_from_file_location("actualites", ".github/scripts/actualites.py"); _m = _iu.module_from_spec(_sp); _sp.loader.exec_module(_m)
+print("Actualités :", _m.render(".", "actualites.json"), "article(s)")

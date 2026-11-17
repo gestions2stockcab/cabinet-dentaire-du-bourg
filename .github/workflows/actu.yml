@@ -30,7 +30,7 @@ jobs:
       - name: Mémoriser
         run: |
           [ -f actu_last.json ] || exit 0
-          git add actu_last.json
+          git add actu_last.json actualites.json actualites sitemap.xml
           git diff --cached --quiet && exit 0
           git config user.name "actu-bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Conseil du mois publié sur la fiche Google"

@@ -1,7 +1,14 @@
 {
  "rating": 4.8,
- "count": 681,
+ "count": 682,
  "reviews": [
+  {
+   "rating": 5,
+   "text": "Rdv pour détartrage, pris le veille pour le lendemain donc déjà un gros + et la qualité de l’accueil et du service c’était parfait! Vraiment j’y retournerais sans hésiter!",
+   "author": "Gary Kurita",
+   "date": "2026-11-17T18:12:52.567755Z",
+   "authorUrl": null
+  },
   {
    "rating": 5,
    "text": "Je suis venue il y a quelque temps pour une dévitalisation et j'ai été très satisfaite de la prise en charge. J'ai été reçue par le Dr Berdah, qui s'est montrée très rassurante et prend le temps d'expliquer chaque étape de l'intervention. Un vrai plus pour moi qui suis toujours un peu stressée en allant chez le dentiste. Tout s'est très bien passé. Je recommande vivement !",
@@ -36,14 +43,7 @@
    "author": "Angele Alemdjrodo",
    "date": "2026-10-11T18:34:56.070134Z",
    "authorUrl": null
-  },
-  {
-   "rating": 5,
-   "text": "La Dr Berdah est la meilleure dentiste ! Merci pour votre efficacité et votre professionnalisme",
-   "author": "Margaux Lamouille-André",
-   "date": "2026-10-09T10:34:44.045899Z",
-   "authorUrl": null
   }
  ],
- "updatedAt": "2026-11-17T08:27:40+00:00"
+ "updatedAt": "2026-11-17T18:45:12+00:00"
 }

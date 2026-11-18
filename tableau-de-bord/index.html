@@ -189,7 +189,8 @@ function win(S,P){var o=P.off||0,L=S.length,n=P.n;return [S.slice(Math.max(0,L-o
 function delta(c,p){var P=PL[PER],prev='<div class="d prev">'+P.pl+' : <b>'+fmt(p)+'</b></div>';if(!p)return prev;var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">'+P.vs+'</span>'+prev;}
 function mapd(a){var m={};(a||[]).forEach(function(x){m[x.d]=x.v||0});return m;}
 function series(d){var ev=d.events_daily||{},doc=mapd(ev.doctolib),tel=mapd(ev.tel);
-  return (d.daily||[]).map(function(x){var a=doc[x.d]||0,b=tel[x.d]||0;return {d:x.d,v:Math.max(0,(x.v||0)-a-b),doc:a,tel:b};});}
+  var td=new Date().toLocaleDateString('sv-SE');  // aujourd'hui (heure locale) : GoatCounter renvoie aussi le lendemain, vide
+  return (d.daily||[]).filter(function(x){return x.d<=td}).map(function(x){var a=doc[x.d]||0,b=tel[x.d]||0;return {d:x.d,v:Math.max(0,(x.v||0)-a-b),doc:a,tel:b};});}
 function sum(a,k){return a.reduce(function(s,x){return s+(x[k]||0)},0);}
 function agg(a,per,k,max){if(per==='j')return a.slice(-max).map(function(x){return {d:x.d,v:x[k],lab:dlabel(x.d),tip:dlong(x.d)}});
   var out=[];if(per==='s'){for(var i=a.length;i>0;i-=7){var s=a.slice(Math.max(0,i-7),i);out.unshift({d:s[0].d,v:sum(s,k),lab:dlabel(s[0].d),tip:'Semaine du '+dlabel(s[0].d)});}}

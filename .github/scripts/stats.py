@@ -175,6 +175,13 @@ except Exception as e:
     out["gsc"] = {"error": "Search Console non autorisée (refaire le jeton avec le scope webmasters.readonly)."}
 
 import unicodedata
+# diagnostic (chiffres agrégés seulement) : derniers jours
+try:
+    _t = total(today - dt.timedelta(days=3), endiso)
+    print("DIAG total", _t.get("total"), "events", _t.get("total_events"), "jours", [(x["day"], x.get("daily"), sum(x.get("hourly") or [])) for x in _t.get("stats", [])])
+    _h = hits(today - dt.timedelta(days=1), iso(today))
+    print("DIAG hier pages", sum(x.get("count", 0) for x in _h if not x.get("event")), "événements", [(x.get("path"), x.get("count")) for x in _h if x.get("event")])
+except Exception as e: print("DIAG erreur", e)
 print("Résumé :", {"jours": len(out.get("daily", [])), "heures": bool(out.get("hours")),
       "fiche": out.get("gbp", {}).get("error") or f'{len(out.get("gbp", {}).get("daily", []))} jours',
       "avis": out.get("avis", {}).get("error") or f'{out.get("avis", {}).get("total")} avis',

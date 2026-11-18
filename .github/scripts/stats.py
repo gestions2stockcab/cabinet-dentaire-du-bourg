@@ -55,10 +55,10 @@ try:
     out["pages"] = [{"path": x.get("path"), "title": x.get("title", ""), "n": x.get("count", 0)} for x in h30 if not x.get("event")][:12]
     # tableaux par période : aujourd'hui (j), 7 jours (s), 30 jours (m)
     out["by"] = {}
-    for per, a in (("j", today), ("s", d7), ("m", d30)):
-        hh = h30 if per == "m" else hits(a, endiso)
+    for per, a, fin in (("h", today - dt.timedelta(days=1), iso(today)), ("j", today, endiso), ("s", d7, endiso), ("m", d30, endiso)):
+        hh = h30 if per == "m" else hits(a, fin)
         b = {"pages": [{"path": x.get("path"), "title": x.get("title", ""), "n": x.get("count", 0)} for x in hh if not x.get("event")][:12]}
-        try: b["toprefs"] = page("toprefs", a, endiso)
+        try: b["toprefs"] = page("toprefs", a, fin)
         except Exception: b["toprefs"] = []
         out["by"][per] = b
     for name in ("toprefs", "sizes", "systems", "browsers", "locations"):

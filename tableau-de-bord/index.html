@@ -110,7 +110,7 @@ footer{color:var(--faint);font-size:.78rem;margin-top:24px}
       <p class="tipi">Astuce iPhone : bouton Partager › « Sur l’écran d’accueil » pour ouvrir cet espace comme une application.</p>
     </section>
     <div id="alert"></div>
-    <div class="seg" role="group" aria-label="Période"><button type="button" data-per="j">Jour</button><button type="button" data-per="s">Semaine</button><button type="button" data-per="m">Mois</button></div>
+    <div class="seg" role="group" aria-label="Période"><button type="button" data-per="j">Jour</button><button type="button" data-per="h">Hier</button><button type="button" data-per="s">Semaine</button><button type="button" data-per="m">Mois</button></div>
     <section class="kpis" id="kpis" aria-label="Chiffres clés"></section>
     <section class="card"><h2 id="h-vis">Visiteurs par jour</h2><p class="note" id="n-vis"></p><div id="c-vis"></div></section>
     <section class="card"><h2 id="h-ev">Prises de contact par semaine</h2><p class="note" id="n-ev"></p>
@@ -163,7 +163,8 @@ $('#out').addEventListener('click',function(){store('dbk',null);location.reload(
 var saved=read('dbk');if(saved)go(saved,true);
 
 var PER=read('dbper')||'j',DATA=null;
-var PL={j:{k:'Aujourd\'hui',vs:'vs hier',pl:'Hier',n:1,tab:'aujourd\'hui',h1:'Visiteurs par jour',n1:'90 derniers jours',h2:'Prises de contact par jour',n2:'30 derniers jours'},
+var PL={h:{k:'Hier',vs:'vs avant-hier',pl:'Avant-hier',n:1,off:1,tab:'hier',h1:'Visiteurs par jour',n1:'90 derniers jours',h2:'Prises de contact par jour',n2:'30 derniers jours'},
+        j:{k:'Aujourd\'hui',vs:'vs hier',pl:'Hier',n:1,tab:'aujourd\'hui',h1:'Visiteurs par jour',n1:'90 derniers jours',h2:'Prises de contact par jour',n2:'30 derniers jours'},
         s:{k:'7 derniers jours',vs:'vs 7 jours précédents',pl:'7 jours précédents',n:7,tab:'7 derniers jours',h1:'Visiteurs par semaine',n1:'26 dernières semaines',h2:'Prises de contact par semaine',n2:'12 dernières semaines'},
         m:{k:'30 derniers jours',vs:'vs 30 jours précédents',pl:'30 jours précédents',n:30,tab:'30 derniers jours',h1:'Visiteurs par mois',n1:'12 derniers mois',h2:'Prises de contact par mois',n2:'12 derniers mois'}};
 document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){PER=b.dataset.per;store('dbper',PER);if(DATA)render(DATA);});});
@@ -183,6 +184,8 @@ async function live(d){var g=d.gc;if(!g||!g.token)return;
     d.liveAt=new Date().toISOString();render(d);
   }catch(err){}
 }
+function G(){return PER==='h'?'j':PER;}
+function win(S,P){var o=P.off||0,L=S.length,n=P.n;return [S.slice(Math.max(0,L-o-n),L-o),S.slice(Math.max(0,L-o-2*n),L-o-n)];}
 function delta(c,p){var P=PL[PER],prev='<div class="d prev">'+P.pl+' : <b>'+fmt(p)+'</b></div>';if(!p)return prev;var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">'+P.vs+'</span>'+prev;}
 function mapd(a){var m={};(a||[]).forEach(function(x){m[x.d]=x.v||0});return m;}
 function series(d){var ev=d.events_daily||{},doc=mapd(ev.doctolib),tel=mapd(ev.tel);
@@ -199,7 +202,7 @@ function render(d){DATA=d;var P=PL[PER];
   var up=new Date(d.updated);var lv=d.liveAt?new Date(d.liveAt):null;$('#upd').textContent=lv?'Visites en direct (mises à jour à l’instant, '+lv.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+') · fiche Google et avis : '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'Mis à jour le '+up.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})+' à '+up.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
   var err=(d.errors||[]).join(' ');
   $('#alert').innerHTML=/GoatCounter.*(401|Unauthorized)/.test(err)?'<div class="alert"><b>Les chiffres ne remontent pas :</b> GoatCounter refuse la connexion (jeton invalide). Créez un nouveau jeton API dans GoatCounter et remplacez le secret GitHub GOATCOUNTER_TOKEN.</div>':(/GoatCounter/.test(err)?'<div class="alert"><b>Erreur GoatCounter :</b> '+esc(err)+'</div>':'');
-  var S=series(d),n=P.n,cur=S.slice(-n),prv=S.slice(-2*n,-n);
+  var S=series(d),W=win(S,P),cur=W[0],prv=W[1];
   var c={visitors:sum(cur,'v'),doctolib:sum(cur,'doc'),tel:sum(cur,'tel')},p={visitors:sum(prv,'v'),doctolib:sum(prv,'doc'),tel:sum(prv,'tel')};
   var contact=c.doctolib+c.tel,rate=c.visitors?(contact/c.visitors*100):0;
   $('#kpis').innerHTML=[['Visiteurs',fmt(c.visitors),delta(c.visitors,p.visitors)],['Clics Doctolib',fmt(c.doctolib),delta(c.doctolib,p.doctolib)],['Clics téléphone',fmt(c.tel),delta(c.tel,p.tel)],
@@ -207,8 +210,8 @@ function render(d){DATA=d;var P=PL[PER];
     .map(function(k){return '<div class="kpi"><div class="k">'+k[0]+' · '+P.k.toLowerCase()+'</div><div class="v">'+k[1]+'</div>'+k[2]+'</div>'}).join('');
   $('#h-vis').textContent=P.h1;$('#n-vis').textContent=P.n1+' · survolez la courbe pour le détail';
   $('#h-ev').textContent=P.h2;$('#n-ev').textContent='Clics vers Doctolib et sur le numéro de téléphone · '+P.n2;
-  line('#c-vis',agg(S,PER,'v',PER==='j'?90:PER==='s'?26:12));
-  bars('#c-ev',agg(S,PER,'doc',PER==='j'?30:12),agg(S,PER,'tel',PER==='j'?30:12));
+  line('#c-vis',agg(S,G(),'v',G()==='j'?90:PER==='s'?26:12));
+  bars('#c-ev',agg(S,G(),'doc',G()==='j'?30:12),agg(S,G(),'tel',G()==='j'?30:12));
   var B=(d.by||{})[PER]||{pages:d.pages,toprefs:d.toprefs};
   document.querySelectorAll('.note.pl').forEach(function(e){e.textContent=P.tab.charAt(0).toUpperCase()+P.tab.slice(1)});
   table('#t-pages',(B.pages||[]).map(function(x){return {name:(x.title?x.title.replace(/ [–-] Cabinet Dentaire du Bourg.*$/,''):x.path),sub:x.path,n:x.n}}));
@@ -227,23 +230,23 @@ function kpiRow(sel,items){$(sel).innerHTML=items.map(function(k){return '<div c
 function renderGbp(d){var g=d.gbp||{},P=PL[PER];
   if(g.error&&/has not been used|disabled/.test(g.error)){$('#n-gbp').textContent='Il reste à activer l’API « Business Profile Performance » dans Google Cloud (un clic, puis les chiffres arrivent à la mise à jour suivante).';$('#k-gbp').innerHTML='';$('#c-gbp').innerHTML='<div class="links"><a href="https://console.cloud.google.com/apis/library/businessprofileperformance.googleapis.com?project=167073614366" target="_blank" rel="noopener"><b>Activer l’API</b><span>Google Cloud › Activer</span></a></div>';return;}
   if(g.error||!(g.daily||[]).length){$('#n-gbp').textContent=g.error?'Données indisponibles pour l’instant : '+g.error.slice(0,140):'Pas encore de données.';$('#k-gbp').innerHTML='';$('#c-gbp').innerHTML='';return;}
-  var S=g.daily,last=S[S.length-1].d,n=P.n,cur=S.slice(-n),prv=S.slice(-2*n,-n);
+  var S=g.daily,last=S[S.length-1-(P.off||0)].d,W=win(S,P),cur=W[0],prv=W[1];
   $('#n-gbp').textContent='Recherche Google et Maps · '+P.k.toLowerCase().replace('aujourd\'hui','dernier jour connu')+' jusqu’au '+dlabel(last)+' (Google publie avec quelques jours de retard)';
   kpiRow('#k-gbp',[['Vues de la fiche',fmt(sum(cur,'vues')),delta(sum(cur,'vues'),sum(prv,'vues'))],['Appels',fmt(sum(cur,'appels')),delta(sum(cur,'appels'),sum(prv,'appels'))],
     ['Itinéraires',fmt(sum(cur,'itin')),delta(sum(cur,'itin'),sum(prv,'itin'))],['Clics vers le site',fmt(sum(cur,'site')),delta(sum(cur,'site'),sum(prv,'site'))]]);
-  line('#c-gbp',agg(S,PER,'vues',PER==='j'?90:PER==='s'?26:12),'vue');}
+  line('#c-gbp',agg(S,G(),'vues',G()==='j'?90:PER==='s'?26:12),'vue');}
 function renderAvis(d){var a=d.avis||{},P=PL[PER];
   if(a.error||!a.total){$('#n-avis').textContent=a.error?'Données indisponibles : '+a.error.slice(0,140):'Pas encore de données.';return;}
   var dates=a.dates||[],today=new Date((d.today||'')+'T12:00:00'),since=function(k){var t=new Date(today);t.setDate(t.getDate()-k+1);return t.toISOString().slice(0,10)};
-  var nw=dates.filter(function(x){return x[0]>=since(P.n)}),pv=dates.filter(function(x){return x[0]>=since(2*P.n)&&x[0]<since(P.n)});
+  var o=P.off||0,nw=dates.filter(function(x){return x[0]>=since(P.n+o)&&x[0]<since(o)}),pv=dates.filter(function(x){return x[0]>=since(2*P.n+o)&&x[0]<since(P.n+o)});
   var moy=nw.length?(nw.reduce(function(s,x){return s+x[1]},0)/nw.length).toFixed(1).replace('.',','):'—';
   $('#n-avis').textContent='Fiche Google du cabinet · nouveaux avis : '+P.k.toLowerCase();
   kpiRow('#k-avis',[['Note globale','<span class="stars">★</span> '+String(a.note).replace('.',','),'<span class="d">sur '+fmt(a.total)+' avis</span>'],
     ['Nouveaux avis',fmt(nw.length),delta(nw.length,pv.length)],['Note des nouveaux avis',moy,'<span class="d">sur 5</span>'],
     ['Sans réponse',fmt(a.sans_reponse),'<span class="d '+(a.sans_reponse_bas?'down':'')+'">'+(a.sans_reponse_bas?a.sans_reponse_bas+' à 3 étoiles ou moins':'réponses automatiques aux 4-5 étoiles')+'</span>']]);
   var S=[],m={};dates.forEach(function(x){m[x[0]]=(m[x[0]]||0)+1});
-  for(var i=(PER==='j'?29:PER==='s'?83:364);i>=0;i--){var t=new Date(today);t.setDate(t.getDate()-i);var k=t.toISOString().slice(0,10);S.push({d:k,n:m[k]||0});}
-  bars('#c-avis',agg(S,PER,'n',PER==='j'?30:12),[],['Avis',null]);
+  for(var i=(G()==='j'?29:PER==='s'?83:364);i>=0;i--){var t=new Date(today);t.setDate(t.getDate()-i);var k=t.toISOString().slice(0,10);S.push({d:k,n:m[k]||0});}
+  bars('#c-avis',agg(S,G(),'n',G()==='j'?30:12),[],['Avis',null]);
   var bas=a.bas||[];
   $('#t-avis').innerHTML='<h2 style="margin:18px 0 6px;font-size:.95rem">Avis à 3 étoiles ou moins (les plus récents)</h2>'+(bas.length?'<table class="avis-bas">'+bas.map(function(x){return '<tr><td><span class="stars">'+'★'.repeat(x.s)+'</span> <b>'+esc(x.nom||'')+'</b> · '+dlabel(x.d)+(x.rep?' · <span class="ok">répondu</span>':' · <span class="ko">sans réponse</span>')+(x.txt?'<br><small>'+esc(x.txt)+'</small>':'')+'</td></tr>'}).join('')+'</table>':'<p class="empty">Aucun.</p>')
     +'<div class="links" style="margin-top:12px"><a href="https://business.google.com/reviews" target="_blank" rel="noopener"><b>Répondre aux avis</b><span>Fiche Google</span></a></div>';}

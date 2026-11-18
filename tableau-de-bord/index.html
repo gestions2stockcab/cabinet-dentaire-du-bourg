@@ -49,6 +49,7 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#06102a
 .kpi .k{font-size:.78rem;color:var(--muted);letter-spacing:.02em}
 .kpi .v{font-size:2rem;font-weight:600;letter-spacing:-.03em;margin:6px 0 2px;font-variant-numeric:tabular-nums}
 .kpi .d{font-size:.8rem;color:var(--muted)}
+.kpi .prev{margin-top:4px;color:var(--muted)}.kpi .prev b{color:var(--ink);font-weight:600}
 .up{color:var(--good)} .down{color:var(--bad)}
 .card{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:20px;margin-bottom:16px;position:relative}
 .card h2{font-size:1rem;font-weight:600;margin:0 0 2px;letter-spacing:-.01em}
@@ -162,9 +163,9 @@ $('#out').addEventListener('click',function(){store('dbk',null);location.reload(
 var saved=read('dbk');if(saved)go(saved,true);
 
 var PER=read('dbper')||'j',DATA=null;
-var PL={j:{k:'Aujourd\'hui',vs:'vs hier',n:1,tab:'aujourd\'hui',h1:'Visiteurs par jour',n1:'90 derniers jours',h2:'Prises de contact par jour',n2:'30 derniers jours'},
-        s:{k:'7 derniers jours',vs:'vs 7 jours précédents',n:7,tab:'7 derniers jours',h1:'Visiteurs par semaine',n1:'26 dernières semaines',h2:'Prises de contact par semaine',n2:'12 dernières semaines'},
-        m:{k:'30 derniers jours',vs:'vs 30 jours précédents',n:30,tab:'30 derniers jours',h1:'Visiteurs par mois',n1:'12 derniers mois',h2:'Prises de contact par mois',n2:'12 derniers mois'}};
+var PL={j:{k:'Aujourd\'hui',vs:'vs hier',pl:'Hier',n:1,tab:'aujourd\'hui',h1:'Visiteurs par jour',n1:'90 derniers jours',h2:'Prises de contact par jour',n2:'30 derniers jours'},
+        s:{k:'7 derniers jours',vs:'vs 7 jours précédents',pl:'7 jours précédents',n:7,tab:'7 derniers jours',h1:'Visiteurs par semaine',n1:'26 dernières semaines',h2:'Prises de contact par semaine',n2:'12 dernières semaines'},
+        m:{k:'30 derniers jours',vs:'vs 30 jours précédents',pl:'30 jours précédents',n:30,tab:'30 derniers jours',h1:'Visiteurs par mois',n1:'12 derniers mois',h2:'Prises de contact par mois',n2:'12 derniers mois'}};
 document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){PER=b.dataset.per;store('dbper',PER);if(DATA)render(DATA);});});
 
 // visites en direct depuis GoatCounter (le planificateur GitHub ne passe pas toujours toutes les heures)
@@ -182,7 +183,7 @@ async function live(d){var g=d.gc;if(!g||!g.token)return;
     d.liveAt=new Date().toISOString();render(d);
   }catch(err){}
 }
-function delta(c,p){var vs=PL[PER].vs;if(!p)return '<span class="d">'+(c?'':'— ')+vs+' : '+fmt(p)+'</span>';var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">'+vs+'</span>';}
+function delta(c,p){var P=PL[PER],prev='<div class="d prev">'+P.pl+' : <b>'+fmt(p)+'</b></div>';if(!p)return prev;var x=Math.round((c-p)/p*100);return '<span class="d '+(x>=0?'up':'down')+'">'+(x>=0?'▲ +':'▼ ')+x+' %</span> <span class="d">'+P.vs+'</span>'+prev;}
 function mapd(a){var m={};(a||[]).forEach(function(x){m[x.d]=x.v||0});return m;}
 function series(d){var ev=d.events_daily||{},doc=mapd(ev.doctolib),tel=mapd(ev.tel);
   return (d.daily||[]).map(function(x){var a=doc[x.d]||0,b=tel[x.d]||0;return {d:x.d,v:Math.max(0,(x.v||0)-a-b),doc:a,tel:b};});}

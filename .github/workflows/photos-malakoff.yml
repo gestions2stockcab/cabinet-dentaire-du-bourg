@@ -1,0 +1,17 @@
+name: Photos fiche Google Malakoff
+on:
+  workflow_dispatch:
+    inputs:
+      mode: {description: "liste", default: "liste"}
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Photos
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          MODE: ${{ github.event.inputs.mode }}
+        run: python3 .github/scripts/photos_malakoff.py

@@ -4,7 +4,7 @@ on:
     - cron: "23 9 5 * *"   # le 5 de chaque mois : une nouvelle photo
   workflow_dispatch:
     inputs:
-      mode: {description: "liste ou publier", default: "liste"}
+      mode: {description: "liste, fiche ou publier", default: "liste"}
 permissions:
   contents: write
   issues: write

@@ -18,6 +18,11 @@ f = json.load(open("malakoff_fiche.json"))
 base = f"https://mybusiness.googleapis.com/v4/accounts/{f['account']}/locations/{f['location']}/media"
 MODE = env("MODE") or "liste"
 
+if MODE == "fiche":   # lecture seule des infos de la fiche
+    r = call(f"https://mybusinessbusinessinformation.googleapis.com/v1/locations/{f['location']}?readMask=title,websiteUri,categories,profile,regularHours,serviceItems,phoneNumbers,storefrontAddress,openInfo", token)
+    print(json.dumps(r, ensure_ascii=False, indent=1))
+    sys.exit(0)
+
 if MODE == "liste":
     items, tok = [], ""
     while True:

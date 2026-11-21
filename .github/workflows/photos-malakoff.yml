@@ -1,8 +1,13 @@
 name: Photos fiche Google Malakoff
 on:
+  schedule:
+    - cron: "23 9 5 * *"   # le 5 de chaque mois : une nouvelle photo
   workflow_dispatch:
     inputs:
-      mode: {description: "liste", default: "liste"}
+      mode: {description: "liste ou publier", default: "liste"}
+permissions:
+  contents: write
+  issues: write
 jobs:
   photos:
     runs-on: ubuntu-latest
@@ -13,5 +18,14 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-          MODE: ${{ github.event.inputs.mode }}
+          GH_TOKEN: ${{ github.token }}
+          MODE: ${{ github.event.inputs.mode || 'publier' }}
         run: python3 .github/scripts/photos_malakoff.py
+      - name: Mémoriser
+        run: |
+          git add photos_malakoff_vues.json 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git config user.name "photos-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Photo publiée sur la fiche Google Malakoff"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done

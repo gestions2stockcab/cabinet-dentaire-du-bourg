@@ -1,0 +1,32 @@
+name: Publication hebdo (fiche Google Espace dentaire Malakoff)
+on:
+  schedule:
+    - cron: "7 11 * * 1"   # chaque lundi vers midi (heure de Paris)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "vide = publier ; etat = voir les publications de la fiche ; nettoyer = supprimer les refusées"
+        default: ""
+permissions:
+  contents: write
+jobs:
+  actu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Publier sur la fiche de Malakoff
+        continue-on-error: true
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          MODE: ${{ github.event.inputs.mode }}
+        run: python3 .github/scripts/actu_malakoff.py
+      - name: Mémoriser
+        run: |
+          [ -f actu_last_malakoff.json ] || exit 0
+          git add actu_last_malakoff.json
+          git diff --cached --quiet && exit 0
+          git config user.name "actu-bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Publication hebdo sur la fiche Google de Malakoff"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done

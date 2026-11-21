@@ -1,7 +1,14 @@
 {
  "rating": 4.8,
- "count": 682,
+ "count": 683,
  "reviews": [
+  {
+   "rating": 5,
+   "text": "J’ai consulté la semaine dernière avec Docteur Kames pour un détartrage et tout s’est parfaitement bien passé. Malgré son jeune âge, on sent tout de suite le professionnalisme : il est à l’écoute, sérieux et rassurant, et il explique chaque geste avant de le faire. Le détartrage a été réalisé avec douceur et précision, sans aucune gêne. Le cabinet est propre et l’accueil agréable. Merci !",
+   "author": "Angèle Istafanous",
+   "date": "2026-11-21T13:29:27.057387Z",
+   "authorUrl": null
+  },
   {
    "rating": 5,
    "text": "Rdv pour détartrage, pris le veille pour le lendemain donc déjà un gros + et la qualité de l’accueil et du service c’était parfait! Vraiment j’y retournerais sans hésiter!",
@@ -43,7 +50,77 @@
    "author": "Angele Alemdjrodo",
    "date": "2026-10-11T18:34:56.070134Z",
    "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "La Dr Berdah est la meilleure dentiste ! Merci pour votre efficacité et votre professionnalisme",
+   "author": "Margaux Lamouille-André",
+   "date": "2026-10-09T10:34:44.045899Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "J'ai commencé à me rendre dans cet espace dentaire il y a 3 ans, alors enceinte. Je m'y rends depuis chaque année pour un contrôle. J'apprécie la prise de rdv, facile sur Doctolib avec beaucoup de créneaux. Les locaux sont propres et agréables, les dentistes compétentes. Seul bémol, commun à tous les cabinets dentaires que j'ai testé près de Paris, on vous fera une radio avant même la première consultation. Dommage que les dentistes ne puissent pas plus souvent transmettre les radios des patients lors d'un changement de médecin.",
+   "author": "Enna Claire",
+   "date": "2026-10-02T14:36:57.234967Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Accueil très sympathique, pas d'attente et suivi professionnel, comme d'habitude.",
+   "author": "Heloise de Castelnau",
+   "date": "2026-09-25T11:53:52.467904Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Génial ! Enfin un centre qui regroupe tous les points positifs ! Super accueil, prise en consultation très rapidement, et le Dr Benchetrit a été adorable, elle prend le temps d’expliquer étape par étape ce qu’elle fait et donne de super conseils ! Et pour finir le lieu est très propre 😊",
+   "author": "Alizée Grena",
+   "date": "2026-09-15T13:18:03.893172Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "C’était la première fois que je m’y rendais\nTout s’est bien passé de l’accueil à la consultation tout était parfait",
+   "author": "nathalie guetta",
+   "date": "2026-09-02T08:38:47.506269Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Accueil souriant et à l’écoute\nDR Benchetrit est une personne douce qui prend le temps d’expliquer et qui vous rassure",
+   "author": "CATEHERINE THOREL",
+   "date": "2026-06-22T18:54:21.342255Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Dentiste merveilleuse. Douce et ultra professionnelle. Je la recommande vivement",
+   "author": "agathe chaigneau",
+   "date": "2026-02-02T15:33:11.116679Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Accueil top, toujours à l'écoute de votre demande et avec le sourire.\nLes professionnels de santé sont bienveillants et très compétents, ils prennent de le temps de vous expliquer les soins dont on a besoin et essayent toujours de faire au mieux pour nous et prennent en compte les contraintes financières que cela représente.",
+   "author": "Veronique Hillaire",
+   "date": "2024-05-23T18:57:03.971896Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Accueil parfait soin rien à dire médecin soigneur dans les soins matériels à la pointe de la technologie je recommande",
+   "author": "pannetier yann",
+   "date": "2024-04-08T16:42:34.219640Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
+   "text": "Les locaux sont neufs, propres et l’équipement très moderne. Excellent accueil, le docteur Simon Atlan est très sympathique et très professionnels.\nJe suis très contente d’avoir enfin trouvé un cabinet si professionnels et accueillant.\nJe le recommande vivement.",
+   "author": "Anne-Marie Culhane",
+   "date": "2023-01-16T17:17:19.600713Z",
+   "authorUrl": null
   }
  ],
- "updatedAt": "2026-11-21T11:43:56+00:00"
+ "updatedAt": "2026-11-21T17:44:01+00:00"
 }

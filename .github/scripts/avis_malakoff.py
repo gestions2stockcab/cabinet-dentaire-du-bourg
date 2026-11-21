@@ -52,7 +52,7 @@ for v in sorted(data.get("reviews", []), key=lambda v: v.get("createTime", ""), 
     r = v.get("reviewer", {})
     reviews.append({"rating": STARS.get(v.get("starRating")), "text": original(v["comment"]),
                     "author": "Patient" if r.get("isAnonymous") else r.get("displayName", "Patient"), "date": v.get("createTime"), "authorUrl": None})
-    if len(reviews) == 6: break
+    if len(reviews) == 24: break
 out = {"rating": round(data["averageRating"], 1) if data.get("averageRating") else None, "count": data.get("totalReviewCount"),
        "reviews": reviews, "updatedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
 json.dump(out, open("avis-malakoff.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)

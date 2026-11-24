@@ -1,6 +1,6 @@
 {
  "rating": 4.8,
- "count": 683,
+ "count": 684,
  "reviews": [
   {
    "rating": 5,
@@ -95,13 +95,6 @@
   },
   {
    "rating": 5,
-   "text": "Dentiste merveilleuse. Douce et ultra professionnelle. Je la recommande vivement",
-   "author": "agathe chaigneau",
-   "date": "2026-02-02T15:33:11.116679Z",
-   "authorUrl": null
-  },
-  {
-   "rating": 5,
    "text": "Accueil top, toujours à l'écoute de votre demande et avec le sourire.\nLes professionnels de santé sont bienveillants et très compétents, ils prennent de le temps de vous expliquer les soins dont on a besoin et essayent toujours de faire au mieux pour nous et prennent en compte les contraintes financières que cela représente.",
    "author": "Veronique Hillaire",
    "date": "2024-05-23T18:57:03.971896Z",
@@ -122,5 +115,5 @@
    "authorUrl": null
   }
  ],
- "updatedAt": "2026-11-23T13:37:35+00:00"
+ "updatedAt": "2026-11-24T14:14:33+00:00"
 }

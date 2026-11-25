@@ -1,6 +1,6 @@
 {
  "rating": 4.8,
- "count": 686,
+ "count": 687,
  "reviews": [
   {
    "rating": 5,
@@ -81,13 +81,6 @@
   },
   {
    "rating": 5,
-   "text": "C’était la première fois que je m’y rendais\nTout s’est bien passé de l’accueil à la consultation tout était parfait",
-   "author": "nathalie guetta",
-   "date": "2026-09-02T08:38:47.506269Z",
-   "authorUrl": null
-  },
-  {
-   "rating": 5,
    "text": "Accueil souriant et à l’écoute\nDR Benchetrit est une personne douce qui prend le temps d’expliquer et qui vous rassure",
    "author": "CATEHERINE THOREL",
    "date": "2026-06-22T18:54:21.342255Z",
@@ -115,5 +108,5 @@
    "authorUrl": null
   }
  ],
- "updatedAt": "2026-11-25T09:06:16+00:00"
+ "updatedAt": "2026-11-25T19:34:27+00:00"
 }

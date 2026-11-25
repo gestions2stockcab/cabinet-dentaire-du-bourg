@@ -1,6 +1,6 @@
 {
  "rating": 4.8,
- "count": 684,
+ "count": 686,
  "reviews": [
   {
    "rating": 5,
@@ -95,6 +95,13 @@
   },
   {
    "rating": 5,
+   "text": "Centre très agréable et très bien accueilli, les dentistes très attentionné, je recommande.",
+   "author": "Patricia Bourquin",
+   "date": "2026-06-10T09:20:33.274313Z",
+   "authorUrl": null
+  },
+  {
+   "rating": 5,
    "text": "Accueil top, toujours à l'écoute de votre demande et avec le sourire.\nLes professionnels de santé sont bienveillants et très compétents, ils prennent de le temps de vous expliquer les soins dont on a besoin et essayent toujours de faire au mieux pour nous et prennent en compte les contraintes financières que cela représente.",
    "author": "Veronique Hillaire",
    "date": "2024-05-23T18:57:03.971896Z",
@@ -106,14 +113,7 @@
    "author": "pannetier yann",
    "date": "2024-04-08T16:42:34.219640Z",
    "authorUrl": null
-  },
-  {
-   "rating": 5,
-   "text": "Les locaux sont neufs, propres et l’équipement très moderne. Excellent accueil, le docteur Simon Atlan est très sympathique et très professionnels.\nJe suis très contente d’avoir enfin trouvé un cabinet si professionnels et accueillant.\nJe le recommande vivement.",
-   "author": "Anne-Marie Culhane",
-   "date": "2023-01-16T17:17:19.600713Z",
-   "authorUrl": null
   }
  ],
- "updatedAt": "2026-11-24T14:14:33+00:00"
+ "updatedAt": "2026-11-25T00:05:46+00:00"
 }

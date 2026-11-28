@@ -55,6 +55,26 @@ for v in sorted(data.get("reviews", []), key=lambda v: v.get("createTime", ""), 
     if len(reviews) == 24: break
 out = {"rating": round(data["averageRating"], 1) if data.get("averageRating") else None, "count": data.get("totalReviewCount"),
        "reviews": reviews, "updatedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
+# avis par thème (orthodontie, parodontie) pour les pages dédiées : tout l'historique, 4-5 étoiles, au moins 40 caractères (Simon, 28/11/2026)
+THEMES = {"ortho": ("orthodon", "appareil", "aligneur", "gouttière", "gouttiere", "invisalign", "bagues", "levy", "lévy"),
+          "paro": ("parodon", "gencive", "déchaussement", "surfaçage", "rioual")}
+try:
+    tout, tok, n = list(data.get("reviews", [])), data.get("nextPageToken"), 0
+    while tok and n < 20:
+        pg = call(f"https://mybusiness.googleapis.com/v4/accounts/{fiche['account']}/locations/{fiche['location']}/reviews?pageSize=50&orderBy=updateTime%20desc&pageToken={tok}", token)
+        tout += pg.get("reviews", []); tok = pg.get("nextPageToken"); n += 1
+    for th, mots in THEMES.items():
+        L = []
+        for v in sorted(tout, key=lambda v: v.get("createTime", ""), reverse=True):
+            t = original(v.get("comment") or "")
+            if STARS.get(v.get("starRating"), 0) < 4 or len(t) < 40 or not any(m in t.lower() for m in mots): continue
+            r = v.get("reviewer", {})
+            L.append({"rating": STARS.get(v.get("starRating")), "text": t, "author": "Patient" if r.get("isAnonymous") else r.get("displayName", "Patient"), "date": v.get("createTime")})
+            if len(L) == 8: break
+        out[th] = L
+    print(f"Avis par thème : {', '.join(f'{k} {len(out[k])}' for k in THEMES)} (sur {len(tout)} avis lus)")
+except Exception as e:
+    print("Avis par thème indisponibles :", e)
 json.dump(out, open("avis-malakoff.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(f"Malakoff : {out['count']} avis, note {out['rating']}, {len(reviews)} avis retenus")
 

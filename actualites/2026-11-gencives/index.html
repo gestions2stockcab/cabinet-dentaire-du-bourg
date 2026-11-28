@@ -213,7 +213,7 @@ dl.care dd{position:relative;z-index:1;margin:0;color:var(--muted);font-size:.97
 /* animations complémentaires (14/11) */
 .sch .mv-grow{transform-box:fill-box;transform-origin:50% 0}
 .sch-slide.on .mv-grow{animation:schGrow 2.6s cubic-bezier(.4,0,.3,1) .4s both}@keyframes schGrow{from{transform:scale(.45);opacity:.35}to{transform:scale(1);opacity:1}}
-.sch .mv-drip{opacity:0}
+.sch .mv-drip{opacity:0;display:none}
 .sch-slide.on .mv-drip{animation:schDrip 1.7s ease-in 1s 3}@keyframes schDrip{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
 .sch .mv-down{transform-box:fill-box;transform-origin:50% 0}
 .sch-slide.on .mv-down{animation:schDown 2.2s ease .8s both}@keyframes schDown{from{transform:scaleY(0)}to{transform:scaleY(1)}}
@@ -582,11 +582,11 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch .sch-c{font-style:normal}
 .sch-v{animation:schFade .6s ease both}
 .sch .mv-fill{stroke-dasharray:1;stroke-dashoffset:1}
-/* pulpe en rouge, pulpe enflammée qui pulse, gutta orange */
-.sch .pulpe{fill:#f6d3cf;stroke:#c2463d}
-.sch .inf .pulpe{fill:#e5352b;stroke:#b3241b}
+/* pulpe rose pâle, pulpe enflammée orangée qui pulse doucement (pas d'aspect « sang », Simon 28/11/2026), gutta orange */
+.sch .pulpe{fill:#fbe4dc;stroke:#d6a395}
+.sch .inf .pulpe{fill:#f3b48f;stroke:#d48a5e}
 .sch-slide.on .inf .pulpe{animation:schPulse 1.3s ease-in-out infinite alternate}
-@keyframes schPulse{from{fill:#e5352b}to{fill:#ff8a7f}}
+@keyframes schPulse{from{fill:#f3b48f}to{fill:#f9d6bf}}
 .sch .gutta path{stroke:#e8832f}
 .sch .mv-screw,.sch .mv-thr{transform-box:view-box}
 .sch-slide.on .mv-site{animation:schFade .8s ease both}

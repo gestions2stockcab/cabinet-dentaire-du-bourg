@@ -75,6 +75,13 @@ try:
     print(f"Avis par thème : {', '.join(f'{k} {len(out[k])}' for k in THEMES)} (sur {len(tout)} avis lus)")
 except Exception as e:
     print("Avis par thème indisponibles :", e)
+# lien « laisser un avis » (carte QR pour les patients, 28/11/2026)
+try:
+    md = call(f"https://mybusinessbusinessinformation.googleapis.com/v1/locations/{fiche['location']}?readMask=metadata", token).get("metadata", {})
+    out["reviewUri"], out["placeId"], out["mapsUri"] = md.get("newReviewUri"), md.get("placeId"), md.get("mapsUri")
+    print("Lien avis :", out["reviewUri"], "| placeId :", out["placeId"])
+except Exception as e:
+    print("Lien avis indisponible :", e)
 json.dump(out, open("avis-malakoff.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(f"Malakoff : {out['count']} avis, note {out['rating']}, {len(reviews)} avis retenus")
 

@@ -568,10 +568,13 @@ dl.care:not(.rcpt-list) div:has(.care-link) dd::after{display:inline;content:"  
 .sch-v{animation:schFade .6s ease both}
 .sch .mv-fill{stroke-dasharray:1;stroke-dashoffset:1}
 /* pulpe rose pâle, pulpe enflammée orangée qui pulse doucement (pas d'aspect « sang », Simon 28/11/2026), gutta orange */
-.sch .pulpe{fill:#fbe4dc;stroke:#d6a395}
-.sch .inf .pulpe{fill:#f3b48f;stroke:#d48a5e}
+.sch .pulpe{fill:#f9ede3;stroke:#d9c1ae}
+.sch .inf .pulpe{fill:#f6d08e;stroke:#d6a557}
 .sch-slide.on .inf .pulpe{animation:schPulse 1.3s ease-in-out infinite alternate}
-@keyframes schPulse{from{fill:#f3b48f}to{fill:#f9d6bf}}
+@keyframes schPulse{from{fill:#f6d08e}to{fill:#fbe7c2}}
+/* aucune couleur « sang » (Simon 28/11/2026) : gencive enflammée corail clair, alvéole beige, contours de dent absente gris */
+.sch [fill="#ee9c94"]{fill:#f4c3b4}.sch [stroke="#b5463d"]{stroke:#d29c8a}
+.sch [fill="#a43a3f"]{fill:#e8cdbd;stroke:#c2a290}.sch [stroke="#c0392b"]{stroke:#7d8a99}.sch [fill="#d9473b"]{fill:#e0b04a}
 .sch .gutta path{stroke:#e8832f}
 .sch .mv-screw,.sch .mv-thr{transform-box:view-box}
 .sch-slide.on .mv-site{animation:schFade .8s ease both}

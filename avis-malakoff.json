@@ -108,7 +108,7 @@
    "authorUrl": null
   }
  ],
- "updatedAt": "2026-11-28T17:47:20+00:00",
+ "updatedAt": "2026-11-28T18:21:04+00:00",
  "ortho": [],
  "paro": [
   {
@@ -117,5 +117,8 @@
    "author": "Ludovic",
    "date": "2024-09-10T15:20:51.172536Z"
   }
- ]
+ ],
+ "reviewUri": "https://search.google.com/local/writereview?placeid=ChIJwXVhvulx5kcRofr7viWrrkU",
+ "placeId": "ChIJwXVhvulx5kcRofr7viWrrkU",
+ "mapsUri": "https://maps.google.com/maps?cid=5021138813171006113"
 }

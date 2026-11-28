@@ -1,0 +1,19 @@
+name: Services fiche Google Malakoff
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "lire ou publier"
+        default: "lire"
+jobs:
+  services:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Services
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          MODE: ${{ inputs.mode }}
+        run: python3 .github/scripts/services_malakoff.py
